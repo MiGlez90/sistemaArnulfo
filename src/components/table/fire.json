@@ -1,0 +1,28 @@
+{
+  "ingresos" : {
+    "-KZEQAKc3daxApBGmQpa" : {
+      "key": "0",
+      "tipo": "animales",
+      "subtipo": "cerdo",
+      "fecha": 12345678,
+      "captura": 12345678,
+      "cantidad":1234
+    },
+    "-KZEQD77XcgsQo7DL4Fn" : {
+      "key": "1",
+      "tipo": "semilla",
+      "subtipo": "maiz",
+      "fecha": 42334552,
+      "captura": 12345678,
+      "cantidad":3456
+    },
+    "-KZERE9xJqNbd9rRdRhl" : {
+      "key": "2",
+      "tipo": "otro",
+      "subtipo": "descripción",
+      "fecha": 334456672,
+      "captura": 12345678,
+      "cantidad":8909
+    }
+  }
+}
