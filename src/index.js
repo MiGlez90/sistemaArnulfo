@@ -12,12 +12,13 @@ import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
 import {loadIngresos} from './actions/ingresoActions'
 import {loadTipos} from './actions/tipoActions'
-
+import {loadGastos} from './actions/gastoActions';
 
 
 const store = configureStore();
 store.dispatch(loadIngresos());
 store.dispatch(loadTipos());
+store.dispatch(loadGastos());
 
 
 const Main = () => (
