@@ -7,10 +7,11 @@ import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
 import IngresoForm from './IngresoForm';
 
+
 class ManageIngresoPage extends React.Component {
 
     state = {
-        ingreso: Object.assign({}, this.props.ingreso),
+        //ingreso: Object.assign({}, this.props.ingreso),
         errors:{}
     };
 
@@ -26,7 +27,7 @@ class ManageIngresoPage extends React.Component {
             <div>
                 <h1>Manage Ingreso</h1>
                 <IngresoForm
-                    ingreso={this.state.ingreso}
+                    ingreso={this.props.ingreso}
                     errors={this.state.errors}
                     allTipos={this.props.tipos}
                     onChange={this.updateIngresoState}
@@ -41,17 +42,24 @@ class ManageIngresoPage extends React.Component {
 //};
 
 function mapStateToProps(state, ownProps) {
-    let ingreso = {
-        key:'',
-        cantidad:'',
-        captura:'',
-        description:'',
-        fecha:'',
-        subtipo:'',
-        tipo:''
+    // let ingreso = {
+    //     key: ownProps.match.params.key,
+    //     cantidad:'',
+    //     captura:'',
+    //     description:'',
+    //     fecha:'',
+    //     subtipo:'',
+    //     tipo:''
+    //
+    // };
+    debugger;
+    console.log(state.ingresos);
 
-    };
+    const ingresoIsolated = state.ingresos.filter( (ingreso) => {
+        return ingreso.key === ownProps.match.params.key;
+    });
 
+    const ingreso = ingresoIsolated[0];
     const tiposFormattedForDropdown = state.tipos.map(tipo=>{
         return {
             value:tipo.value,
@@ -60,7 +68,7 @@ function mapStateToProps(state, ownProps) {
     });
 
     return {
-        ingreso,
+        ingreso: ingreso,
         tipos: tiposFormattedForDropdown
     };
 }

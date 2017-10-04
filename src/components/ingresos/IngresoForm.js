@@ -7,6 +7,11 @@ import SelectInput from '../common/SelectInput';
 
 
 const IngresoForm = ({ingreso, onChange, errors, allTipos}) => {
+    if(ingreso !== undefined){
+        console.log(ingreso.key);
+    }else{
+        ingreso = {};
+    }
     return (
         <form>
             <TextInput
