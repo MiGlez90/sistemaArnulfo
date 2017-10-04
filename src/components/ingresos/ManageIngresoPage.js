@@ -6,6 +6,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
 import IngresoForm from './IngresoForm';
+import ListaDetalle from "./ListaDetalle";
+import {FlatButton} from 'material-ui';
+import toastr from 'toastr';
 
 
 class ManageIngresoPage extends React.Component {
@@ -15,6 +18,9 @@ class ManageIngresoPage extends React.Component {
         errors:{}
     };
 
+    componentWillMount(){
+        this.props.history.push(this.props.match.url);
+    }
 
     componentWillReceiveProps(nP){
         const newIngreso = Object.assign({},this.props.ingreso);
@@ -34,19 +40,48 @@ class ManageIngresoPage extends React.Component {
         this.setState({ingreso});
     };
 
+    deleteItem = () => {
+        const response = window.confirm('Seguro');
+        if(response){
+            const ingresoForRemoving = Object.assign({},this.state.ingreso);
+            this.props.actions.deleteIngreso(ingresoForRemoving)
+                .then( r => {
+                    toastr.success('Se ha eliminado');
+                    this.props.history.push('/ingresos');
+                }).catch( e => {
+
+            });
+        }
+
+    };
+
 
     render() {
+        let ingresoToPrint = [];
+        const ingreso = this.state.ingreso;
+        for(let field in ingreso){
+            let newIngreso = {};
+            newIngreso.value = ingreso[field];
+            newIngreso.label = field;
+            ingresoToPrint.push(newIngreso);
+        }
+
         return (
             <div>
-                <h1>Manage Ingreso</h1>
-                <IngresoForm
-                    ingresoClon={this.state.ingreso}
-                    ingreso={this.state.ingreso}
-                    errors={this.state.errors}
-                    allTipos={this.props.tipos}
-                    onChange={this.updateIngresoState}
-                    onChangeTipo={this.handleChangeTipo}
-                />
+                <ListaDetalle title="Detalle Ingreso" data={ingresoToPrint}/>
+
+                {/*<IngresoForm*/}
+                    {/*ingreso={this.state.ingreso}*/}
+                    {/*allTipos={this.props.tipos}*/}
+                    {/*onChange={this.updateIngresoState}*/}
+                    {/*onChangeTipo={this.handleChangeTipo}*/}
+                {/*/>*/}
+                <FlatButton
+                    label="Editar" primary={true}/>
+                <FlatButton
+                    label="Eliminar"
+                    primary={true}
+                    onClick={this.deleteItem}/>
             </div>
         );
     }

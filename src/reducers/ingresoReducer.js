@@ -20,6 +20,8 @@ export default function ingresoReducer(state = [], action){
 
         // case "LOAD_TIPOS_SUCCESS":
         //     return action.tipos;
+        case "DELETE_INGRESO_SUCCESS":
+            return [...state.filter( i => i.key !== action.ingreso.key)];
         default:
             return state;
     }

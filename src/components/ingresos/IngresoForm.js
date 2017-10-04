@@ -7,8 +7,8 @@ import {MenuItem, SelectField, TextField, FlatButton} from "material-ui";
 
 
 
-const IngresoForm = ({ingreso, ingresoClon, onChange, onChangeTipo, allTipos, textSubscribe}) => {
-    console.log(ingresoClon);
+const IngresoForm = ({ingreso, onChange, onChangeTipo, allTipos, textSubscribe}) => {
+    console.log(ingreso);
     let menuItems = [];
     if( ingreso !== undefined){
         console.log(ingreso.key);
