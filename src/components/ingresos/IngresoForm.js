@@ -57,10 +57,4 @@ IngresoForm.defaultProps = {
     textSubscribe: 'Actualizar'
 };
 
-const styles = {
-    form:{
-        display:'block'
-    }
-};
-
 export default IngresoForm;
