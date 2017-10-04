@@ -11,26 +11,41 @@ import IngresoForm from './IngresoForm';
 class ManageIngresoPage extends React.Component {
 
     state = {
-        //ingreso: Object.assign({}, this.props.ingreso),
+        ingreso:  {},
         errors:{}
+    };
+
+
+    componentWillReceiveProps(nP){
+        const newIngreso = Object.assign({},this.props.ingreso);
+        this.setState({ingreso:newIngreso});
+    }
+
+    handleChangeTipo = (event, index, value) => {
+        let ingreso = Object.assign({}, this.state.ingreso);
+        ingreso.tipo = value;
+        this.setState({ingreso});
     };
 
     updateIngresoState = (e) => {
         const field = e.target.name;
         let ingreso = Object.assign({}, this.state.ingreso);
         ingreso[field] = e.target.value;
-        return this.setState({ingreso});
+        this.setState({ingreso});
     };
+
 
     render() {
         return (
             <div>
                 <h1>Manage Ingreso</h1>
                 <IngresoForm
-                    ingreso={this.props.ingreso}
+                    ingresoClon={this.state.ingreso}
+                    ingreso={this.state.ingreso}
                     errors={this.state.errors}
                     allTipos={this.props.tipos}
                     onChange={this.updateIngresoState}
+                    onChangeTipo={this.handleChangeTipo}
                 />
             </div>
         );
@@ -52,7 +67,7 @@ function mapStateToProps(state, ownProps) {
     //     tipo:''
     //
     // };
-    debugger;
+
     console.log(state.ingresos);
 
     const ingresoIsolated = state.ingresos.filter( (ingreso) => {
