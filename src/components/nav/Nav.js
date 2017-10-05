@@ -23,7 +23,11 @@ class Nav extends Component {
         //const {oddEvent} = this;
         const {active} = this.state;
         return(
-            <Drawer containerStyle={styles.draw}>
+            <Drawer
+                containerStyle={styles.draw}
+                open={this.props.open}
+                docked={true}
+                width='20%'>
                 <NavLink
                     activeClassName="selected"
                     activeStyle={{

@@ -44,10 +44,6 @@ const IngresoForm = ({ingreso, onChange, onChangeTipo, allTipos, textSubscribe})
                 onChange={onChangeTipo}>
                 {menuItems}
             </SelectField>
-
-            <FlatButton>
-                {textSubscribe}
-            </FlatButton>
         </form>
     );
 };

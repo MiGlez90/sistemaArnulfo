@@ -9,7 +9,7 @@ const IngresoListRow = ({ingreso}) => (
     <TableRow>
         <TableRowColumn>
             <Link to={"/ingresos/"+ingreso.key}>
-                {ingreso.tipo}
+                {ingreso.key}
             </Link>
 
             </TableRowColumn>

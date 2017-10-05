@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
 import IngresoForm from './IngresoForm';
 import ListaDetalle from "./ListaDetalle";
-import {FlatButton} from 'material-ui';
+import {Dialog, FlatButton} from 'material-ui';
 import toastr from 'toastr';
 
 
@@ -15,7 +15,8 @@ class ManageIngresoPage extends React.Component {
 
     state = {
         ingreso:  {},
-        errors:{}
+        errors:{},
+        openForm: false
     };
 
     componentWillMount(){
@@ -26,19 +27,6 @@ class ManageIngresoPage extends React.Component {
         const newIngreso = Object.assign({},this.props.ingreso);
         this.setState({ingreso:newIngreso});
     }
-
-    handleChangeTipo = (event, index, value) => {
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso.tipo = value;
-        this.setState({ingreso});
-    };
-
-    updateIngresoState = (e) => {
-        const field = e.target.name;
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso[field] = e.target.value;
-        this.setState({ingreso});
-    };
 
     deleteItem = () => {
         const response = window.confirm('Seguro');
@@ -55,6 +43,46 @@ class ManageIngresoPage extends React.Component {
 
     };
 
+    editIngreso = () => {
+        const ingresoCopy = Object.assign({},this.state.ingreso);
+        this.props.actions.saveIngreso(ingresoCopy)
+            .then( (r) => {
+                toastr.success('Guardado');
+                console.log(r);
+            }).catch(e=>console.error(e));
+        this.closeForm();
+    };
+
+    closeForm = () => {
+        this.setState({openForm:false});
+    };
+
+    actions = [
+        <FlatButton
+            label="Editar"
+            primary={true}
+            keyboardFocused={true}
+            onClick={this.editIngreso}
+        />
+    ];
+
+
+    handleChangeTipo = (event, index, value) => {
+        let ingreso = Object.assign({}, this.state.ingreso);
+        ingreso.tipo = value;
+        this.setState({ingreso});
+    };
+
+    updateIngresoState = (e) => {
+        const field = e.target.name;
+        let ingreso = Object.assign({}, this.state.ingreso);
+        ingreso[field] = e.target.value;
+        this.setState({ingreso});
+    };
+
+    openForm = () => {
+        this.setState({openForm:true});
+    };
 
     render() {
         let ingresoToPrint = [];
@@ -77,11 +105,26 @@ class ManageIngresoPage extends React.Component {
                     {/*onChangeTipo={this.handleChangeTipo}*/}
                 {/*/>*/}
                 <FlatButton
-                    label="Editar" primary={true}/>
+                    label="Editar" primary={true} onClick={this.openForm}/>
                 <FlatButton
                     label="Eliminar"
                     primary={true}
                     onClick={this.deleteItem}/>
+                <Dialog
+                    contentStyle={{width:350}}
+                    title="Editar Ingreso"
+                    actions={this.actions}
+                    modal={false}
+                    open={this.state.openForm}
+                    onRequestClose={this.closeForm}>
+                    <IngresoForm
+                        ingreso={this.state.ingreso}
+                        allTipos={this.props.tipos}
+                        onChange={this.updateIngresoState}
+                        onChangeTipo={this.handleChangeTipo}
+                    />
+
+                </Dialog>
             </div>
         );
     }

@@ -10,16 +10,28 @@ import Nav from './components/nav/Nav';
 
 
 class App extends Component {
-  render() {
+    state = {
+        showDrawer : false
+    };
+
+    openDrawer = () => {
+        let {showDrawer} = this.state;
+        showDrawer = !showDrawer;
+        this.setState({showDrawer});
+    };
+
+    render() {
     return (
       <div>
         <AppBar
             title="Flujo de Efectivo"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
+            onLeftIconButtonTouchTap={this.openDrawer}
+            style={{top:0,position:'fixed'}}
         />
-        <Nav/>
+        <Nav open={this.state.showDrawer}/>
 
-          <div style={styles.container}>
+          <div className="routes-container App">
               <Routes />
           </div>
 
@@ -30,9 +42,7 @@ class App extends Component {
 
 const styles = {
     container:{
-        marginLeft:'300px',
-        marginRight:'100px',
-        marginTop:'70px'
+        marginLeft:'22%'
     }
 };
 

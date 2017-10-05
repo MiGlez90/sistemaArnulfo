@@ -16,7 +16,12 @@ export default function ingresoReducer(state = [], action){
             Object.assign({}, action.ingreso)
             ];
         case "UPDATE_INGRESO_SUCCESS":
-            return state;
+            return [...state.map( i => {
+                if(i.key === action.ingreso.key){
+                    return action.ingreso;
+                }
+                return i;
+            } )];
 
         // case "LOAD_TIPOS_SUCCESS":
         //     return action.tipos;
