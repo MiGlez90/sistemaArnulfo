@@ -15,6 +15,7 @@ class ManageIngresoPage extends React.Component {
 
     state = {
         ingreso:  {},
+        ingresoMutable:  {},
         errors:{},
         openForm: false
     };
@@ -25,7 +26,7 @@ class ManageIngresoPage extends React.Component {
 
     componentWillReceiveProps(nP){
         const newIngreso = Object.assign({},this.props.ingreso);
-        this.setState({ingreso:newIngreso});
+        this.setState({ingreso:newIngreso, ingresoMutable:newIngreso});
     }
 
     deleteItem = () => {
@@ -44,7 +45,7 @@ class ManageIngresoPage extends React.Component {
     };
 
     editIngreso = () => {
-        const ingresoCopy = Object.assign({},this.state.ingreso);
+        const ingresoCopy = Object.assign({},this.state.ingresoMutable);
         this.props.actions.saveIngreso(ingresoCopy)
             .then( (r) => {
                 toastr.success('Guardado');
@@ -68,16 +69,16 @@ class ManageIngresoPage extends React.Component {
 
 
     handleChangeTipo = (event, index, value) => {
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso.tipo = value;
-        this.setState({ingreso});
+        let ingresoMutable = Object.assign({}, this.state.ingresoMutable);
+        ingresoMutable.tipo = value;
+        this.setState({ingresoMutable});
     };
 
     updateIngresoState = (e) => {
         const field = e.target.name;
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso[field] = e.target.value;
-        this.setState({ingreso});
+        let ingresoMutable = Object.assign({}, this.state.ingresoMutable);
+        ingresoMutable[field] = e.target.value;
+        this.setState({ingresoMutable});
     };
 
     openForm = () => {
@@ -86,7 +87,7 @@ class ManageIngresoPage extends React.Component {
 
     render() {
         let ingresoToPrint = [];
-        const ingreso = this.state.ingreso;
+        const ingreso = this.props.ingreso;
         for(let field in ingreso){
             let newIngreso = {};
             newIngreso.value = ingreso[field];
@@ -94,8 +95,12 @@ class ManageIngresoPage extends React.Component {
             ingresoToPrint.push(newIngreso);
         }
 
+
+
+
+
         return (
-            <div>
+            <div style={{width:'50vw'}}>
                 <ListaDetalle title="Detalle Ingreso" data={ingresoToPrint}/>
 
                 {/*<IngresoForm*/}
@@ -118,7 +123,7 @@ class ManageIngresoPage extends React.Component {
                     open={this.state.openForm}
                     onRequestClose={this.closeForm}>
                     <IngresoForm
-                        ingreso={this.state.ingreso}
+                        ingreso={this.state.ingresoMutable}
                         allTipos={this.props.tipos}
                         onChange={this.updateIngresoState}
                         onChangeTipo={this.handleChangeTipo}
