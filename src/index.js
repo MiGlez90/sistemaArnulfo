@@ -11,13 +11,15 @@ import 'antd/dist/antd.css';
 import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
 import {loadIngresos} from './actions/ingresoActions'
-import {loadTipos} from './actions/tipoActions'
+import {loadTipos} from './actions/tipoActions';
+import{loadCaja} from './actions/cajaActions';
 
 
 
 const store = configureStore();
 store.dispatch(loadIngresos());
 store.dispatch(loadTipos());
+store.dispatch(loadCaja());
 
 
 const Main = () => (
@@ -43,4 +45,3 @@ const ReduxProvider = () => (
 ReactDOM.render(<ReduxProvider />, document.getElementById('root'));
 
 registerServiceWorker();
-
