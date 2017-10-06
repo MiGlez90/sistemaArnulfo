@@ -7,17 +7,19 @@ import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
 import IngresoForm from './IngresoForm';
 import ListaDetalle from "./ListaDetalle";
-import {Dialog, FlatButton} from 'material-ui';
+import {Dialog, FlatButton, TextField} from 'material-ui';
 import toastr from 'toastr';
+import FormularioEditar from "./FormularioEditar";
 
 
 class ManageIngresoPage extends React.Component {
 
     state = {
+        edit: false,
         ingreso:  {},
         ingresoMutable:  {},
-        errors:{},
-        openForm: false
+        errors:{}
+        // openForm: false
     };
 
     componentWillMount(){
@@ -55,7 +57,8 @@ class ManageIngresoPage extends React.Component {
     };
 
     closeForm = () => {
-        this.setState({openForm:false});
+        // this.setState({openForm:false});
+        this.setState({edit:false});
     };
 
     actions = [
@@ -82,13 +85,16 @@ class ManageIngresoPage extends React.Component {
     };
 
     openForm = () => {
-        this.setState({openForm:true});
+        // this.setState({openForm:true});
+        this.setState({edit:true});
     };
 
     render() {
+        const {edit} = this.state;
         let ingresoToPrint = [];
+
         const ingreso = this.props.ingreso;
-        for(let field in ingreso){
+        for (let field in ingreso) {
             let newIngreso = {};
             newIngreso.value = ingreso[field];
             newIngreso.label = field;
@@ -99,37 +105,46 @@ class ManageIngresoPage extends React.Component {
 
 
 
+
         return (
             <div style={{width:'50vw'}}>
-                <ListaDetalle title="Detalle Ingreso" data={ingresoToPrint}/>
-
+                { (!edit)
+                    ?<ListaDetalle title="Detalle Ingreso" data={ingresoToPrint}/>
+                    :< FormularioEditar data={ingresoToPrint}/>
+                }
                 {/*<IngresoForm*/}
                     {/*ingreso={this.state.ingreso}*/}
                     {/*allTipos={this.props.tipos}*/}
                     {/*onChange={this.updateIngresoState}*/}
                     {/*onChangeTipo={this.handleChangeTipo}*/}
                 {/*/>*/}
-                <FlatButton
-                    label="Editar" primary={true} onClick={this.openForm}/>
+                { !edit
+                    ?<FlatButton label="Editar" primary={true} onClick={this.openForm}/>
+                    :<FlatButton label="Cancelar" primary={true} onClick={this.closeForm}/>
+                }
+
+
+
+
                 <FlatButton
                     label="Eliminar"
                     primary={true}
                     onClick={this.deleteItem}/>
-                <Dialog
-                    contentStyle={{width:350}}
-                    title="Editar Ingreso"
-                    actions={this.actions}
-                    modal={false}
-                    open={this.state.openForm}
-                    onRequestClose={this.closeForm}>
-                    <IngresoForm
-                        ingreso={this.state.ingresoMutable}
-                        allTipos={this.props.tipos}
-                        onChange={this.updateIngresoState}
-                        onChangeTipo={this.handleChangeTipo}
-                    />
+                {/*<Dialog*/}
+                    {/*contentStyle={{width:350}}*/}
+                    {/*title="Editar Ingreso"*/}
+                    {/*actions={this.actions}*/}
+                    {/*modal={false}*/}
+                    {/*open={this.state.openForm}*/}
+                    {/*onRequestClose={this.closeForm}>*/}
+                    {/*<IngresoForm*/}
+                        {/*ingreso={this.state.ingresoMutable}*/}
+                        {/*allTipos={this.props.tipos}*/}
+                        {/*onChange={this.updateIngresoState}*/}
+                        {/*onChangeTipo={this.handleChangeTipo}*/}
+                    {/*/>*/}
 
-                </Dialog>
+                {/*</Dialog>*/}
             </div>
         );
     }

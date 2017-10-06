@@ -1,5 +1,5 @@
 import React from 'react';
-import {ListItem, List} from 'material-ui';
+import {ListItem, List, TextField} from 'material-ui';
 
 const ListaDetalle = (props) => {
 

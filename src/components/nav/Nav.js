@@ -29,6 +29,7 @@ class Nav extends Component {
                 docked={true}
                 width='20%'>
                 <NavLink
+                    onClick={this.props.toogleDrawer}
                     activeClassName="selected"
                     activeStyle={{
                         fontWeight: 'bold',
@@ -41,6 +42,7 @@ class Nav extends Component {
                         leftIcon={<NoteAdd />} />
                 </NavLink>
                 <NavLink
+                    onClick={this.props.toogleDrawer}
                     activeClassName="selected"
                     activeStyle={{
                         fontWeight: 'bold',
@@ -55,6 +57,7 @@ class Nav extends Component {
                 </NavLink>
 
                 <NavLink
+                    onClick={this.props.toogleDrawer}
                     activeClassName="selected"
                     activeStyle={{
                         fontWeight: 'bold',
@@ -69,6 +72,7 @@ class Nav extends Component {
                 </NavLink>
 
                 <NavLink
+                    onClick={this.props.toogleDrawer}
                     activeClassName="selected"
                     activeStyle={{
                         fontWeight: 'bold',
@@ -83,6 +87,7 @@ class Nav extends Component {
                 </NavLink>
 
                 <NavLink
+                    onClick={this.props.toogleDrawer}
                     activeClassName="selected"
                     activeStyle={{
                         fontWeight: 'bold',
@@ -99,9 +104,6 @@ class Nav extends Component {
         );
     }
 }
-
-//
-
 
 const styles = {
     draw:{

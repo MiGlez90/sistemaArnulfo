@@ -29,7 +29,7 @@ class App extends Component {
             onLeftIconButtonTouchTap={this.openDrawer}
             style={{top:0,position:'fixed'}}
         />
-        <Nav open={this.state.showDrawer}/>
+        <Nav open={this.state.showDrawer} toogleDrawer={this.openDrawer}/>
 
           <div className="routes-container App">
               <Routes />
