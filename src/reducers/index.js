@@ -1,13 +1,15 @@
 import {combineReducers} from 'redux';
 import ingresoReducer from './ingresoReducer';
 import tipoReducer from './tipoReducer';
-import cajaReducer from './cajaReducer';
+import gastoReducer from "./gastoReducer";
+import usuarioReducer from "./usuarioReducer";
 
 
 const rootReducer = combineReducers({
     ingresos: ingresoReducer,
     tipos: tipoReducer,
-    caja:cajaReducer
+    gastos:gastoReducer,
+    usuario: usuarioReducer
 });
 
 export default rootReducer;

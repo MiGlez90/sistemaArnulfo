@@ -16,6 +16,9 @@ export function updateIngresoSuccess(ingreso){
     return { type: "UPDATE_INGRESO_SUCCESS", ingreso };
 }
 
+export function deleteIngresoSuccess(ingreso) {
+    return { type: "DELETE_INGRESO_SUCCESS", ingreso };
+}
 
 
 export function loadIngresos(){
@@ -69,5 +72,20 @@ export function saveIngreso(ingreso){
 
 
     };
+}
+
+export function deleteIngreso(ingreso) {
+    return function (dispatch, getState) {
+        let updates = {};
+        updates['/ingresos/' + ingreso.key] = null;
+        return firebase.database().ref().update(updates)
+            .then(r=>{
+                dispatch(deleteIngresoSuccess(ingreso));
+                console.log(r);
+            }).catch(e=>{
+                console.log(e)
+            });
+
+    }
 }
 

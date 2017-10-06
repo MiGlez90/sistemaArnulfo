@@ -7,6 +7,10 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import IngresoForm from './IngresoForm';
 import {message} from 'antd';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as gastoActions from '../../actions/gastoActions';
+
 
 class TableContainer extends Component{
 
@@ -17,7 +21,7 @@ class TableContainer extends Component{
         newItem:{cantidad:'', captura:'',cantidad:'', tipo:'', subtipo:''}
     };
 
-    componentWillMount(){
+    /*componentWillMount(){
         firebase.database().ref('gastos')
             .on('child_added',
                 s=>{
@@ -36,7 +40,9 @@ class TableContainer extends Component{
                     const datas = data.filter(i=>i.key!==item.key);
                     this.setState({data:datas});
                 })
-    }
+    }*/
+
+
 
     openForm = () => {
       this.setState({openForm:true});
@@ -100,10 +106,11 @@ class TableContainer extends Component{
                 onClick={this.saveItem}
             />,
         ];
-        const {data, loading, openForm, newItem} = this.state;
+        const {loading, openForm, newItem} = this.state;
+        const {gastos} = this.props;
         return(
             <div>
-                <ShowTable loading={loading} data={data} />
+                <ShowTable loading={loading} data={gastos} />
                 <FloatingActionButton
                     style={styles.float}
                     onClick={this.openForm}
@@ -143,4 +150,16 @@ const styles = {
 
 };
 
-export default TableContainer;
+function mapStateToProps(state, ownProps) {
+    return {
+        gastos: state.gastos,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(gastoActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(TableContainer);
