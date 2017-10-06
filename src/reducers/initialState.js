@@ -1,5 +1,6 @@
 export default {
     ingresos:[],
     tipos:[],
-    gastos:[]
+    gastos:[],
+    caja:[]
 }

@@ -48,4 +48,3 @@ const ReduxProvider = () => (
 ReactDOM.render(<ReduxProvider />, document.getElementById('root'));
 
 registerServiceWorker();
-

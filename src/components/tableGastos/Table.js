@@ -78,7 +78,7 @@ const columns = [
         <span>
       <a href="#">Action 一 {record.cantidad}</a>
       <span className="ant-divider" />
-      <Popconfirm onConfirm={()=>borrarItem(record)} title="estas seguro？" okText="Si" cancelText="No">
+      <Popconfirm onConfirm={()=>borrarItem(record)} title="¿Estás seguro？" okText="Sí" cancelText="No">
     <a>Borrar</a>
   </Popconfirm>
 
