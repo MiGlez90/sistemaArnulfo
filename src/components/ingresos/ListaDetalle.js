@@ -27,22 +27,21 @@ const ListaDetalle = (props) => {
                     <TableHeaderColumn>Descripcion</TableHeaderColumn>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
-                    {props.data.map((ingreso) => {
-                        if(ingreso.label === 'key'){
-                            return null;
-                        }
-                        //return<ListItem key={ingreso.label}>{ingreso.label} : {ingreso.value}</ListItem>
-
-
-                        const label = FirstLetterInMayus(ingreso.label);
-
-                        return (
-                            <TableRow key={ingreso.label}>
-                                <TableRowColumn>{label}</TableRowColumn>
-                                <TableRowColumn>{ingreso.value}</TableRowColumn>
-                            </TableRow>
-                        )
-                    })}
+                    {
+                        props.data.map( ingreso => {
+                            if(ingreso.label === 'key'){
+                                return null;
+                            }
+                            //return<ListItem key={ingreso.label}>{ingreso.label} : {ingreso.value}</ListItem>
+                            const label = FirstLetterInMayus(ingreso.label);
+                            return (
+                                <TableRow key={ingreso.label}>
+                                    <TableRowColumn>{label}</TableRowColumn>
+                                    <TableRowColumn>{ingreso.value}</TableRowColumn>
+                                </TableRow>
+                            )
+                        })
+                    }
                 </TableBody>
 
             </Table>

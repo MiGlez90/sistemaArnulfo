@@ -6,7 +6,7 @@ import {
 import {Link} from 'react-router-dom';
 
 const IngresoListRow = ({ingreso}) => (
-    <TableRow>
+    <TableRow key={ingreso.key}>
         <TableRowColumn>
             <Link to={"/ingresos/"+ingreso.key}>
                 {ingreso.key}
