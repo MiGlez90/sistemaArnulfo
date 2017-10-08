@@ -2,7 +2,7 @@ import React from 'react';
 import {
     TableRow,
     TableRowColumn,
-} from 'material-ui/Table';
+} from 'material-ui';
 import {Link} from 'react-router-dom';
 
 const IngresoListRow = ({ingreso}) => (
@@ -11,7 +11,6 @@ const IngresoListRow = ({ingreso}) => (
             <Link to={"/ingresos/"+ingreso.key}>
                 {ingreso.key}
             </Link>
-
             </TableRowColumn>
         <TableRowColumn>$ {ingreso.cantidad}</TableRowColumn>
         <TableRowColumn>{ingreso.description}</TableRowColumn>
