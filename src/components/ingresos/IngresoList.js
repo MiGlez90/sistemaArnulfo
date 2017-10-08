@@ -7,7 +7,6 @@ import {
     TableHeaderColumn,
     TableRow
 } from 'material-ui/Table';
-import QueueAnim from 'rc-queue-anim';
 
 
 
@@ -24,11 +23,11 @@ const IngresoList = ({ingresos, deleteIngreso}) => (
                </TableRow>
            </TableHeader>
            <TableBody>
-                   {
-                       ingresos.map( ingreso => {
-                           return <IngresoListRow key={ingreso.key} ingreso={ingreso} />
-                       })
-                   }
+               {
+                   ingresos.map( ingreso => {
+                       return <IngresoListRow key={ingreso.key} ingreso={ingreso} />
+                   })
+               }
            </TableBody>
        </Table>
 
