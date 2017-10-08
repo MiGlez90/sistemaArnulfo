@@ -71,7 +71,7 @@ class IngresoContainer extends React.Component {
     render() {
         const {ingresos} = this.props;
         return (
-            <div>
+            <div style={ingresoContainerStyle}>
                 <IngresoList ingresos={ingresos} />
                 <FloatingActionButton
                     style={fabstyle}
@@ -104,6 +104,11 @@ const fabstyle = {
   right: 15,
   bottom: 15
 };
+
+const ingresoContainerStyle = {
+    width: '85vw'
+};
+
 IngresoContainer.propTypes = {
     // myProp: PropTypes.string.isRequired
 };
