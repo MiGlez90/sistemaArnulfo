@@ -5,12 +5,15 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
-import IngresoForm from './IngresoForm';
 import ListaDetalle from "./ListaDetalle";
-import {Dialog, FlatButton, TextField} from 'material-ui';
+import { FlatButton, FloatingActionButton} from 'material-ui';
 import toastr from 'toastr';
 import FormularioEditar from "./FormularioEditar";
+import ContentRemove from 'material-ui/svg-icons/action/delete-forever';
 
+const buttonStyle = {
+    margin: '20px 0px'
+};
 
 class ManageIngresoPage extends React.Component {
 
@@ -19,17 +22,8 @@ class ManageIngresoPage extends React.Component {
         ingreso:  {},
         ingresoMutable:  {},
         errors:{}
-        // openForm: false
     };
 
-    componentWillMount(){
-        this.props.history.push(this.props.match.url);
-    }
-
-    componentWillReceiveProps(nP){
-        const newIngreso = Object.assign({},this.props.ingreso);
-        this.setState({ingreso:newIngreso, ingresoMutable:newIngreso});
-    }
 
     deleteItem = () => {
         const response = window.confirm('Seguro');
@@ -47,7 +41,7 @@ class ManageIngresoPage extends React.Component {
     };
 
     editIngreso = () => {
-        const ingresoCopy = Object.assign({},this.state.ingresoMutable);
+        const ingresoCopy = Object.assign({},this.state.ingreso);
         this.props.actions.saveIngreso(ingresoCopy)
             .then( (r) => {
                 toastr.success('Guardado');
@@ -56,19 +50,18 @@ class ManageIngresoPage extends React.Component {
         this.closeForm();
     };
 
+    openForm = () => {
+        // this.setState({openForm:true});
+        const ingreso = Object.assign({},this.props.ingreso);
+        this.setState({edit:true, ingreso}, () => {
+            console.log(this.state.ingreso);
+        } );
+    };
+
     closeForm = () => {
         // this.setState({openForm:false});
         this.setState({edit:false});
     };
-
-    actions = [
-        <FlatButton
-            label="Editar"
-            primary={true}
-            keyboardFocused={true}
-            onClick={this.editIngreso}
-        />
-    ];
 
 
     handleChangeTipo = (event, index, value) => {
@@ -79,15 +72,11 @@ class ManageIngresoPage extends React.Component {
 
     updateIngresoState = (e) => {
         const field = e.target.name;
-        let ingresoMutable = Object.assign({}, this.state.ingresoMutable);
-        ingresoMutable[field] = e.target.value;
-        this.setState({ingresoMutable});
+        let ingreso = Object.assign({}, this.state.ingreso);
+        ingreso[field] = e.target.value;
+        this.setState({ingreso});
     };
 
-    openForm = () => {
-        // this.setState({openForm:true});
-        this.setState({edit:true});
-    };
 
     render() {
         const {edit} = this.state;
@@ -101,35 +90,63 @@ class ManageIngresoPage extends React.Component {
             ingresoToPrint.push(newIngreso);
         }
 
-
-
-
-
-
         return (
-            <div style={{width:'50vw'}}>
+            <div style={{width:'70vw'}}>
                 { (!edit)
-                    ?<ListaDetalle title="Detalle Ingreso" data={ingresoToPrint}/>
-                    :< FormularioEditar data={ingresoToPrint}/>
+                    ?<ListaDetalle
+                        title="Detalle Ingreso"
+                        data={ingresoToPrint}/>
+                    :< FormularioEditar
+                        data={ingresoToPrint}
+                        ingreso={this.state.ingreso}
+                        onChange={this.updateIngresoState}
+                        onChangleTipo={this.handleChangeTipo}/>
                 }
-                {/*<IngresoForm*/}
-                    {/*ingreso={this.state.ingreso}*/}
-                    {/*allTipos={this.props.tipos}*/}
-                    {/*onChange={this.updateIngresoState}*/}
-                    {/*onChangeTipo={this.handleChangeTipo}*/}
-                {/*/>*/}
                 { !edit
-                    ?<FlatButton label="Editar" primary={true} onClick={this.openForm}/>
-                    :<FlatButton label="Cancelar" primary={true} onClick={this.closeForm}/>
+                    ?
+                    <div>
+                        <FlatButton
+                            label="Editar"
+                            primary={true}
+                            onClick={this.openForm}
+                            style={buttonStyle}
+                        />
+                        <FlatButton
+                            label="Regresar"
+                            primary={true}
+                            onClick={()=>this.props.history.push('/ingresos')}
+                            style={buttonStyle}
+                        />
+                    </div>
+                    :
+                    <div>
+                        <FlatButton
+                            label="Guardar Cambios"
+                            primary={true}
+                            onClick={this.editIngreso}
+                            style={buttonStyle}
+                        />
+                        <FlatButton
+                            label="Cancelar"
+                            primary={true}
+                            onClick={this.closeForm}
+                            style={buttonStyle}
+                        />
+                    </div>
                 }
 
+                <FloatingActionButton
+                    style={fabstyle}
+                    onClick={this.deleteItem}>
+                    <ContentRemove/>
+                </FloatingActionButton>
 
 
+                {/*<FlatButton*/}
+                    {/*label="Eliminar"*/}
+                    {/*primary={true}*/}
+                    {/*onClick={this.deleteItem}/>*/}
 
-                <FlatButton
-                    label="Eliminar"
-                    primary={true}
-                    onClick={this.deleteItem}/>
                 {/*<Dialog*/}
                     {/*contentStyle={{width:350}}*/}
                     {/*title="Editar Ingreso"*/}
@@ -154,18 +171,13 @@ class ManageIngresoPage extends React.Component {
     // myProp: PropTypes.string.isRequired
 //};
 
-function mapStateToProps(state, ownProps) {
-    // let ingreso = {
-    //     key: ownProps.match.params.key,
-    //     cantidad:'',
-    //     captura:'',
-    //     description:'',
-    //     fecha:'',
-    //     subtipo:'',
-    //     tipo:''
-    //
-    // };
+const fabstyle = {
+    position:'fixed',
+    right: 15,
+    bottom: 15
+};
 
+function mapStateToProps(state, ownProps) {
     console.log(state.ingresos);
 
     const ingresoIsolated = state.ingresos.filter( (ingreso) => {
