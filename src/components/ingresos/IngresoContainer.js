@@ -17,15 +17,28 @@ class IngresoContainer extends React.Component {
         openForm: false,
         ingreso: {
             description: '',
+            referencia: '',
             cantidad: '',
-            tipo: ''
-        }
+            tipo: '',
+            captureDate: '',
+            subtipo: ''
+        },
+        controlledDate: {}
     };
 
     handleChangeTipo = (event, index, value) => {
         let ingreso = Object.assign({}, this.state.ingreso);
         ingreso.tipo = value;
         this.setState({ingreso});
+    };
+
+    handleChangeCaptureDate = (name, date) => {
+        const ingreso = this.state.ingreso;
+        ingreso.captureDate = date.toString();
+        this.setState({
+            ingreso,
+            controlledDate: date
+        });
     };
 
     updateIngresoState = (e) => {
@@ -36,6 +49,7 @@ class IngresoContainer extends React.Component {
     };
 
     saveItem = () => {
+        debugger;
         const ingresoCopy = Object.assign({},this.state.ingreso);
         this.props.actions.saveIngreso(ingresoCopy)
             .then( (r) => {
@@ -44,7 +58,10 @@ class IngresoContainer extends React.Component {
                 const newIngreso = {
                     description: '',
                         cantidad: '',
-                        tipo: ''
+                        tipo: '',
+                        captureDate: '',
+                        referencia: '',
+                        subtipo: ''
                 };
                 this.setState({ingreso:newIngreso});
             }).catch(e=>console.error(e));
@@ -87,9 +104,11 @@ class IngresoContainer extends React.Component {
                     onRequestClose={this.closeForm}>
                     <IngresoForm
                         ingreso={this.state.ingreso}
+                        controlledDate={this.state.controlledDate}
                         allTipos={this.props.tipos}
                         onChange={this.updateIngresoState}
                         onChangeTipo={this.handleChangeTipo}
+                        onChangeDate={this.handleChangeCaptureDate}
                     />
 
                 </Dialog>

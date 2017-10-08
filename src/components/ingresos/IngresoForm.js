@@ -3,25 +3,27 @@
  */
 import React from 'react';
 //import TextInput from '../common/TextInput';
-import {MenuItem, SelectField, TextField, FlatButton} from "material-ui";
+import {MenuItem, SelectField, TextField, DatePicker} from "material-ui";
 
 
 
-const IngresoForm = ({ingreso, onChange, onChangeTipo, allTipos, textSubscribe}) => {
-    console.log(ingreso);
+const IngresoForm = (props) => {
+    console.log(props.ingreso);
     let menuItems = [];
-    if( ingreso !== undefined){
-        console.log(ingreso.key);
+    if( props.ingreso !== undefined){
+        console.log(props.ingreso.key);
     }else{
-        ingreso = {};
+        props.ingreso = {};
     }
-    if ( typeof allTipos !== 'undefined') {
-        menuItems = allTipos.map((tipo) => {
+    if ( typeof props.allTipos !== 'undefined') {
+        menuItems = props.allTipos.map((tipo) => {
             const valor = tipo.value.toLowerCase();
             console.info(valor);
             return <MenuItem key={valor} primaryText={tipo.text} value={valor}/>
         })
     }
+    const {ingreso, onChange, onChangeTipo, onChangeDate, controlledDate} = props;
+    console.log(ingreso);
 
     return (
         <form >
@@ -30,12 +32,32 @@ const IngresoForm = ({ingreso, onChange, onChangeTipo, allTipos, textSubscribe})
                 floatingLabelText="Cantidad"
                 value={ingreso.cantidad}
                 onChange={onChange}
+                type="number"
             />
             <TextField
                 name="description"
                 floatingLabelText="Descripcion"
                 value={ingreso.description}
                 onChange={onChange}
+            />
+            <TextField
+                name="referencia"
+                floatingLabelText="Referencia"
+                value={ingreso.referencia}
+                onChange={onChange}
+            />
+
+            <TextField
+                name="subtipo"
+                floatingLabelText="Subtipo"
+                value={ingreso.subtipo}
+                onChange={onChange}
+            />
+
+            <DatePicker
+                hintText="Fecha de captura"
+                value={controlledDate}
+                onChange={onChangeDate}
             />
             <SelectField
                 name="tipo"
