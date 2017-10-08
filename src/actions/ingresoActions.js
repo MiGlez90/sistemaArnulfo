@@ -76,6 +76,7 @@ export function saveIngreso(ingreso){
 
 export function deleteIngreso(ingreso) {
     return function (dispatch, getState) {
+        debugger;
         let updates = {};
         updates['/ingresos/' + ingreso.key] = null;
         return firebase.database().ref().update(updates)

@@ -20,21 +20,21 @@ class ManageIngresoPage extends React.Component {
     state = {
         edit: false,
         ingreso:  {},
-        ingresoMutable:  {},
         errors:{}
     };
 
 
     deleteItem = () => {
+        debugger;
         const response = window.confirm('Seguro');
         if(response){
-            const ingresoForRemoving = Object.assign({},this.state.ingreso);
+            const ingresoForRemoving = Object.assign({},this.props.ingreso);
             this.props.actions.deleteIngreso(ingresoForRemoving)
                 .then( r => {
                     toastr.success('Se ha eliminado');
                     this.props.history.push('/ingresos');
                 }).catch( e => {
-
+                    console.log(e);
             });
         }
 
@@ -65,9 +65,9 @@ class ManageIngresoPage extends React.Component {
 
 
     handleChangeTipo = (event, index, value) => {
-        let ingresoMutable = Object.assign({}, this.state.ingresoMutable);
-        ingresoMutable.tipo = value;
-        this.setState({ingresoMutable});
+        let ingreso = Object.assign({}, this.state.ingreso);
+        ingreso.tipo = value;
+        this.setState({ingreso});
     };
 
     updateIngresoState = (e) => {
@@ -180,8 +180,12 @@ const fabstyle = {
 function mapStateToProps(state, ownProps) {
     console.log(state.ingresos);
 
+    debugger;
     const ingresoIsolated = state.ingresos.filter( (ingreso) => {
-        return ingreso.key === ownProps.match.params.key;
+        if (ingreso !== undefined){
+            return ingreso.key === ownProps.match.params.key;
+        }
+
     });
 
     const ingreso = ingresoIsolated[0];
