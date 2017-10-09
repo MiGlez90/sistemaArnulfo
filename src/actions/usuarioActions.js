@@ -43,6 +43,52 @@ export function iniciarSesion(user) {
     }
 }
 
+export function registrarEIniciarSesion(user) {
+    return function (dispatch, getState) {
+        return firebase.auth()
+            .createUserWithEmailAndPassword(user.email, user.password)
+            .then((result) => {
+                debugger;
+                toastr.success('Se ha creado el usuario con éxito');
+                    dispatch(iniciarSesion(user))
+                    .then( (result) =>{
+                        debugger;
+                        let userFirebase = firebase.auth().currentUser;
+                        let fullname = user.fullName;
+                        userFirebase.updateProfile({
+                            displayName: fullname,
+                            //photoURL: "https://example.com/jane-q-user/profile.jpg"
+                        }).then( () => {
+                            //toastr.success('Actualizado!');
+                            console.log('Perfil actualizado');
+                        }, error => {
+                            toastr.error('Algo mal' + error.message);
+                        });
+                    })
+                    .catch( (error) => {
+                        const errorCode = error.code;
+                        let errorMessage = '';
+                        if( errorCode === 'auth/user-not-found'){
+                            errorMessage = 'Usuario no encontrado';
+                        }else if(errorCode === 'auth/wrong-password'){
+                            errorMessage = 'La contraseña es inválida';
+                        }
+
+                        console.log('Algo estuvo mal ' + errorCode);
+                        toastr.error( errorMessage);
+                    });
+
+                //this.props.history.push('/login');
+            })
+            .catch(function(error) {
+                //var errorCode = error.code;
+                let errorMessage = error.message;
+                console.log('something wrong ' + errorMessage);
+                toastr.error('something wrong ' + errorMessage);
+            });
+    }
+}
+
 export function cerrarSesion() {
     return function (dispatch,getState) {
         return firebase.auth().signOut()
