@@ -8,6 +8,7 @@ import Caja from './components/caja/TableContainer';
 import Resumen from './components/resumen/Resumen';
 import ManageIngresoPage from './components/ingresos/ManageIngresoPage';
 import LoginContainer from "./components/login/LoginContainer";
+import SignUpContainer from "./components/signup/SignUpContainer";
 
 
 
@@ -18,6 +19,7 @@ const Routes = () => (
         <Route exact path="/" component={HomePage} />
         <Route exact path="/ingresos" component={Ingresos} />
         <Route path="/login" component={LoginContainer} />
+        <Route path="/signup" component={SignUpContainer} />
         <Route path="/gastos" component={Gastos} />
         <Route path="/caja" component={Caja} />
         <Route path="/resumen" component={Resumen} />
