@@ -1,5 +1,5 @@
 import firebase from '../firebase';
-//import toastr from 'toastr';
+import toastr from 'toastr';
 
 
 export function iniciarSesionAction(usuario) {
@@ -50,7 +50,6 @@ export function cerrarSesion() {
                 console.log('Ya sali ', r);
                 toastr.success('Ha cerrado sesión');
                 dispatch(cerrarSesionAction(null));
-                dispatch(vaciarMedidas());
             }).catch( (error) => {
                 console.error('No pude salir');
             });
@@ -63,10 +62,7 @@ export function comprobarUsuario(){
         return firebase.auth().onAuthStateChanged((u) => {
             if(u){
                 debugger;
-                const year = moment().format('YYYY');
-                const month = moment().format('MM');
                 dispatch(comprobarUsuarioAction(u));
-                dispatch(loadListaMedidas(u.uid,year,month));
             }else{
                 debugger;
             }
