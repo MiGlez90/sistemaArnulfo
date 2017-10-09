@@ -23,12 +23,11 @@ class LoginContainer extends Component {
     loginWithPassword = (e) => {
         e.preventDefault();
         const user = Object.assign({},this.state.usuario);
-        toastr.success(user.email + ' ' + user.password);
-        // console.log(user.email + user.password);
-        // this.props.usuarioActions.iniciarSesion(user)
-        // .then( () => {
-        //     this.props.history.push('/home');
-        // });
+        console.log(user.email + user.password);
+        this.props.usuarioActions.iniciarSesion(user)
+        .then( () => {
+            this.props.history.push('/');
+        });
 
     };
 

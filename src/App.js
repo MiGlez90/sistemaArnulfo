@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Routes from './Routes';
-import {AppBar} from 'material-ui';
 import Nav from './components/nav/Nav';
-
-
-
-
-
+import NavBar from "./components/nav/NavBar";
 
 class App extends Component {
     state = {
@@ -20,23 +15,20 @@ class App extends Component {
         this.setState({showDrawer});
     };
 
+    forceClosingDrawer = () => {
+        this.setState({showDrawer:false})
+    };
+
     render() {
-    return (
-      <div>
-        <AppBar
-            title="Flujo de Efectivo"
-            iconClassNameRight="muidocs-icon-navigation-expand-more"
-            onLeftIconButtonTouchTap={this.openDrawer}
-            style={{top:0,position:'fixed'}}
-        />
-        <Nav open={this.state.showDrawer} toogleDrawer={this.openDrawer}/>
-
-          <div className="routes-container App">
-              <Routes />
+        return (
+            <div>
+                <NavBar forceClosingDrawer={this.forceClosingDrawer} openDrawer={this.openDrawer}/>
+                <Nav open={this.state.showDrawer} toogleDrawer={this.openDrawer}/>
+                <div className="routes-container App">
+                    <Routes />
+                </div>
           </div>
-
-      </div>
-    );
+        );
   }
 }
 
@@ -47,4 +39,4 @@ const styles = {
 };
 
 
-export default App;
+export default (App);
