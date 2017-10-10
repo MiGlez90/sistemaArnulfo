@@ -4,6 +4,7 @@ import tipoReducer from './tipoReducer';
 import gastoReducer from "./gastoReducer";
 import usuarioReducer from "./usuarioReducer";
 import navBarNameReducer from './navBarNameReducer';
+import usuarioVerificadoReducer from "./usuarioVerificadoReducer";
 
 
 const rootReducer = combineReducers({
@@ -11,7 +12,8 @@ const rootReducer = combineReducers({
     tipos: tipoReducer,
     gastos:gastoReducer,
     usuario: usuarioReducer,
-    navBarName: navBarNameReducer
+    navBarName: navBarNameReducer,
+    usuarioVerificado: usuarioVerificadoReducer
 });
 
 export default rootReducer;

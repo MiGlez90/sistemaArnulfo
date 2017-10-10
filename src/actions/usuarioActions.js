@@ -1,5 +1,6 @@
 import firebase from '../firebase';
 import toastr from 'toastr';
+import {usuarioVerificado} from "./usuarioVerificadoActions";
 
 
 export function iniciarSesionAction(usuario) {
@@ -47,36 +48,11 @@ export function registrarEIniciarSesion(user) {
     return function (dispatch, getState) {
         return firebase.auth()
             .createUserWithEmailAndPassword(user.email, user.password)
-            .then((result) => {
+            .then((u) => {
                 debugger;
                 toastr.success('Se ha creado el usuario con éxito');
-                    dispatch(iniciarSesion(user))
-                    .then( (result) =>{
-                        debugger;
-                        let userFirebase = firebase.auth().currentUser;
-                        let fullname = user.fullName;
-                        userFirebase.updateProfile({
-                            displayName: fullname,
-                            //photoURL: "https://example.com/jane-q-user/profile.jpg"
-                        }).then( () => {
-                            //toastr.success('Actualizado!');
-                            console.log('Perfil actualizado');
-                        }, error => {
-                            toastr.error('Algo mal' + error.message);
-                        });
-                    })
-                    .catch( (error) => {
-                        const errorCode = error.code;
-                        let errorMessage = '';
-                        if( errorCode === 'auth/user-not-found'){
-                            errorMessage = 'Usuario no encontrado';
-                        }else if(errorCode === 'auth/wrong-password'){
-                            errorMessage = 'La contraseña es inválida';
-                        }
-
-                        console.log('Algo estuvo mal ' + errorCode);
-                        toastr.error( errorMessage);
-                    });
+                actualizarPerfil(u);
+                iniciarSesion(user);
 
                 //this.props.history.push('/login');
             })
@@ -89,12 +65,30 @@ export function registrarEIniciarSesion(user) {
     }
 }
 
+export function actualizarPerfil (user) {
+    return function (dispatch, getState) {
+        let userFirebase = firebase.auth().currentUser;
+        let fullname = user.fullName;
+        userFirebase.updateProfile({
+            displayName: fullname,
+            //photoURL: "https://example.com/jane-q-user/profile.jpg"
+        }).then( () => {
+            //toastr.success('Actualizado!');
+            console.log('Perfil actualizado');
+        }, error => {
+            toastr.error('Algo mal' + error.message);
+        });
+    }
+}
+
+
+
 export function cerrarSesion() {
     return function (dispatch,getState) {
         return firebase.auth().signOut()
             .then( (r) => {
                 console.log('Ya sali ', r);
-                toastr.success('Ha cerrado sesión');
+                //toastr.success('Ha cerrado sesión');
                 dispatch(cerrarSesionAction(null));
             }).catch( (error) => {
                 console.error('No pude salir');
@@ -106,6 +100,7 @@ export function cerrarSesion() {
 export function comprobarUsuario(){
     return function (dispatch, getState) {
         return firebase.auth().onAuthStateChanged((u) => {
+            dispatch(usuarioVerificado());
             if(u){
                 debugger;
                 dispatch(comprobarUsuarioAction(u));

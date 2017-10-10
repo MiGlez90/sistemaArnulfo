@@ -4,6 +4,8 @@ import {LinearProgress} from "material-ui";
 
 const PrivateRoute = ({component: Component, usuario, fetched,  ...rest}) => {
     return (
+        <div>
+            {fetched ?
                 <Route {...rest} render={props => (
                     typeof usuario !== 'undefined' && usuario !== null ?
                         (
@@ -18,6 +20,10 @@ const PrivateRoute = ({component: Component, usuario, fetched,  ...rest}) => {
                         )
 
                 )}/>
+                :
+                <LinearProgress style={{marginTop: 300, width: '50vw'}} mode="indeterminate"/>
+            }
+        </div>
 
     );
 };
