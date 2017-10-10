@@ -9,7 +9,7 @@ import Resumen from './components/resumen/Resumen';
 import ManageIngresoPage from './components/ingresos/ManageIngresoPage';
 import LoginContainer from "./components/login/LoginContainer";
 import SignUpContainer from "./components/signup/SignUpContainer";
-import PrivateRoute from "./PrivateRoute";
+import PrivateRouteConnect from "./PrivateRouteConnect";
 
 
 
@@ -18,13 +18,13 @@ import PrivateRoute from "./PrivateRoute";
 const Routes = () => (
     <Switch>
         <Route exact path="/" component={HomePage} />
-        <PrivateRoute exact path="/ingresos" component={Ingresos} />
+        <PrivateRouteConnect exact path="/ingresos" component={Ingresos} />
         <Route path="/login" component={LoginContainer} />
         <Route path="/signup" component={SignUpContainer} />
-        <PrivateRoute path="/gastos" component={Gastos} />
-        <PrivateRoute path="/caja" component={Caja} />
-        <PrivateRoute path="/resumen" component={Resumen} />
-        <PrivateRoute path="/ingresos/:key" component={ManageIngresoPage} />
+        <PrivateRouteConnect path="/gastos" component={Gastos} />
+        <PrivateRouteConnect path="/caja" component={Caja} />
+        <PrivateRouteConnect path="/resumen" component={Resumen} />
+        <PrivateRouteConnect path="/ingresos/:key" component={ManageIngresoPage} />
     </Switch>
 );
 

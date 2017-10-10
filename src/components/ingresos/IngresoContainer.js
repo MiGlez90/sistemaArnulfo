@@ -5,6 +5,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
+import * as navBarNameActions from '../../actions/navBarNameActions';
 import IngresoList from './IngresoList';
 import {FloatingActionButton, Dialog, FlatButton} from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -25,6 +26,10 @@ class IngresoContainer extends React.Component {
         },
         controlledDate: {}
     };
+
+    componentWillMount(){
+        this.props.navBarNameActions.changeName('Ingresos');
+    }
 
     handleChangeTipo = (event, index, value) => {
         let ingreso = Object.assign({}, this.state.ingreso);
@@ -141,13 +146,15 @@ function mapStateToProps(state, ownProps) {
     });
     return {
         ingresos: state.ingresos,
-        tipos: tiposFormattedForDropdown
+        tipos: tiposFormattedForDropdown,
+        navBarName: state.navBarName
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(ingresoActions, dispatch)
+        actions: bindActionCreators(ingresoActions, dispatch),
+        navBarNameActions: bindActionCreators(navBarNameActions, dispatch)
     };
 }
 
