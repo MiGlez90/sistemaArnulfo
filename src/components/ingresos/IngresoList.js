@@ -12,7 +12,6 @@ import {
 
 const IngresoList = ({ingresos, deleteIngreso}) => (
    <div>
-       <h2>Ingresos</h2>
 
        <Table>
            <TableHeader>

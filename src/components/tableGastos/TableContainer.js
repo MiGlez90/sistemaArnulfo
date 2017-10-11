@@ -11,13 +11,15 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as gastoActions from '../../actions/gastoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
+import GastosList from '../ingresos/IngresoList';
+
 
 
 class TableContainer extends Component{
 
     state = {
         data:[],
-        loading:true,
+        loading:false,
         openForm:false,
         newItem:{cantidad:'', captura:'',cantidad:'', tipo:'', subtipo:''}
     };
@@ -114,8 +116,9 @@ class TableContainer extends Component{
         const {loading, openForm, newItem} = this.state;
         const {gastos} = this.props;
         return(
-            <div>
-                <ShowTable loading={loading} data={gastos} />
+            <div >
+                <GastosList ingresos={gastos}/>
+                {/*<ShowTable loading={loading} data={gastos} />*/}
                 <FloatingActionButton
                     style={styles.float}
                     onClick={this.openForm}
@@ -146,12 +149,14 @@ class TableContainer extends Component{
     }
 }
 
+const fabstyle = {
+    position:'fixed',
+    right: 15,
+    bottom: 15
+};
+
 const styles = {
-    float:{
-        position: 'fixed',
-        bottom:'50px',
-        right:'50px'
-    }
+    float: fabstyle
 
 };
 
