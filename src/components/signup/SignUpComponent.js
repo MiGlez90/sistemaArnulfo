@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField,RaisedButton} from 'material-ui';
+import {TextField, RaisedButton, Checkbox} from 'material-ui';
 import {NavLink} from "react-router-dom";
 
 const formStyle = {
@@ -27,7 +27,14 @@ const navStyle = {
     display: 'inline'
 };
 
-
+const styles = {
+    block: {
+        maxWidth: 250,
+    },
+    checkbox: {
+        margin: '15px 0px'
+    },
+};
 
 
 const SignUpComponent = (props) => {
@@ -62,7 +69,7 @@ const SignUpComponent = (props) => {
                 floatingLabelText="Contraseña"
                 value={props.newUser.password}
                 onChange={props.onChange}
-                type="password"
+                type={props.checked ? "text" : "password"}
                 fullWidth={true}
             />
             <TextField
@@ -72,9 +79,18 @@ const SignUpComponent = (props) => {
                 floatingLabelText="Confirmar contraseña"
                 value={props.newUser.confirmPassword}
                 onChange={props.onChange}
-                type="password"
+                type={props.checked ? "text" : "password"}
                 fullWidth={true}
+                errorText={props.matching ? null : "La contraseña no coincide" }
             />
+            <div style={{textAlign:'left'}}>
+                <Checkbox
+                    label="Mostrar contraseñas"
+                    checked={props.checked}
+                    onCheck={props.updateCheck}
+                    style={styles.checkbox}
+                />
+            </div>
             <RaisedButton
                 label="Registrarse"
                 primary={true}

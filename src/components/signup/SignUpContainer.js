@@ -17,7 +17,9 @@ class SignUpContainer extends Component {
                 email: '',
                 password: '',
                 confirmPassword: ''
-            }
+            },
+            isMatching: true,
+            checked: false
         };
     }
 
@@ -26,7 +28,11 @@ class SignUpContainer extends Component {
         const value = e.target.value;
         let {newUser} = this.state;
         newUser[name] = value;
-        this.setState({newUser});
+        this.setState({newUser}, () => {
+            if(name === 'confirmPassword' || name === 'password'){
+                this.isMatching();
+            }
+        });
     };
 
     handleSubmit = (e) => {
@@ -38,8 +44,19 @@ class SignUpContainer extends Component {
             });
     };
 
+    isMatching = () => {
+        const {password, confirmPassword} = this.state.newUser;
+        this.setState({isMatching: (password === confirmPassword) });
 
+    };
 
+    updateCheck = () => {
+        this.setState((oldState) => {
+            return {
+                checked: !oldState.checked,
+            };
+        });
+    }
 
     render() {
         const {newUser} = this.state;
@@ -49,6 +66,9 @@ class SignUpContainer extends Component {
                     newUser={newUser}
                     onChange={this.handleChangeNewUser}
                     onSubmit={this.handleSubmit}
+                    matching={this.state.isMatching}
+                    checked={this.state.checked}
+                    updateCheck={this.updateCheck}
                 />
             </div>
         );
