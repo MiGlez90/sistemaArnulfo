@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Drawer, MenuItem} from 'material-ui';
+import HomeIcon from 'material-ui/svg-icons/action/home';
 import NoteAdd from 'material-ui/svg-icons/action/note-add';
 import Resumen from 'material-ui/svg-icons/editor/insert-chart';
 import System from 'material-ui/svg-icons/action/system-update-alt';
@@ -33,6 +34,22 @@ class Nav extends Component {
                 open={this.props.open}
                 docked={true}
                 width='20%'>
+                <NavLink
+                    onClick={this.props.toogleDrawer}
+                    activeClassName="selected"
+                    activeStyle={{
+                        fontWeight: 'bold',
+                    }}
+                    //isActive={()=>this.oddEvent(1)}
+                    exact
+                    to="/">
+                    <MenuItem
+                        style={active?styles.active:null}
+                        primaryText="Inicio"
+                        leftIcon={<HomeIcon/>}
+                        //onClick={()=>this.changeName('Ingresos')}
+                    />
+                </NavLink>
                 <NavLink
                     onClick={this.props.toogleDrawer}
                     activeClassName="selected"

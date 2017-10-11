@@ -10,6 +10,7 @@ import {message} from 'antd';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as gastoActions from '../../actions/gastoActions';
+import * as navBarNameActions from '../../actions/navBarNameActions';
 
 
 class TableContainer extends Component{
@@ -41,6 +42,10 @@ class TableContainer extends Component{
                     this.setState({data:datas});
                 })
     }*/
+
+    componentWillMount(){
+        this.props.navBarNameActions.changeName('Gastos');
+    }
 
 
 
@@ -158,7 +163,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(gastoActions, dispatch)
+        actions: bindActionCreators(gastoActions, dispatch),
+        navBarNameActions: bindActionCreators(navBarNameActions,dispatch)
     };
 }
 
