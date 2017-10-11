@@ -3,6 +3,7 @@ import SignUpComponent from "./SignUpComponent";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as usuarioActions from '../../actions/usuarioActions';
+import * as navBarNameActions from '../../actions/navBarNameActions';
 
 const containerStyle = {
     height: '85vh'
@@ -21,6 +22,10 @@ class SignUpContainer extends Component {
             isMatching: true,
             checked: false
         };
+    }
+
+    componentWillMount(){
+        this.props.navBarNameActions.changeName('Registrarse');
     }
 
     handleChangeNewUser = (e) => {
@@ -84,7 +89,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        usuarioActions: bindActionCreators(usuarioActions,dispatch)
+        usuarioActions: bindActionCreators(usuarioActions,dispatch),
+        navBarNameActions: bindActionCreators(navBarNameActions,dispatch)
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps) (SignUpContainer);

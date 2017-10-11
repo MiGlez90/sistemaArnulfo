@@ -103,6 +103,7 @@ const SignUpComponent = (props) => {
             <NavLink style={navStyle} to='/login'>Ingresa</NavLink>
         </form>
     );
-}
+};
+
 
 export default SignUpComponent;

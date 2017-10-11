@@ -3,7 +3,8 @@ import LoginComponent from "./LoginComponent";
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as usuarioActions from '../../actions/usuarioActions';
-import toastr from 'toastr';
+import * as navBarNameActions from '../../actions/navBarNameActions';
+//import toastr from 'toastr';
 
 const containerStyle = {
     height: '85vh'
@@ -18,6 +19,10 @@ class LoginContainer extends Component {
                 password: '',
             }
         };
+    }
+
+    componentWillMount(){
+        this.props.navBarNameActions.changeName('Entrar');
     }
 
     loginWithPassword = (e) => {
@@ -58,7 +63,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        usuarioActions: bindActionCreators(usuarioActions,dispatch)
+        usuarioActions: bindActionCreators(usuarioActions,dispatch),
+        navBarNameActions: bindActionCreators(navBarNameActions,dispatch)
     }
 }
 
