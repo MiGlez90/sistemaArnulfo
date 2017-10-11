@@ -5,7 +5,7 @@ function mapStateToProps(state) {
     return {
         usuario: state.usuario,
         usuarioVerificado: state.usuarioVerificado,
-        fetched: state.usuarioVerificado !== false
+        fetched: state.usuarioVerificado
     }
 }
 

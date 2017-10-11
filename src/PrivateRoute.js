@@ -1,8 +1,14 @@
 import React from 'react';
 import {Redirect, Route} from "react-router-dom";
 import {LinearProgress} from "material-ui";
+import toastr from 'toastr';
 
 const PrivateRoute = ({component: Component, usuario, fetched,  ...rest}) => {
+    if(fetched){
+        if (typeof usuario === 'undefined' || usuario === null ){
+            toastr.warning('Debes iniciar sesión');
+        }
+    }
     return (
         <div>
             {fetched ?

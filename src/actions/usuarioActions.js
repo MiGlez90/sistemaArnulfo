@@ -100,11 +100,12 @@ export function cerrarSesion() {
 export function comprobarUsuario(){
     return function (dispatch, getState) {
         return firebase.auth().onAuthStateChanged((u) => {
-            dispatch(usuarioVerificado());
             if(u){
                 debugger;
                 dispatch(comprobarUsuarioAction(u));
+                dispatch(usuarioVerificado());
             }else{
+                dispatch(usuarioVerificado());
                 debugger;
             }
 
