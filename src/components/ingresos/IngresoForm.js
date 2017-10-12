@@ -3,8 +3,8 @@
  */
 import React from 'react';
 //import TextInput from '../common/TextInput';
-import {MenuItem, SelectField, TextField, DatePicker} from "material-ui";
-
+import {MenuItem, SelectField} from "material-ui";
+import CommonFieldForm from './CommonFieldsForm';
 
 
 const IngresoForm = (props) => {
@@ -26,53 +26,37 @@ const IngresoForm = (props) => {
     console.log(ingreso);
 
     return (
-        <form >
-            <TextField
-                name="cantidad"
-                floatingLabelText="Cantidad"
-                value={ingreso.cantidad}
-                onChange={onChange}
-                type="number"
-            />
-            <TextField
-                name="description"
-                floatingLabelText="Descripcion"
-                value={ingreso.description}
-                onChange={onChange}
-            />
-            <TextField
-                name="referencia"
-                floatingLabelText="Referencia"
-                value={ingreso.referencia}
-                onChange={onChange}
-            />
-
-            <TextField
-                name="subtipo"
-                floatingLabelText="Subtipo"
-                value={ingreso.subtipo}
-                onChange={onChange}
-            />
-
-            <DatePicker
-                hintText="Fecha de captura"
-                value={controlledDate}
-                onChange={onChangeDate}
-            />
+        <div>
             <SelectField
                 name="tipo"
                 floatingLabelText="Tipo"
                 value={ingreso.tipo}
-                onChange={onChangeTipo}>
+                onChange={onChangeTipo}
+            >
                 {menuItems}
             </SelectField>
-        </form>
+            {
+                props.showedFormAlimentos &&
+                <CommonFieldForm
+                    ingreso={ingreso}
+                    controlledDate={controlledDate}
+                    onChange={onChange}
+                    onChangeTipo={onChangeTipo}
+                    onChangeDate={onChangeDate}
+                />
+            }
+
+        </div>
     );
 };
 
 //IngresoForm.propTypes = {};
 IngresoForm.defaultProps = {
     textSubscribe: 'Actualizar'
+};
+
+const styleComponent = {
+  margin: '10px 15px'
 };
 
 export default IngresoForm;

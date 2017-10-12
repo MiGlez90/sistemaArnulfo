@@ -10,6 +10,7 @@ import ManageIngresoPage from './components/ingresos/ManageIngresoPage';
 import LoginContainer from "./components/login/LoginContainer";
 import SignUpContainer from "./components/signup/SignUpContainer";
 import PrivateRouteConnect from "./PrivateRouteConnect";
+import IngresoFormContainer from "./components/ingresos/IngresoFormContainer";
 
 
 
@@ -19,6 +20,7 @@ const Routes = () => (
     <Switch>
         <Route exact path="/" component={HomePage} />
         <PrivateRouteConnect exact path="/ingresos" component={Ingresos} />
+        <PrivateRouteConnect path="/ingresos/addIngreso" component={IngresoFormContainer} />
         <Route path="/login" component={LoginContainer} />
         <Route path="/signup" component={SignUpContainer} />
         <PrivateRouteConnect path="/gastos" component={Gastos} />

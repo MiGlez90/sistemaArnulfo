@@ -9,49 +9,18 @@ import * as navBarNameActions from '../../actions/navBarNameActions';
 import IngresoList from '../common/ShowTable';
 import {FloatingActionButton, Dialog, FlatButton} from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import IngresoForm from './IngresoForm';
-import toastr from 'toastr';
+import {Link} from "react-router-dom";
+// import IngresoForm from './IngresoForm';
+// import toastr from 'toastr';
 
 
 class IngresoContainer extends React.Component {
-    state = {
-        openForm: false,
-        ingreso: {
-            description: '',
-            referencia: '',
-            cantidad: '',
-            tipo: '',
-            captureDate: '',
-            subtipo: ''
-        },
-        controlledDate: {}
-    };
 
     componentWillMount(){
         this.props.navBarNameActions.changeName('Ingresos');
     }
 
-    handleChangeTipo = (event, index, value) => {
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso.tipo = value;
-        this.setState({ingreso});
-    };
 
-    handleChangeCaptureDate = (name, date) => {
-        const ingreso = this.state.ingreso;
-        ingreso.captureDate = date.toString();
-        this.setState({
-            ingreso,
-            controlledDate: date
-        });
-    };
-
-    updateIngresoState = (e) => {
-        const field = e.target.name;
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso[field] = e.target.value;
-        this.setState({ingreso});
-    };
 
     filterItems = (losItems, filtro) => {
         switch(filtro){
@@ -69,26 +38,6 @@ class IngresoContainer extends React.Component {
         }
     };
 
-    saveItem = () => {
-        debugger;
-        const ingresoCopy = Object.assign({},this.state.ingreso);
-        this.props.actions.saveIngreso(ingresoCopy)
-            .then( (r) => {
-                toastr.success('Guardado');
-                console.log(r);
-                const newIngreso = {
-                    description: '',
-                        cantidad: '',
-                        tipo: '',
-                        captureDate: '',
-                        referencia: '',
-                        subtipo: ''
-                };
-                this.setState({ingreso:newIngreso});
-            }).catch(e=>console.error(e));
-        this.closeForm();
-    };
-
     actions = [
         <FlatButton
             label="Ok"
@@ -98,41 +47,37 @@ class IngresoContainer extends React.Component {
         />,
     ];
 
-    openForm = () => {
-        this.setState({openForm:true});
-    };
-
-    closeForm = () => {
-        this.setState({openForm:false});
-    };
 
     render() {
         const {ingresos} = this.props;
         return (
             <div>
                 <IngresoList data={ingresos} />
-                <FloatingActionButton
-                    style={fabstyle}
-                    onClick={this.openForm}>
-                    <ContentAdd/>
-                </FloatingActionButton>
-                <Dialog
-                    contentStyle={{width:350}}
-                    title="Agregar Ingreso"
-                    actions={this.actions}
-                    modal={false}
-                    open={this.state.openForm}
-                    onRequestClose={this.closeForm}>
-                    <IngresoForm
-                        ingreso={this.state.ingreso}
-                        controlledDate={this.state.controlledDate}
-                        allTipos={this.props.tipos}
-                        onChange={this.updateIngresoState}
-                        onChangeTipo={this.handleChangeTipo}
-                        onChangeDate={this.handleChangeCaptureDate}
-                    />
+                <Link to="/ingresos/addIngreso">
+                    <FloatingActionButton
+                        style={fabstyle}
+                        //onClick={()=>this.props.history.push(this.props.match.url + '/addIngreso')}
+                    >
+                        <ContentAdd/>
+                    </FloatingActionButton>
+                </Link>
+                {/*<Dialog*/}
+                    {/*contentStyle={{width:350}}*/}
+                    {/*title="Agregar Ingreso"*/}
+                    {/*actions={this.actions}*/}
+                    {/*modal={false}*/}
+                    {/*open={this.state.openForm}*/}
+                    {/*onRequestClose={this.closeForm}>*/}
+                    {/*<IngresoForm*/}
+                        {/*ingreso={this.state.ingreso}*/}
+                        {/*controlledDate={this.state.controlledDate}*/}
+                        {/*allTipos={this.props.tipos}*/}
+                        {/*onChange={this.updateIngresoState}*/}
+                        {/*onChangeTipo={this.handleChangeTipo}*/}
+                        {/*onChangeDate={this.handleChangeCaptureDate}*/}
+                    {/*/>*/}
 
-                </Dialog>
+                {/*</Dialog>*/}
             </div>
 
         );
