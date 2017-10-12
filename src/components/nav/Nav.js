@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {Drawer, MenuItem} from 'material-ui';
+import HomeIcon from 'material-ui/svg-icons/action/home';
 import NoteAdd from 'material-ui/svg-icons/action/note-add';
 import Resumen from 'material-ui/svg-icons/editor/insert-chart';
 import System from 'material-ui/svg-icons/action/system-update-alt';
 import Cart from 'material-ui/svg-icons/action/add-shopping-cart';
 import Invent from 'material-ui/svg-icons/editor/format-list-numbered';
 import {NavLink} from 'react-router-dom';
-
-
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as navBarNameActions from '../../actions/navBarNameActions'
 
 class Nav extends Component {
 
@@ -17,6 +19,10 @@ class Nav extends Component {
 
     oddEvent = (num) => {
         //this.setState({active:num});
+    };
+
+    changeName = (name) => {
+        this.props.navBarNameActions.changeName(name);
     };
 
     render(){
@@ -35,11 +41,29 @@ class Nav extends Component {
                         fontWeight: 'bold',
                     }}
                     //isActive={()=>this.oddEvent(1)}
+                    exact
+                    to="/">
+                    <MenuItem
+                        style={active?styles.active:null}
+                        primaryText="Inicio"
+                        leftIcon={<HomeIcon/>}
+                        //onClick={()=>this.changeName('Ingresos')}
+                    />
+                </NavLink>
+                <NavLink
+                    onClick={this.props.toogleDrawer}
+                    activeClassName="selected"
+                    activeStyle={{
+                        fontWeight: 'bold',
+                    }}
+                    //isActive={()=>this.oddEvent(1)}
                     to="/ingresos">
                     <MenuItem
                         style={active?styles.active:null}
                         primaryText="Ingresos"
-                        leftIcon={<NoteAdd />} />
+                        leftIcon={<NoteAdd />}
+                        //onClick={()=>this.changeName('Ingresos')}
+                    />
                 </NavLink>
                 <NavLink
                     onClick={this.props.toogleDrawer}
@@ -114,4 +138,16 @@ const styles = {
     }
 };
 
-export default Nav;
+function mapStateToProps(state, ownProps) {
+    return {
+        navBarName: state.navBarName
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        navBarNameActions: bindActionCreators(navBarNameActions,dispatch)
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Nav);

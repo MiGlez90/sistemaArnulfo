@@ -24,7 +24,7 @@ class App extends Component {
             <div>
                 <NavBar forceClosingDrawer={this.forceClosingDrawer} openDrawer={this.openDrawer}/>
                 <Nav open={this.state.showDrawer} toogleDrawer={this.openDrawer}/>
-                <div className="routes-container App">
+                <div className="routes-container App" style={this.state.showDrawer ? styles.drawer: styles.noDrawer}>
                     <Routes />
                 </div>
           </div>
@@ -33,8 +33,13 @@ class App extends Component {
 }
 
 const styles = {
-    container:{
-        marginLeft:'22%'
+    noDrawer:{
+        paddingLeft:'3vw',
+        paddingRight:'3vw'
+    },
+    drawer:{
+        paddingLeft:'23vw',
+        paddingRight:'3vw'
     }
 };
 

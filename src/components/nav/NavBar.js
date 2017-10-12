@@ -56,7 +56,7 @@ class NavBar extends Component {
         return (
             <div>
                 <AppBar
-                    title="Flujo de Efectivo"
+                    title={this.props.navBarName}
                     onLeftIconButtonTouchTap={usuario ? this.props.openDrawer : null}
                     style={{top:0,position:'fixed'}}
                     iconElementRight={iconRight}
@@ -70,7 +70,8 @@ class NavBar extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        usuario: state.usuario
+        usuario: state.usuario,
+        navBarName: state.navBarName
     }
 }
 
