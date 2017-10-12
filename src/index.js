@@ -18,6 +18,7 @@ import {comprobarUsuario} from "./actions/usuarioActions";
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'toastr/build/toastr.min.css';
 import {loadSubtiposAnimales} from "./actions/subtiposAnimalesActions";
+import {loadSubtiposGranos} from "./actions/subtiposGranosActions";
 
 injectTapEventPlugin();
 
@@ -27,6 +28,7 @@ store.dispatch(loadTipos());
 store.dispatch(loadGastos());
 store.dispatch(comprobarUsuario());
 store.dispatch(loadSubtiposAnimales());
+store.dispatch(loadSubtiposGranos());
 setTimeout( () => {
     console.log(store.getState());
 }, 3000);
