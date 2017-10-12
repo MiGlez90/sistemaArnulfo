@@ -14,7 +14,7 @@ const IngresoList = ({ingresos, deleteIngreso}) => (
    <div>
 
        <Table>
-           <TableHeader>
+           <TableHeader displaySelectAll={false}>
                <TableRow>
                    <TableHeaderColumn>Cantidad</TableHeaderColumn>
                    <TableHeaderColumn>Descripción</TableHeaderColumn>
