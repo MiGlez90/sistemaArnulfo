@@ -1,5 +1,5 @@
 import React from 'react';
-import IngresoListRow from './IngresoListRow';
+import TableRowComponent from './TableRowComponent';
 import {
     Table,
     TableBody,
@@ -10,7 +10,7 @@ import {
 
 
 
-const IngresoList = ({ingresos, deleteIngreso}) => (
+const ShowTable = ({data}) => (
    <div>
 
        <Table>
@@ -23,8 +23,8 @@ const IngresoList = ({ingresos, deleteIngreso}) => (
            </TableHeader>
            <TableBody>
                {
-                   ingresos.map( ingreso => {
-                       return <IngresoListRow key={ingreso.key} ingreso={ingreso} />
+                   data.map( fact => {
+                       return <TableRowComponent key={fact.key} fact={fact} />
                    })
                }
            </TableBody>
@@ -33,4 +33,4 @@ const IngresoList = ({ingresos, deleteIngreso}) => (
    </div>
 );
 
-export default IngresoList;
+export default ShowTable;

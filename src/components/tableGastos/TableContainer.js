@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as gastoActions from '../../actions/gastoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
-import GastosList from '../ingresos/IngresoList';
+import GastosList from '../common/ShowTable';
 
 
 
@@ -117,7 +117,7 @@ class TableContainer extends Component{
         const {gastos} = this.props;
         return(
             <div >
-                <GastosList ingresos={gastos}/>
+                <GastosList data={gastos}/>
                 {/*<ShowTable loading={loading} data={gastos} />*/}
                 <FloatingActionButton
                     style={styles.float}

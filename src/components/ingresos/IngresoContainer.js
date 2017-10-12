@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
-import IngresoList from './IngresoList';
+import IngresoList from '../common/ShowTable';
 import {FloatingActionButton, Dialog, FlatButton} from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import IngresoForm from './IngresoForm';
@@ -110,7 +110,7 @@ class IngresoContainer extends React.Component {
         const {ingresos} = this.props;
         return (
             <div>
-                <IngresoList ingresos={ingresos} />
+                <IngresoList data={ingresos} />
                 <FloatingActionButton
                     style={fabstyle}
                     onClick={this.openForm}>
