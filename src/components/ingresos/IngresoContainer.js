@@ -48,6 +48,22 @@ class IngresoContainer extends React.Component {
         this.setState({ingreso});
     };
 
+    filterItems = (losItems, filtro) => {
+        switch(filtro){
+            case "SHOW_ANIMALES":
+                return losItems.filter(i=>i.tipo==='animales');
+            case "SHOW_GRANOS":
+                return losItems.filter(i=>i.tipo==='granos');
+
+            case "SHOW_OTROS":
+                return losItems.filter(i=>i.tipo==='otro');
+
+            case "SHOW_TODOS":
+                return losItems;
+
+        }
+    };
+
     saveItem = () => {
         debugger;
         const ingresoCopy = Object.assign({},this.state.ingreso);
