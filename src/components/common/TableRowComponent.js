@@ -8,7 +8,7 @@ import {
 import {Link} from 'react-router-dom';
 
 const TableRowComponent = ({fact, muiTheme}) => {
-    console.log(muiTheme);
+    // console.log(muiTheme);
     return(
         <TableRow key={fact.key}>
             <TableRowColumn>$ {fact.cantidad}</TableRowColumn>
