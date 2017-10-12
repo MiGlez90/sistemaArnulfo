@@ -16,9 +16,9 @@ const IngresoList = ({ingresos, deleteIngreso}) => (
        <Table>
            <TableHeader>
                <TableRow>
-                   <TableHeaderColumn>ID</TableHeaderColumn>
                    <TableHeaderColumn>Cantidad</TableHeaderColumn>
                    <TableHeaderColumn>Descripción</TableHeaderColumn>
+                   <TableHeaderColumn>Acciones</TableHeaderColumn>
                </TableRow>
            </TableHeader>
            <TableBody>
