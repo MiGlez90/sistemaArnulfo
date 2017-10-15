@@ -6,7 +6,8 @@ import * as usuarioActions from '../../actions/usuarioActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
 
 const containerStyle = {
-    height: '85vh'
+    height: '85vh',
+    justifyContent: 'center'
 };
 
 class SignUpContainer extends Component {

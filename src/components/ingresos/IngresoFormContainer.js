@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import IngresoForm from "./IngresoForm";
+//import IngresoForm from "./IngresoForm";
+import {MenuItem, SelectField} from "material-ui";
+import CommonFieldForm from './CommonFieldsForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
 import toastr from 'toastr';
+import {Row, Col} from 'antd';
 
 
 class IngresoFormContainer extends Component {
@@ -100,24 +103,49 @@ class IngresoFormContainer extends Component {
 
 
     render() {
+        const { ingreso, controlledDate, showedFormAlimentos} = this.state;
+        const {tipos} = this.props;
+        let menuItems = [];
+
+        if ( typeof tipos !== 'undefined') {
+            menuItems = tipos.map((tipo) => {
+                const valor = tipo.value.toLowerCase();
+                console.info(valor);
+                return <MenuItem key={valor} primaryText={tipo.text} value={valor}/>
+            })
+        }
         return (
-            <div>
-                <IngresoForm
-                    ingreso={this.state.ingreso}
-                    controlledDate={this.state.controlledDate}
-                    allTipos={this.props.tipos}
-                    onChange={this.updateIngresoState}
-                    onChangeTipo={this.handleChangeTipo}
-                    onChangeDate={this.handleChangeCaptureDate}
-                    showedFormAlimentos={this.state.showedFormAlimentos}
-                    showedFormGranos={this.state.showedFormGranos}
+            <div style={{width:'100%'}}>
+                <Row>
+                    <Col xs={24} sm={24} md={8} lg={8} xl={8} >
+                        <SelectField
+                            name="tipo"
+                            floatingLabelText="Tipo"
+                            value={ingreso.tipo}
+                            onChange={this.handleChangeTipo}
+                        >
+                            {menuItems}
+                        </SelectField>
+                    </Col>
+                    <Col span={8}/>
+                    <Col span={8}/>
+                </Row>
+                {
+                    showedFormAlimentos &&
+                    <CommonFieldForm
+                        ingreso={ingreso}
+                        controlledDate={controlledDate}
+                        onChange={this.updateIngresoState}
+                        onChangeTipo={this.handleChangeTipo}
+                        onChangeDate={this.handleChangeCaptureDate}
+                    />
+                }
 
-
-                />
             </div>
         );
     }
 }
+
 
 function mapStateToProps(state, ownProps) {
     const tiposFormattedForDropdown = state.tipos.map(tipo=>{

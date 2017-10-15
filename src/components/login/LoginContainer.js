@@ -7,7 +7,8 @@ import * as navBarNameActions from '../../actions/navBarNameActions';
 //import toastr from 'toastr';
 
 const containerStyle = {
-    height: '85vh'
+    height: '85vh',
+    justifyContent: 'center'
 };
 
 class LoginContainer extends Component {
