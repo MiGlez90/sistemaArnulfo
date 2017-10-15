@@ -9,6 +9,15 @@ import * as navBarNameActions from '../../actions/navBarNameActions';
 import toastr from 'toastr';
 import {Row, Col} from 'antd';
 
+function formatMenuItems(tipos) {
+    let formattedItems = [];
+    if ( typeof tipos !== 'undefined') {
+        formattedItems = tipos.map((tipo) => {
+            return <MenuItem key={tipo.value} primaryText={tipo.text} value={tipo.value}/>
+        });
+        return formattedItems;
+    }
+}
 
 class IngresoFormContainer extends Component {
     constructor(props) {
@@ -17,6 +26,7 @@ class IngresoFormContainer extends Component {
             ingreso: {
                 description: '',
                 referencia: '',
+                monto: '',
                 cantidad: '',
                 tipo: '',
                 captureDate: '',
@@ -65,6 +75,14 @@ class IngresoFormContainer extends Component {
         });
     };
 
+    handleChangeSubtipo = (event, index, value) => {
+        let ingreso = Object.assign({}, this.state.ingreso);
+        ingreso.subtipo = value;
+        this.setState({ingreso});
+    };
+
+
+
     handleChangeCaptureDate = (name, date) => {
         const ingreso = this.state.ingreso;
         ingreso.captureDate = date.toString();
@@ -90,6 +108,7 @@ class IngresoFormContainer extends Component {
                 console.log(r);
                 const newIngreso = {
                     description: '',
+                    monto: '',
                     cantidad: '',
                     tipo: '',
                     captureDate: '',
@@ -104,40 +123,36 @@ class IngresoFormContainer extends Component {
 
     render() {
         const { ingreso, controlledDate, showedFormAlimentos} = this.state;
-        const {tipos} = this.props;
-        let menuItems = [];
-
-        if ( typeof tipos !== 'undefined') {
-            menuItems = tipos.map((tipo) => {
-                const valor = tipo.value.toLowerCase();
-                console.info(valor);
-                return <MenuItem key={valor} primaryText={tipo.text} value={valor}/>
-            })
-        }
+        const {tipos, subtiposAnimales} = this.props;
+        const menuItems = formatMenuItems(tipos);
+        const menuItemsSubAnimales = formatMenuItems(subtiposAnimales);
         return (
             <div style={{width:'100%'}}>
-                <Row>
+                <Row gutter={32}>
                     <Col xs={24} sm={24} md={8} lg={8} xl={8} >
                         <SelectField
                             name="tipo"
                             floatingLabelText="Tipo"
                             value={ingreso.tipo}
                             onChange={this.handleChangeTipo}
+                            fullWidth={true}
                         >
                             {menuItems}
                         </SelectField>
                     </Col>
-                    <Col span={8}/>
-                    <Col span={8}/>
+                    <Col xs={24} sm={24} md={8} lg={8} xl={8}/>
+                    <Col xs={24} sm={24} md={8} lg={8} xl={8}/>
                 </Row>
                 {
                     showedFormAlimentos &&
                     <CommonFieldForm
                         ingreso={ingreso}
+                        subtipoMenuItems={menuItemsSubAnimales}
                         controlledDate={controlledDate}
                         onChange={this.updateIngresoState}
                         onChangeTipo={this.handleChangeTipo}
                         onChangeDate={this.handleChangeCaptureDate}
+                        onChangeSubtipo={this.handleChangeSubtipo}
                     />
                 }
 
@@ -154,9 +169,16 @@ function mapStateToProps(state, ownProps) {
             text:tipo.text
         }
     });
+    const subtiposAnimalesFormattedForDropdown = state.subtiposAnimales.map(tipo=>{
+        return {
+            value:tipo.value,
+            text:tipo.text
+        }
+    });
     return {
         ingresos: state.ingresos,
         tipos: tiposFormattedForDropdown,
+        subtiposAnimales: subtiposAnimalesFormattedForDropdown,
         navBarName: state.navBarName
     };
 }
