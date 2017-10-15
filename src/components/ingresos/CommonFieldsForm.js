@@ -1,6 +1,23 @@
 import React from 'react';
-import {TextField, DatePicker, SelectField} from "material-ui";
+import {TextField, DatePicker, SelectField, RaisedButton, FlatButton} from "material-ui";
 import {Row,Col} from 'antd';
+import areIntlLocalesSupported from 'intl-locales-supported';
+import moment from "moment";
+
+let DateTimeFormat;
+
+/**
+ * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
+ */
+if (areIntlLocalesSupported(['es', 'es-MX'])) {
+    DateTimeFormat = global.Intl.DateTimeFormat;
+    console.info(DateTimeFormat.toString());
+} else {
+    const IntlPolyfill = require('intl');
+    DateTimeFormat = IntlPolyfill.DateTimeFormat;
+    require('intl/locale-data/jsonp/es');
+    require('intl/locale-data/jsonp/es-MX');
+}
 
 const commonFieldsForm = (props) => {
     const {
@@ -11,9 +28,39 @@ const commonFieldsForm = (props) => {
         onChangeSubtipo,
         subtipoMenuItems
     } = props;
+    const today = new Date();
+    const subtipoLabel =
+        ingreso.tipo === 'animales'?
+            "Tipo de animal" :
+            ingreso.tipo === 'granos' ?
+                "Tipo de grano" :
+                "Subtipo"
+    ;
     return (
         <form style={{width:'100%'}}>
             <Row gutter={32}>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+                    <SelectField
+                        name="subtipo"
+                        floatingLabelText={subtipoLabel}
+                        value={ingreso.subtipo}
+                        onChange={onChangeSubtipo}
+                        fullWidth={true}
+                    >
+                        {subtipoMenuItems}
+                    </SelectField>
+                </Col>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8} >
+                    <TextField
+                        name="cantidad"
+                        hintText="Kgs"
+                        floatingLabelText="Cantidad"
+                        value={ingreso.cantidad}
+                        onChange={onChange}
+                        type="number"
+                        style={{marginLeft: '2%', width: '96%'}}
+                    />
+                </Col>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8} >
                     <TextField
                         name="monto"
@@ -25,6 +72,8 @@ const commonFieldsForm = (props) => {
                         style={{marginLeft: '2%', width: '96%'}}
                     />
                 </Col>
+            </Row>
+            <Row gutter={32}>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <TextField
                         name="description"
@@ -43,28 +92,31 @@ const commonFieldsForm = (props) => {
                         fullWidth={true}
                     />
                 </Col>
-            </Row>
-            <Row gutter={32}>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                    <SelectField
-                        name="subtipo"
-                        floatingLabelText="Tipo de animal"
-                        value={ingreso.subtipo}
-                        onChange={onChangeSubtipo}
-                        fullWidth={true}
-                    >
-                        {subtipoMenuItems}
-                    </SelectField>
-                </Col>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <DatePicker
                         floatingLabelText="Fecha"
                         value={controlledDate}
                         onChange={onChangeDate}
                         fullWidth={true}
+                        DateTimeFormat={DateTimeFormat}
+                        okLabel="OK"
+                        cancelLabel="Cancelar"
+                        locale="es"
+                        maxDate={today}
                     />
                 </Col>
-                <Col span={8}/>
+            </Row>
+            <Row style={{marginTop:20}} gutter={32}>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+                    <RaisedButton
+                        primary={true}
+                        label="Guadar"
+                        type="susucribe"
+                        fullWidth={true}
+                    />
+                </Col>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8}/>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8}/>
             </Row>
 
 

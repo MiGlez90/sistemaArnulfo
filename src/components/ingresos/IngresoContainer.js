@@ -55,29 +55,10 @@ class IngresoContainer extends React.Component {
                 <IngresoList data={ingresos} />
                 <Link to="/ingresos/addIngreso">
                     <FloatingActionButton
-                        style={fabstyle}
-                        //onClick={()=>this.props.history.push(this.props.match.url + '/addIngreso')}
-                    >
+                        style={fabstyle}>
                         <ContentAdd/>
                     </FloatingActionButton>
                 </Link>
-                {/*<Dialog*/}
-                    {/*contentStyle={{width:350}}*/}
-                    {/*title="Agregar Ingreso"*/}
-                    {/*actions={this.actions}*/}
-                    {/*modal={false}*/}
-                    {/*open={this.state.openForm}*/}
-                    {/*onRequestClose={this.closeForm}>*/}
-                    {/*<IngresoForm*/}
-                        {/*ingreso={this.state.ingreso}*/}
-                        {/*controlledDate={this.state.controlledDate}*/}
-                        {/*allTipos={this.props.tipos}*/}
-                        {/*onChange={this.updateIngresoState}*/}
-                        {/*onChangeTipo={this.handleChangeTipo}*/}
-                        {/*onChangeDate={this.handleChangeCaptureDate}*/}
-                    {/*/>*/}
-
-                {/*</Dialog>*/}
             </div>
 
         );

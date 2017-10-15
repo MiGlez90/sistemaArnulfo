@@ -29,7 +29,7 @@ class IngresoFormContainer extends Component {
                 monto: '',
                 cantidad: '',
                 tipo: '',
-                captureDate: '',
+                date: '',
                 subtipo: ''
             },
             controlledDate: {},
@@ -67,8 +67,10 @@ class IngresoFormContainer extends Component {
                     this.openFormAlimentos();
                     break;
                 case 'granos':
+                    this.openFormAlimentos();
                     break;
                 case 'otros':
+                    this.openFormAlimentos();
                     break;
                 default:
             }
@@ -83,9 +85,9 @@ class IngresoFormContainer extends Component {
 
 
 
-    handleChangeCaptureDate = (name, date) => {
+    handleChangeDate = (name, date) => {
         const ingreso = this.state.ingreso;
-        ingreso.captureDate = date.toString();
+        ingreso.date = date.toString();
         this.setState({
             ingreso,
             controlledDate: date
@@ -111,7 +113,7 @@ class IngresoFormContainer extends Component {
                     monto: '',
                     cantidad: '',
                     tipo: '',
-                    captureDate: '',
+                    date: '',
                     referencia: '',
                     subtipo: ''
                 };
@@ -123,9 +125,19 @@ class IngresoFormContainer extends Component {
 
     render() {
         const { ingreso, controlledDate, showedFormAlimentos} = this.state;
-        const {tipos, subtiposAnimales} = this.props;
+        const {tipos, subtiposAnimales,subtiposGranos} = this.props;
         const menuItems = formatMenuItems(tipos);
         const menuItemsSubAnimales = formatMenuItems(subtiposAnimales);
+        const menuItemsSubGranos = formatMenuItems(subtiposGranos);
+        const otros = [{text: 'En construccion', value: 'enconstruccion'}];
+        const menuItemsSubOtros = formatMenuItems(otros);
+        const menuItemsSub =
+            ingreso.tipo === 'animales'?
+                menuItemsSubAnimales :
+            ingreso.tipo === 'granos' ?
+                menuItemsSubGranos :
+                menuItemsSubOtros
+        ;
         return (
             <div style={{width:'100%'}}>
                 <Row gutter={32}>
@@ -147,11 +159,11 @@ class IngresoFormContainer extends Component {
                     showedFormAlimentos &&
                     <CommonFieldForm
                         ingreso={ingreso}
-                        subtipoMenuItems={menuItemsSubAnimales}
+                        subtipoMenuItems={menuItemsSub}
                         controlledDate={controlledDate}
                         onChange={this.updateIngresoState}
                         onChangeTipo={this.handleChangeTipo}
-                        onChangeDate={this.handleChangeCaptureDate}
+                        onChangeDate={this.handleChangeDate}
                         onChangeSubtipo={this.handleChangeSubtipo}
                     />
                 }
@@ -163,22 +175,11 @@ class IngresoFormContainer extends Component {
 
 
 function mapStateToProps(state, ownProps) {
-    const tiposFormattedForDropdown = state.tipos.map(tipo=>{
-        return {
-            value:tipo.value,
-            text:tipo.text
-        }
-    });
-    const subtiposAnimalesFormattedForDropdown = state.subtiposAnimales.map(tipo=>{
-        return {
-            value:tipo.value,
-            text:tipo.text
-        }
-    });
     return {
         ingresos: state.ingresos,
-        tipos: tiposFormattedForDropdown,
-        subtiposAnimales: subtiposAnimalesFormattedForDropdown,
+        tipos: state.tipos,
+        subtiposAnimales: state.subtiposAnimales,
+        subtiposGranos: state.subtiposGranos,
         navBarName: state.navBarName
     };
 }
