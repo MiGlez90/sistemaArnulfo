@@ -16,8 +16,8 @@ const ShowTable = ({data}) => (
        <Table>
            <TableHeader displaySelectAll={false}>
                <TableRow>
-                   <TableHeaderColumn>Cantidad</TableHeaderColumn>
                    <TableHeaderColumn>Descripción</TableHeaderColumn>
+                   <TableHeaderColumn>Fecha</TableHeaderColumn>
                    <TableHeaderColumn>Acciones</TableHeaderColumn>
                </TableRow>
            </TableHeader>
