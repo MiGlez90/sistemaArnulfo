@@ -1,4 +1,4 @@
-export default function filtroReducer(state = "todos", action){
+export default function filtroTipoReducer(state = "todos", action){
     switch(action.type){
         case "CHANGE_FILTER_TIPO":
             return action.filtro;

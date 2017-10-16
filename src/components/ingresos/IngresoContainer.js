@@ -12,7 +12,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {Link} from "react-router-dom";
 import FiltroSelect from "./FiltroSelect";
 import {formatMenuItems} from './IngresoFormContainer';
-import * as filtroActions from '../../actions/filtroActions';
+import * as filtroActions from '../../actions/filtroTiposActions';
 
 // import IngresoForm from './IngresoForm';
 // import toastr from 'toastr';
