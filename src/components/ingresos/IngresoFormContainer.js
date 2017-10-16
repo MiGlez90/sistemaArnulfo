@@ -57,7 +57,6 @@ class IngresoFormContainer extends Component {
         this.setState({showedFormGranos:false});
     };
 
-
     handleChangeTipo = (event, index, value) => {
         let ingreso = Object.assign({}, this.state.ingreso);
         ingreso.tipo = value;
