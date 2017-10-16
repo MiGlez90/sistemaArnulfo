@@ -5,32 +5,46 @@ import {
     TableBody,
     TableHeader,
     TableHeaderColumn,
-    TableRow
+    TableRow,
+    TableRowColumn
 } from 'material-ui';
 
-
-
-const ShowTable = ({data}) => (
-   <div>
-
-       <Table>
-           <TableHeader displaySelectAll={false}>
-               <TableRow>
-                   <TableHeaderColumn>Descripción</TableHeaderColumn>
-                   <TableHeaderColumn>Fecha</TableHeaderColumn>
-                   <TableHeaderColumn>Acciones</TableHeaderColumn>
-               </TableRow>
-           </TableHeader>
-           <TableBody>
-               {
-                   data.map( fact => {
-                       return <TableRowComponent key={fact.key} fact={fact} />
-                   })
-               }
-           </TableBody>
-       </Table>
-
-   </div>
+const noData = (
+    <TableRow selectable={false} >
+        <TableRowColumn/>
+        <TableRowColumn>No hay datos</TableRowColumn>
+        <TableRowColumn/>
+    </TableRow>
 );
+
+const ShowTable = ({data}) => {
+    let showData = noData;
+    if(data.length > 0){
+        showData = data.map(fact => {
+            return <TableRowComponent key={fact.key} fact={fact}/>
+        });
+    }
+    return (
+        <div>
+            <Table>
+                <TableHeader displaySelectAll={false}>
+                    <TableRow>
+                        <TableHeaderColumn>Descripción</TableHeaderColumn>
+                        <TableHeaderColumn>Fecha</TableHeaderColumn>
+                        <TableHeaderColumn>Acciones</TableHeaderColumn>
+                    </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false}>
+                    {showData}
+                </TableBody>
+            </Table>
+
+        </div>
+    );
+};
+
+ShowTable.defaultProps = {
+    data: []
+};
 
 export default ShowTable;

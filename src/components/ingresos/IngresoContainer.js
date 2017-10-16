@@ -10,12 +10,21 @@ import IngresoList from '../common/ShowTable';
 import {FloatingActionButton, Dialog, FlatButton} from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {Link} from "react-router-dom";
+import FiltroSelect from "./FiltroSelect";
+import {formatMenuItems} from './IngresoFormContainer';
+import * as filtroActions from '../../actions/filtroActions';
+
 // import IngresoForm from './IngresoForm';
 // import toastr from 'toastr';
 
 
 class IngresoContainer extends React.Component {
-
+    constructor(props){
+        super(props);
+        this.state = {
+            filtro: 'todos'
+        }
+    }
     componentWillMount(){
         this.props.navBarNameActions.changeName('Ingresos');
     }
@@ -24,35 +33,37 @@ class IngresoContainer extends React.Component {
 
     filterItems = (losItems, filtro) => {
         switch(filtro){
-            case "SHOW_ANIMALES":
+            case "animales":
                 return losItems.filter(i=>i.tipo==='animales');
-            case "SHOW_GRANOS":
+            case "granos":
                 return losItems.filter(i=>i.tipo==='granos');
-
-            case "SHOW_OTROS":
+            case "otros":
                 return losItems.filter(i=>i.tipo==='otro');
-
-            case "SHOW_TODOS":
+            case 'todos':
                 return losItems;
 
         }
     };
 
-    actions = [
-        <FlatButton
-            label="Ok"
-            primary={true}
-            keyboardFocused={true}
-            onClick={this.saveItem}
-        />,
-    ];
-
+    handleChangeSelect = (event, index, value) => {
+        this.setState({filtro:value});
+        this.props.filtroActions.changeFilterTipo(value);
+    };
 
     render() {
-        const {ingresos} = this.props;
+        const {ingresos, tipos, filtro} = this.props;
+        const ingresosFiltrados = this.filterItems(ingresos,filtro);
+        const tiposMenuItems = formatMenuItems(tipos);
         return (
             <div>
-                <IngresoList data={ingresos} />
+                <FiltroSelect
+                    tipos={tiposMenuItems}
+                    filtro={filtro}
+                    onChange={this.handleChangeSelect}
+                />
+                <IngresoList
+                    data={ingresosFiltrados}
+                />
                 <Link to="/ingresos/addIngreso">
                     <FloatingActionButton
                         style={fabstyle}>
@@ -76,22 +87,18 @@ IngresoContainer.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    const tiposFormattedForDropdown = state.tipos.map(tipo=>{
-        return {
-            value:tipo.value,
-            text:tipo.text
-        }
-    });
     return {
         ingresos: state.ingresos,
-        tipos: tiposFormattedForDropdown,
-        navBarName: state.navBarName
+        tipos: state.tipos,
+        navBarName: state.navBarName,
+        filtro: state.filtro
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(ingresoActions, dispatch),
+        filtroActions: bindActionCreators(filtroActions, dispatch),
         navBarNameActions: bindActionCreators(navBarNameActions, dispatch)
     };
 }

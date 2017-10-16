@@ -7,6 +7,7 @@ import usuarioReducer from "./usuarioReducer";
 import navBarNameReducer from './navBarNameReducer';
 import usuarioVerificadoReducer from "./usuarioVerificadoReducer";
 import subtiposGranosReducer from "./subtiposGranosReducer";
+import filtroReducer from "./filtroReducer";
 
 
 const rootReducer = combineReducers({
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     gastos:gastoReducer,
     usuario: usuarioReducer,
     navBarName: navBarNameReducer,
-    usuarioVerificado: usuarioVerificadoReducer
+    usuarioVerificado: usuarioVerificadoReducer,
+    filtro: filtroReducer
 });
 
 export default rootReducer;

@@ -10,7 +10,7 @@ import toastr from 'toastr';
 import {Row, Col} from 'antd';
 import moment from 'moment';
 
-function formatMenuItems(tipos) {
+export function formatMenuItems(tipos) {
     let formattedItems = [];
     if ( typeof tipos !== 'undefined') {
         formattedItems = tipos.map((tipo) => {
