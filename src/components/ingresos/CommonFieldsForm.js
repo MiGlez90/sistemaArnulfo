@@ -23,6 +23,7 @@ const commonFieldsForm = (props) => {
     const {
         ingreso,
         onChange,
+        onSubmit,
         onChangeDate,
         controlledDate,
         onChangeSubtipo,
@@ -37,10 +38,11 @@ const commonFieldsForm = (props) => {
                 "Subtipo"
     ;
     return (
-        <form style={{width:'100%'}}>
+        <form onSubmit={onSubmit} style={{width:'100%'}}>
             <Row gutter={32}>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <SelectField
+                        required
                         name="subtipo"
                         floatingLabelText={subtipoLabel}
                         value={ingreso.subtipo}
@@ -52,6 +54,7 @@ const commonFieldsForm = (props) => {
                 </Col>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8} >
                     <TextField
+                        required
                         name="cantidad"
                         hintText="Kgs"
                         floatingLabelText="Cantidad"
@@ -63,6 +66,7 @@ const commonFieldsForm = (props) => {
                 </Col>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8} >
                     <TextField
+                        required
                         name="monto"
                         hintText="$ MXN"
                         floatingLabelText="Monto"
@@ -76,6 +80,7 @@ const commonFieldsForm = (props) => {
             <Row gutter={32}>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <TextField
+                        required
                         name="description"
                         floatingLabelText="Descripcion"
                         value={ingreso.description}
@@ -85,6 +90,7 @@ const commonFieldsForm = (props) => {
                 </Col>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <TextField
+                        required
                         name="referencia"
                         floatingLabelText="Referencia"
                         value={ingreso.referencia}
@@ -94,6 +100,7 @@ const commonFieldsForm = (props) => {
                 </Col>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <DatePicker
+                        required
                         floatingLabelText="Fecha"
                         value={controlledDate}
                         onChange={onChangeDate}
@@ -111,7 +118,7 @@ const commonFieldsForm = (props) => {
                     <RaisedButton
                         primary={true}
                         label="Guadar"
-                        type="susucribe"
+                        type="subscribe"
                         fullWidth={true}
                     />
                 </Col>

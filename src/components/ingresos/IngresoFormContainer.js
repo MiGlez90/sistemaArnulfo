@@ -8,6 +8,7 @@ import * as ingresoActions from '../../actions/ingresoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
 import toastr from 'toastr';
 import {Row, Col} from 'antd';
+import moment from 'moment';
 
 function formatMenuItems(tipos) {
     let formattedItems = [];
@@ -86,7 +87,7 @@ class IngresoFormContainer extends Component {
 
     handleChangeDate = (name, date) => {
         const ingreso = this.state.ingreso;
-        ingreso.date = date.toString();
+        ingreso.date = moment(date.toISOString(), moment.ISO_8601).format('DD MMMM YYYY');
         this.setState({
             ingreso,
             controlledDate: date
@@ -100,8 +101,8 @@ class IngresoFormContainer extends Component {
         this.setState({ingreso});
     };
 
-    saveItem = () => {
-        debugger;
+    saveItem = (e) => {
+        e.preventDefault();
         const ingresoCopy = Object.assign({},this.state.ingreso);
         this.props.actions.saveIngreso(ingresoCopy)
             .then( (r) => {
@@ -118,7 +119,6 @@ class IngresoFormContainer extends Component {
                 };
                 this.setState({ingreso:newIngreso});
             }).catch(e=>console.error(e));
-        this.closeForm();
     };
 
 
@@ -164,6 +164,7 @@ class IngresoFormContainer extends Component {
                         onChangeTipo={this.handleChangeTipo}
                         onChangeDate={this.handleChangeDate}
                         onChangeSubtipo={this.handleChangeSubtipo}
+                        onSubmit={this.saveItem}
                     />
                 }
 
