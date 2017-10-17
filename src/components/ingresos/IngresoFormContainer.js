@@ -31,7 +31,8 @@ class IngresoFormContainer extends Component {
                 cantidad: '',
                 tipo: '',
                 date: '',
-                subtipo: ''
+                subtipo: '',
+                dateMS: ''
             },
             controlledDate: {},
             showedFormAlimentos: false,
@@ -88,6 +89,7 @@ class IngresoFormContainer extends Component {
     handleChangeDate = (name, date) => {
         const ingreso = this.state.ingreso;
         ingreso.date = moment(date.toISOString(), moment.ISO_8601).format('DD MMMM YYYY');
+        ingreso.dateMS = moment(date.toISOString(), moment.ISO_8601).format('x');
         this.setState({
             ingreso,
             controlledDate: date
@@ -115,7 +117,8 @@ class IngresoFormContainer extends Component {
                     tipo: '',
                     date: '',
                     referencia: '',
-                    subtipo: ''
+                    subtipo: '',
+                    dateMS: ''
                 };
                 this.setState({ingreso:newIngreso});
             }).catch(e=>console.error(e));

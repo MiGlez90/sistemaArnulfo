@@ -22,10 +22,10 @@ export function deleteIngresoSuccess(ingreso) {
 
 
 export function loadIngresos(){
-    return function(dispatch){
+    return function(dispatch, getState){
         // Despachamos la accion para el loader
        // dispatch(beginAjaxCall());
-        return firebase.database().ref('ingresos')
+        return firebase.database().ref('/ingresos/' + getState().usuario.uid)
             .once('value')
             .then(s => {
                 let array = [];
@@ -48,14 +48,14 @@ export function saveIngreso(ingreso){
         //dispatch(beginAjaxCall());
         if(ingreso.key){
             let updates = {};
-            updates['/ingresos/' + ingreso.key] = ingreso;
+            updates['/ingresos/' + getState().usuario.uid  + '/' +  ingreso.key] = ingreso;
             return firebase.database().ref().update(updates)
                 .then(()=>{
                     //console.log('chet');
                     return dispatch(updateIngresoSuccess(ingreso));
                 });
         }else{
-            return firebase.database().ref('ingresos/')
+            return firebase.database().ref('/ingresos/' + getState().usuario.uid)
                 .push(ingreso)
                 .then(s =>{
                     //console.log(s.key);
@@ -78,7 +78,7 @@ export function deleteIngreso(ingreso) {
     return function (dispatch, getState) {
         debugger;
         let updates = {};
-        updates['/ingresos/' + ingreso.key] = null;
+        updates['/ingresos/' + getState().usuario.uid + '/' + ingreso.key] = null;
         return firebase.database().ref().update(updates)
             .then(r=>{
                 dispatch(deleteIngresoSuccess(ingreso));

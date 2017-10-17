@@ -47,11 +47,12 @@ class IngresoContainer extends React.Component {
 
     handleChangeSelect = (event, index, value) => {
         this.setState({filtro:value});
-        this.props.filtroActions.changeFilterTipo(value);
+        //this.props.filtroActions.changeFilterTipo(value);
     };
 
     render() {
-        const {ingresos, tipos, filtro} = this.props;
+        const {ingresos, tipos} = this.props;
+        const {filtro} = this.state;
         const ingresosFiltrados = this.filterItems(ingresos,filtro);
         const tiposMenuItems = formatMenuItems(tipos);
         return (

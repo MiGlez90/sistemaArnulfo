@@ -23,7 +23,6 @@ import {loadSubtiposGranos} from "./actions/subtiposGranosActions";
 injectTapEventPlugin();
 
 const store = configureStore();
-store.dispatch(loadIngresos());
 store.dispatch(loadTipos());
 store.dispatch(loadGastos());
 store.dispatch(comprobarUsuario());

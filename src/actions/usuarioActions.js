@@ -1,6 +1,7 @@
 import firebase from '../firebase';
 import toastr from 'toastr';
 import {usuarioVerificado} from "./usuarioVerificadoActions";
+import {loadIngresos} from "./ingresoActions";
 
 
 export function iniciarSesionAction(usuario) {
@@ -104,6 +105,7 @@ export function comprobarUsuario(){
                 debugger;
                 dispatch(comprobarUsuarioAction(u));
                 dispatch(usuarioVerificado());
+                dispatch(loadIngresos());
             }else{
                 dispatch(usuarioVerificado());
                 debugger;
