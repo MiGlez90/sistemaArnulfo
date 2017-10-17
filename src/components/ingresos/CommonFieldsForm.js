@@ -2,7 +2,7 @@ import React from 'react';
 import {TextField, DatePicker, SelectField, RaisedButton, FlatButton} from "material-ui";
 import {Row,Col} from 'antd';
 import areIntlLocalesSupported from 'intl-locales-supported';
-import moment from "moment";
+//import moment from "moment";
 
 let DateTimeFormat;
 

@@ -42,6 +42,31 @@ export function loadIngresos(){
     };
 }
 
+export function loadIngresosDelimitedByRange(fechaInicio, fechaFinal){
+    return function(dispatch, getState){
+        // Despachamos la accion para el loader
+        // dispatch(beginAjaxCall());
+        debugger;
+        return firebase.database().ref('/ingresos/' + getState().usuario.uid)
+            .orderByChild('dateMS')
+            .startAt(fechaInicio)
+            .endAt(fechaFinal)
+            .once('value')
+            .then(s => {
+                let array = [];
+                for (let k in s.val()){
+                    let c = s.val()[k];
+                    //console.log(s.val()[k]);
+                    c['key'] = k;
+                    array.push(c);
+                }
+                dispatch(loadIngresosSuccess(array));
+            }).catch(error =>{
+                throw(error);
+            });
+    };
+}
+
 export function saveIngreso(ingreso){
     return function (dispatch, getState){
         // Despachamos la accion para el loader
