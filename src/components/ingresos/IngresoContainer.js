@@ -19,6 +19,10 @@ import moment from  'moment';
 // import IngresoForm from './IngresoForm';
 // import toastr from 'toastr';
 
+function toMiliseconds(fechaISO) {
+    return moment(fechaISO , moment.ISO_8601).format('x');
+}
+
 
 class IngresoContainer extends React.Component {
     constructor(props){
@@ -72,12 +76,20 @@ class IngresoContainer extends React.Component {
         });
     };
 
+    checkIfFinalIsGreather = (inicio,final) => {
+        return final >= inicio;
+    };
+
     retrieveIngresosWithDate = (e) => {
         e.preventDefault();
         const {filtroFecha} = this.state;
-        const fechaInicio = moment(filtroFecha.inicio.toISOString(), moment.ISO_8601).format('x');
-        const fechaFinal = moment(filtroFecha.final.toISOString(), moment.ISO_8601).format('x');
-        this.props.actions.loadIngresosDelimitedByRange(fechaInicio, fechaFinal);
+        const fechaFinal = toMiliseconds(filtroFecha.final);
+        const fechaInicio = toMiliseconds(filtroFecha.inicio);
+        if(this.checkIfFinalIsGreather(fechaInicio,fechaFinal)){
+            this.props.actions.loadIngresosDelimitedByRange(fechaInicio, fechaFinal);
+        }else{
+            alert('La fecha final debe ser mayor a la de inicio');
+        }
     };
 
     render() {

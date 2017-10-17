@@ -43,10 +43,12 @@ export function loadIngresos(){
 }
 
 export function loadIngresosDelimitedByRange(fechaInicio, fechaFinal){
-    return function(dispatch, getState){
-        // Despachamos la accion para el loader
-        // dispatch(beginAjaxCall());
+    return async(dispatch, getState) => {
         debugger;
+        //const resItem = await firebase.saveItem(item);
+        /*
+            const s = await firebase.database()
+         */
         return firebase.database().ref('/ingresos/' + getState().usuario.uid)
             .orderByChild('dateMS')
             .startAt(fechaInicio)

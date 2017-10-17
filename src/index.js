@@ -19,6 +19,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'toastr/build/toastr.min.css';
 import {loadSubtiposAnimales} from "./actions/subtiposAnimalesActions";
 import {loadSubtiposGranos} from "./actions/subtiposGranosActions";
+import areIntlLocalesSupported from 'intl-locales-supported';
 
 injectTapEventPlugin();
 
@@ -31,7 +32,20 @@ store.dispatch(loadSubtiposGranos());
 setTimeout( () => {
     console.log(store.getState());
 }, 3000);
+export let DateTimeFormat;
 
+/**
+ * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
+ */
+if (areIntlLocalesSupported(['es', 'es-MX'])) {
+    DateTimeFormat = global.Intl.DateTimeFormat;
+    console.info(DateTimeFormat.toString());
+} else {
+    const IntlPolyfill = require('intl');
+    DateTimeFormat = IntlPolyfill.DateTimeFormat;
+    require('intl/locale-data/jsonp/es');
+    require('intl/locale-data/jsonp/es-MX');
+}
 const Main = () => (
     <MuiThemeProvider >
         <App />

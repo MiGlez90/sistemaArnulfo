@@ -3,12 +3,17 @@ import initialState from './initialState';
 export default function ingresoReducer(state = [], action){
     switch(action.type){
         case "LOAD_INGRESOS_SUCCESS":
-            return action.ingresos;
+            return action.ingresos.sort( (a,b) => {
+                return a.dateMS - b.dateMS;
+            });
             break;
         case "SAVE_NEW_INGRESO_SUCCESS":
-            return [...state,
+            let newState =  [...state,
                 Object.assign({},action.ingreso)
             ];
+            return newState.sort( (a,b) => {
+                return a.dateMS - b.dateMS;
+            });
         case "CREATE_INGRESO":
             //state.push(action.ingreso);
             //return state;

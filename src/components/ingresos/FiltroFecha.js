@@ -1,19 +1,9 @@
 import React from 'react';
-import areIntlLocalesSupported from 'intl-locales-supported';
 import {DatePicker, RaisedButton} from 'material-ui';
 import {Row, Col} from 'antd';
+import moment from 'moment';
+import {DateTimeFormat} from "../../index";
 
-let DateTimeFormat;
-
-if (areIntlLocalesSupported(['es', 'es-MX'])) {
-    DateTimeFormat = global.Intl.DateTimeFormat;
-    console.info(DateTimeFormat.toString());
-} else {
-    const IntlPolyfill = require('intl');
-    DateTimeFormat = IntlPolyfill.DateTimeFormat;
-    require('intl/locale-data/jsonp/es');
-    require('intl/locale-data/jsonp/es-MX');
-}
 
 const FiltroFecha = (props) => {
     const {filtro, onChangeInicio, onChangeFinal, onSubmit} = props;
@@ -36,6 +26,7 @@ const FiltroFecha = (props) => {
                         okLabel="OK"
                         cancelLabel="Cancelar"
                         locale="es"
+                        maxDate={today}
                         fullWidth={true}
                     />
                 </Col>
@@ -50,6 +41,7 @@ const FiltroFecha = (props) => {
                         cancelLabel="Cancelar"
                         locale="es"
                         maxDate={today}
+                        minDate={filtro.inicio}
                         fullWidth={true}
                     />
                 </Col>
