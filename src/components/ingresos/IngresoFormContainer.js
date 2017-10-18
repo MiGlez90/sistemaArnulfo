@@ -4,15 +4,17 @@
  */
 import React, {Component} from 'react';
 //import IngresoForm from "./IngresoForm";
-import {MenuItem, SelectField} from "material-ui";
+import {MenuItem, DatePicker, RaisedButton} from "material-ui";
 import CommonFieldForm from './CommonFieldsForm';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
+import * as gastosActions from '../../actions/gastoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
 import toastr from 'toastr';
 import {Row, Col} from 'antd';
 import moment from 'moment';
+import {DateTimeFormat} from "../../index";
 
 //Función para que un array pueda ser mostrado en un drop down
 export function formatMenuItems(tipos) {
@@ -30,18 +32,12 @@ class IngresoFormContainer extends Component {
         super(props);
         this.state = {
             ingreso: {
-                description: '',
-                referencia: '',
-                monto: '',
-                cantidad: '',
-                tipo: '',
+                total: '',
                 date: '',
-                subtipo: '',
-                dateMS: ''
+                items: []
             },
-            controlledDate: {},
-            showCommonForm: false,
-            showedFormGranos: false
+            cantidadItems: 0,
+            controlledDate: {}
         };
     }
     componentWillMount(){
@@ -54,36 +50,18 @@ class IngresoFormContainer extends Component {
         this.setState({showCommonForm: true});
     };
 
-    closeFormAlimentos = () => {
-        this.setState({showCommonForm: false});
-    };
-
-    openFormGranos = () => {
-        this.setState({showedFormGranos:true});
-    };
-
-    closeFormGranos = () => {
-        this.setState({showedFormGranos:false});
-    };
 
     // abrir el formulario correspondiente de acuerdo al tipo
     // por el momento solo hay un formulario
-    handleChangeTipo = (event, index, value) => {
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso.tipo = value;
-        this.setState({ingreso}, () => {
-            switch (ingreso.tipo){
-                case 'animales':
-                    this.openCommonForm();
-                    break;
-                case 'granos':
-                    this.openCommonForm();
-                    break;
-                case 'otros':
-                    this.openCommonForm();
-                    break;
-                default:
-            }
+    handleChangeTipo = (event, index, value, gastoIndex) => {
+        debugger;
+        let gasto = Object.assign({}, this.state[gastoIndex]);
+        let {ingreso} = this.state;
+        let gastoSeleccionado = this.props.gastos.filter((gasto) => gasto.key === value );
+        gasto = gastoSeleccionado[0];
+        gasto.referencia = value;
+        ingreso.items.push(gasto);
+        this.setState({[gastoIndex]:gasto}, () => {
         });
     };
     // controlar el subtipo
@@ -102,6 +80,8 @@ class IngresoFormContainer extends Component {
         this.setState({
             ingreso,
             controlledDate: date
+        }, () => {
+            this.openCommonForm();
         });
     };
     // controlar los text field
@@ -122,67 +102,111 @@ class IngresoFormContainer extends Component {
                 console.log(r);
                 // resetear el ingreso
                 const newIngreso = {
-                    description: '',
-                    monto: '',
-                    cantidad: '',
-                    tipo: '',
                     date: '',
-                    referencia: '',
-                    subtipo: '',
-                    dateMS: ''
+                    total: '',
+                    items : []
                 };
                 this.setState({ingreso:newIngreso});
             }).catch(e=>console.error(e));
     };
 
+    addItem = () => {
+        let {cantidadItems} = this.state;
+        cantidadItems++;
+        this.setState({cantidadItems});
+    };
+
+    removeItem = () => {
+        let {cantidadItems} = this.state;
+        cantidadItems--;
+        this.setState({cantidadItems})
+    };
 
     render() {
         // obtener datos necesarios del state
-        const { ingreso, controlledDate, showCommonForm} = this.state;
+        const { ingreso, gasto, controlledDate, cantidadItems} = this.state;
         // obtener datos necesarios de los props
-        const {tipos, subtiposAnimales,subtiposGranos} = this.props;
+        const {tipos, subtiposAnimales,subtiposGranos, gastos, gastosForDropDown} = this.props;
         // formatear tipos, subtipos de animales y subtipos de granos para dropdown
-        const menuItems = formatMenuItems(tipos);
+        // const menuItems = formatMenuItems(tipos);
         const menuItemsSubAnimales = formatMenuItems(subtiposAnimales);
         const menuItemsSubGranos = formatMenuItems(subtiposGranos);
+        const gastosItems = formatMenuItems(gastosForDropDown);
         const otros = [{text: 'En construccion', value: 'enconstruccion'}];
         const menuItemsSubOtros = formatMenuItems(otros);
         // de acuerdo a la eleccion del usuario, se cargan los subtipos
         const menuItemsSub = ingreso.tipo === 'animales' ? menuItemsSubAnimales :
             ingreso.tipo === 'granos' ? menuItemsSubGranos : menuItemsSubOtros;
-        return (
-            <div style={{width:'100%'}}>
-                <Row gutter={32}>
-                    <Col xs={24} sm={24} md={8} lg={8} xl={8} >
-                        {/*El usuario debe seleccionar un tipo, al dar click*/}
-                        {/*Se abre el otro form*/}
-                        <SelectField
-                            name="tipo"
-                            floatingLabelText="Tipo"
-                            value={ingreso.tipo}
-                            onChange={this.handleChangeTipo}
-                            fullWidth={true}
-                        >
-                            {menuItems}
-                        </SelectField>
-                    </Col>
-                    <Col xs={24} sm={24} md={8} lg={8} xl={8}/>
-                    <Col xs={24} sm={24} md={8} lg={8} xl={8}/>
-                </Row>
-                {
-                    showCommonForm &&
+        const today = new Date();
+        const itemsParaIngreso = [];
+        for( let i = 0 ; i < cantidadItems; i++ ){
+            const newGasto = 'gasto' + i;
+            itemsParaIngreso.push(
+                <div>
                     <CommonFieldForm
-                        ingreso={ingreso}
+                        gastoIndex={newGasto}
+                        dato={this.state[newGasto]}
+                        gastosItems={gastosItems}
                         subtipoMenuItems={menuItemsSub}
                         controlledDate={controlledDate}
                         onChange={this.updateIngresoState}
                         onChangeTipo={this.handleChangeTipo}
                         onChangeDate={this.handleChangeDate}
                         onChangeSubtipo={this.handleChangeSubtipo}
-                        onSubmit={this.saveItem}
                     />
+                </div>
+            );
+        }
+        return (
+            <div style={{width:'100%'}}>
+                <Row gutter={32}>
+                    <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                        <DatePicker
+                            required
+                            floatingLabelText="Fecha"
+                            value={this.state.controlledDate}
+                            onChange={this.handleChangeDate}
+                            fullWidth={true}
+                            DateTimeFormat={DateTimeFormat}
+                            okLabel="OK"
+                            cancelLabel="Cancelar"
+                            locale="es"
+                            maxDate={today}
+                        />
+                    </Col>
+                    <Col xs={24} sm={24} md={4} lg={4} xl={4}>
+                        <RaisedButton
+                            primary={true}
+                            label="Agregar item"
+                            fullWidth={true}
+                            onClick={this.addItem}
+                        />
+                    </Col>
+                    <Col xs={24} sm={24} md={4} lg={4} xl={4}>
+                        <RaisedButton
+                            primary={true}
+                            label="Eliminar item"
+                            fullWidth={true}
+                            onClick={this.removeItem}
+                        />
+                    </Col>
+                    <Col xs={24} sm={24} md={8} lg={8} xl={8}/>
+                </Row>
+                {itemsParaIngreso}
+                { cantidadItems > 0 &&
+                    <Row style={{marginTop: 20}} gutter={32}>
+                        <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+                            <RaisedButton
+                                primary={true}
+                                onClick={this.saveItem}
+                                label="Guadar"
+                                fullWidth={true}
+                            />
+                        </Col>
+                        <Col xs={24} sm={8} md={8} lg={8} xl={8}/>
+                        <Col xs={24} sm={8} md={8} lg={8} xl={8}/>
+                    </Row>
                 }
-
             </div>
         );
     }
@@ -190,9 +214,17 @@ class IngresoFormContainer extends Component {
 
 /*********************** Conectar con redux ************************************/
 function mapStateToProps(state, ownProps) {
+    const gastosForDropDown = state.gastos.map((gasto)=> {
+        return {
+            value: gasto.key,
+            text: gasto.key
+        }
+    });
     return {
         ingresos: state.ingresos,
         tipos: state.tipos,
+        gastos: state.gastos,
+        gastosForDropDown: gastosForDropDown,
         subtiposAnimales: state.subtiposAnimales,
         subtiposGranos: state.subtiposGranos,
         navBarName: state.navBarName
@@ -202,6 +234,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(ingresoActions, dispatch),
+        gastosActions: bindActionCreators(gastosActions,dispatch),
         navBarNameActions: bindActionCreators(navBarNameActions, dispatch)
     };
 }

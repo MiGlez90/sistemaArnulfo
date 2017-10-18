@@ -21,69 +21,99 @@ if (areIntlLocalesSupported(['es', 'es-MX'])) {
 
 const commonFieldsForm = (props) => {
     const {
-        ingreso,
+        dato,
         onChange,
-        onSubmit,
-        onChangeDate,
-        controlledDate,
+        onChangeTipo,
+        gastosItems,
+        gastoIndex,
         onChangeSubtipo,
         subtipoMenuItems
     } = props;
-    const today = new Date();
+    const handleChangeTipo = (event, index, value) => {
+        onChangeTipo(event,index,value,gastoIndex);
+    };
     const subtipoLabel =
-        ingreso.tipo === 'animales'?
+        dato.tipo === 'animales'?
             "Tipo de animal" :
-            ingreso.tipo === 'granos' ?
+            dato.tipo === 'granos' ?
                 "Tipo de grano" :
                 "Subtipo"
     ;
     return (
-        <form onSubmit={onSubmit} style={{width:'100%'}}>
-            <Row gutter={32}>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+        <form style={{width:'100%'}}>
+            <Row>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} >
                     <SelectField
-                        required
-                        name="subtipo"
-                        floatingLabelText={subtipoLabel}
-                        value={ingreso.subtipo}
-                        onChange={onChangeSubtipo}
+                        name="referencia"
+                        floatingLabelText="Referencia"
+                        value={dato.referencia}
+                        onChange={handleChangeTipo}
                         fullWidth={true}
                     >
-                        {subtipoMenuItems}
+                        {gastosItems}
                     </SelectField>
+                </Col>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} />
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} />
+            </Row>
+            <Row gutter={32}>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+                    <TextField
+                        disabled={true}
+                        required
+                        name="tipo"
+                        floatingLabelText="Tipo"
+                        value={dato.tipo}
+                        onChange={onChange}
+                        fullWidth={true}
+                    />
+                </Col>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+                    <TextField
+                        disabled={true}
+                        required
+                        name="subtipo"
+                        floatingLabelText="Subtipo"
+                        value={dato.subtipo}
+                        onChange={onChange}
+                        fullWidth={true}
+                    />
                 </Col>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8} >
                     <TextField
+                        disabled={true}
                         required
-                        name="cantidad"
+                        name="peso"
                         hintText="Kgs"
-                        floatingLabelText="Cantidad"
-                        value={ingreso.cantidad}
+                        floatingLabelText="Peso"
+                        value={dato.peso}
                         onChange={onChange}
                         type="number"
                         style={{marginLeft: '2%', width: '96%'}}
                     />
                 </Col>
+            </Row>
+            <Row gutter={32}>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8} >
                     <TextField
                         required
+                        disabled={true}
                         name="monto"
                         hintText="$ MXN"
                         floatingLabelText="Monto"
-                        value={ingreso.monto}
+                        value={dato.monto}
                         onChange={onChange}
                         type="number"
-                        style={{marginLeft: '2%', width: '96%'}}
+                        fullWidth={true}
                     />
                 </Col>
-            </Row>
-            <Row gutter={32}>
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <TextField
                         required
+                        disabled={true}
                         name="description"
                         floatingLabelText="Descripcion"
-                        value={ingreso.description}
+                        value={dato.description}
                         onChange={onChange}
                         fullWidth={true}
                     />
@@ -91,46 +121,28 @@ const commonFieldsForm = (props) => {
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <TextField
                         required
+                        disabled={true}
                         name="referencia"
                         floatingLabelText="Referencia"
-                        value={ingreso.referencia}
+                        value={dato.referencia}
                         onChange={onChange}
                         fullWidth={true}
                     />
                 </Col>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                    <DatePicker
-                        required
-                        floatingLabelText="Fecha"
-                        value={controlledDate}
-                        onChange={onChangeDate}
-                        fullWidth={true}
-                        DateTimeFormat={DateTimeFormat}
-                        okLabel="OK"
-                        cancelLabel="Cancelar"
-                        locale="es"
-                        maxDate={today}
-                    />
-                </Col>
             </Row>
-            <Row style={{marginTop:20}} gutter={32}>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                    <RaisedButton
-                        primary={true}
-                        label="Guadar"
-                        type="subscribe"
-                        fullWidth={true}
-                    />
-                </Col>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}/>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}/>
-            </Row>
-
-
         </form>
     );
 };
 
-
+commonFieldsForm.defaultProps = {
+    dato: {
+        description: '',
+        referencia: '',
+        monto: '',
+        peso: '',
+        tipo: '',
+        subtipo: '',
+    },
+};
 
 export default commonFieldsForm;
