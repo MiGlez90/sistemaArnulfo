@@ -23,15 +23,22 @@ import areIntlLocalesSupported from 'intl-locales-supported';
 
 injectTapEventPlugin();
 
+//configurar store y cargar store en redux
 const store = configureStore();
+//Cargar datos
 store.dispatch(loadTipos());
-store.dispatch(loadGastos());
-store.dispatch(comprobarUsuario());
 store.dispatch(loadSubtiposAnimales());
 store.dispatch(loadSubtiposGranos());
+store.dispatch(loadGastos());
+//comprobar si usuario esta logueado
+store.dispatch(comprobarUsuario());
+//imprimir state
 setTimeout( () => {
     console.log(store.getState());
 }, 3000);
+
+// configurar DateTimeFormat para que el date picker
+// tenga configuracion mexicana
 export let DateTimeFormat;
 
 /**
