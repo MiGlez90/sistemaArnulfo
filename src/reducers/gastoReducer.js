@@ -11,11 +11,32 @@ export default function gastoReducer (state = [], action){
 
         case "CREATE_GASTO":
             return [...state,action.gasto];
-            break;;
+            break;
+
+        case "TOOGLE_LOCK":
+            debugger;
+            const item = {...action.gasto, lock:!action.gasto.lock};
+            return state.map(c=>{
+                if(c.key === action.gasto.key){
+                    return item;
+                }
+                return c;
+            });
 
         case "UPDATE_GASTO_SUCCESS":
-            return state;
-
+            return [...state.map( i => {
+                if(i.key === action.gasto.key){
+                    return action.gasto;
+                }
+                return i;
+            } )];
+        case 'RESET_GASTOS':
+            let newState = state.slice(0);
+            for( let gasto of newState){
+               gasto.lock = false;
+            }
+            return newState;
+            break;
         default:
             return state;
 

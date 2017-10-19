@@ -3,6 +3,27 @@ import firebase from '../firebase';
 export function createGasto(gasto){
     return {type: "CREATE_GASTO", gasto}
 }
+export function toogleLockSuccess(gasto){
+    return {type: "TOOGLE_LOCK", gasto}
+}
+
+export function toogleLock(gasto){
+    return function (dispatch) {
+        dispatch(toogleLockSuccess(gasto));
+        return Promise.resolve();
+    }
+}
+
+
+export function resetGastosSuccess() {
+    return {type: "RESET_GASTOS"}
+}
+
+export function resetGastos() {
+    return function (dispatch) {
+        dispatch(resetGastosSuccess());
+    }
+}
 
 export function loadGastosSuccess(gastos){
     return {type: "LOAD_GASTOS_SUCCESS", gastos}
@@ -16,6 +37,7 @@ export function updateGastoSuccess(gasto){
     return { type: "UPDATE_GASTO_SUCCESS", gasto };
 }
 
+
 export function loadGastos(){
     return function (dispatch) {
         return firebase.database().ref('gastos')
@@ -25,6 +47,7 @@ export function loadGastos(){
                 for (let k in s.val()){
                     let c = s.val()[k];
                     c['key'] = k;
+                    c['lock'] = false;
                     array.push(c);
                 }
                 dispatch(loadGastosSuccess(array));

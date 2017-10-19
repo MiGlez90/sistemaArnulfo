@@ -28,6 +28,7 @@ const commonFieldsForm = (props) => {
         onChangeSubtipo,
         subtipoMenuItems
     } = props;
+    debugger;
     const handleChangeTipo = (event, index, value) => {
         onChangeTipo(event,index,value,gastoIndex);
     };
@@ -48,15 +49,27 @@ const commonFieldsForm = (props) => {
                     showExpandableButton={true}
                 />
                 <CardActions>
-                    <SelectField
-                        name="referencia"
-                        floatingLabelText="Referencia"
-                        value={dato.referencia}
-                        onChange={handleChangeTipo}
-                        style={textFieldStyle}
-                    >
-                        {gastosItems}
-                    </SelectField>
+                    { !dato.lock ?
+                        <SelectField
+                            name="referencia"
+                            floatingLabelText="Referencia"
+                            value={dato.referencia}
+                            onChange={handleChangeTipo}
+                            style={textFieldStyle}
+                        >
+                            {gastosItems}
+                        </SelectField>
+                        :
+                        <TextField
+                            required
+                            disabled={true}
+                            name="referencia"
+                            floatingLabelText="Referencia"
+                            value={dato.referencia}
+                            onChange={onChange}
+                            style={textFieldStyle}
+                        />
+                    }
                 </CardActions>
                 <CardText expandable={true}>
                     <div>
@@ -106,15 +119,6 @@ const commonFieldsForm = (props) => {
                             name="description"
                             floatingLabelText="Descripcion"
                             value={dato.description}
-                            onChange={onChange}
-                            style={textFieldStyle}
-                        />
-                        <TextField
-                            required
-                            disabled={true}
-                            name="referencia"
-                            floatingLabelText="Referencia"
-                            value={dato.referencia}
                             onChange={onChange}
                             style={textFieldStyle}
                         />

@@ -43,6 +43,7 @@ class IngresoFormContainer extends Component {
     componentWillMount(){
         //cambiar nombre de barra
         this.props.navBarNameActions.changeName('Añadir ingreso');
+        this.props.gastosActions.resetGastos();
     }
 
 
@@ -50,14 +51,19 @@ class IngresoFormContainer extends Component {
     // por el momento solo hay un formulario
     handleChangeReferencia = (event, index, value, gastoIndex) => {
         debugger;
-        let gasto = Object.assign({}, this.state[gastoIndex]);
         let {ingreso} = this.state;
         let gastoSeleccionado = this.props.gastos.filter((gasto) => gasto.key === value );
-        gasto = gastoSeleccionado[0];
-        gasto.referencia = value;
-        ingreso.items.push(gasto);
-        this.setState({[gastoIndex]:gasto}, () => {
+        let gasto = gastoSeleccionado[0];
+        this.props.gastosActions.toogleLock(gasto).then( () => {
+            gastoSeleccionado = this.props.gastos.filter((gasto) => gasto.key === value );
+            let gasto = gastoSeleccionado[0];
+            gasto.referencia = value;
+            ingreso.items.push(gasto);
+            this.setState({[gastoIndex]:gasto}, () => {
+            });
         });
+
+
     };
     // controlar el subtipo
     handleChangeSubtipo = (event, index, value) => {
@@ -90,6 +96,10 @@ class IngresoFormContainer extends Component {
         e.preventDefault();
         // clonar el state para no generar problemas
         const ingresoCopy = Object.assign({},this.state.ingreso);
+        for(let gasto of ingresoCopy.items){
+            gasto.sold = true;
+            this.props.gastosActions.saveGasto(gasto);
+        }
         this.props.actions.saveIngreso(ingresoCopy)
             .then( (r) => {
                 toastr.success('Guardado');
@@ -106,8 +116,11 @@ class IngresoFormContainer extends Component {
 
     addItem = () => {
         let {cantidadItems} = this.state;
-        cantidadItems++;
-        this.setState({cantidadItems});
+        const length = this.props.gastosForDropDown.length;
+        if (length > 0 && cantidadItems < length ){
+            cantidadItems++;
+            this.setState({cantidadItems});
+        }
     };
 
     removeItem = () => {
@@ -211,7 +224,13 @@ const firstStepStyle = {
 
 /*********************** Conectar con redux ************************************/
 function mapStateToProps(state, ownProps) {
-    const gastosForDropDown = state.gastos.map((gasto)=> {
+    let gastos = state.gastos.filter( (gasto) => {
+        return gasto.sold === false;
+    });
+    let gastosForDropDown = gastos.filter( (gasto) => {
+        return gasto.lock === false;
+    });
+    gastosForDropDown = gastosForDropDown.map((gasto)=> {
         return {
             value: gasto.key,
             text: gasto.key
@@ -220,7 +239,7 @@ function mapStateToProps(state, ownProps) {
     return {
         ingresos: state.ingresos,
         tipos: state.tipos,
-        gastos: state.gastos,
+        gastos: gastos,
         gastosForDropDown: gastosForDropDown,
         subtiposAnimales: state.subtiposAnimales,
         subtiposGranos: state.subtiposGranos,
