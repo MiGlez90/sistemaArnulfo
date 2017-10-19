@@ -45,15 +45,10 @@ class IngresoFormContainer extends Component {
         this.props.navBarNameActions.changeName('Añadir ingreso');
     }
 
-    // abrir el common field form
-    openCommonForm = () => {
-        this.setState({showCommonForm: true});
-    };
-
 
     // abrir el formulario correspondiente de acuerdo al tipo
     // por el momento solo hay un formulario
-    handleChangeTipo = (event, index, value, gastoIndex) => {
+    handleChangeReferencia = (event, index, value, gastoIndex) => {
         debugger;
         let gasto = Object.assign({}, this.state[gastoIndex]);
         let {ingreso} = this.state;
@@ -81,7 +76,6 @@ class IngresoFormContainer extends Component {
             ingreso,
             controlledDate: date
         }, () => {
-            this.openCommonForm();
         });
     };
     // controlar los text field
@@ -150,7 +144,7 @@ class IngresoFormContainer extends Component {
                         subtipoMenuItems={menuItemsSub}
                         controlledDate={controlledDate}
                         onChange={this.updateIngresoState}
-                        onChangeTipo={this.handleChangeTipo}
+                        onChangeTipo={this.handleChangeReferencia}
                         onChangeDate={this.handleChangeDate}
                         onChangeSubtipo={this.handleChangeSubtipo}
                     />
@@ -159,43 +153,41 @@ class IngresoFormContainer extends Component {
         }
         return (
             <div style={{width:'100%'}}>
-                <Row gutter={32}>
-                    <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-                        <DatePicker
-                            required
-                            floatingLabelText="Fecha"
-                            value={this.state.controlledDate}
-                            onChange={this.handleChangeDate}
-                            fullWidth={true}
-                            DateTimeFormat={DateTimeFormat}
-                            okLabel="OK"
-                            cancelLabel="Cancelar"
-                            locale="es"
-                            maxDate={today}
-                        />
-                    </Col>
-                    <Col xs={24} sm={24} md={4} lg={4} xl={4}>
-                        <RaisedButton
-                            primary={true}
-                            label="Agregar item"
-                            fullWidth={true}
-                            onClick={this.addItem}
-                        />
-                    </Col>
-                    <Col xs={24} sm={24} md={4} lg={4} xl={4}>
-                        <RaisedButton
-                            primary={true}
-                            label="Eliminar item"
-                            fullWidth={true}
-                            onClick={this.removeItem}
-                        />
-                    </Col>
-                    <Col xs={24} sm={24} md={8} lg={8} xl={8}/>
-                </Row>
+                <div style={firstStepStyle}>
+                    <DatePicker
+                        required
+                        floatingLabelText="Fecha"
+                        value={this.state.controlledDate}
+                        onChange={this.handleChangeDate}
+                        DateTimeFormat={DateTimeFormat}
+                        okLabel="OK"
+                        cancelLabel="Cancelar"
+                        locale="es"
+                        maxDate={today}
+                        fullWidth={true}
+                    />
+                </div>
+                <div style={firstStepStyle}>
+                    <RaisedButton
+                        //primary={true}
+                        label="Agregar item"
+                        onClick={this.addItem}
+                        fullWidth={true}
+                    />
+                </div>
+                <div style={firstStepStyle}>
+                    <RaisedButton
+                        //primary={true}
+                        label="Eliminar item"
+                        onClick={this.removeItem}
+                        fullWidth={true}
+                    />
+                </div>
+                <br/>
                 {itemsParaIngreso}
                 { cantidadItems > 0 &&
                     <Row style={{marginTop: 20}} gutter={32}>
-                        <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+                        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                             <RaisedButton
                                 primary={true}
                                 onClick={this.saveItem}
@@ -203,14 +195,19 @@ class IngresoFormContainer extends Component {
                                 fullWidth={true}
                             />
                         </Col>
-                        <Col xs={24} sm={8} md={8} lg={8} xl={8}/>
-                        <Col xs={24} sm={8} md={8} lg={8} xl={8}/>
                     </Row>
                 }
             </div>
         );
     }
 }
+
+const firstStepStyle = {
+    display: 'inline-block',
+    width: '33.33% ',
+    margin: '10px 0px 25px 0px',
+    padding: 10
+};
 
 /*********************** Conectar con redux ************************************/
 function mapStateToProps(state, ownProps) {

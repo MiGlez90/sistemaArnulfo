@@ -1,6 +1,5 @@
 import React from 'react';
-import {TextField, DatePicker, SelectField, RaisedButton, FlatButton} from "material-ui";
-import {Row,Col} from 'antd';
+import {TextField, SelectField, Card, CardHeader, CardActions, CardText} from "material-ui";
 import areIntlLocalesSupported from 'intl-locales-supported';
 //import moment from "moment";
 
@@ -40,97 +39,93 @@ const commonFieldsForm = (props) => {
                 "Subtipo"
     ;
     return (
-        <form style={{width:'100%'}}>
-            <Row>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} >
+        <div style={{width:'100%'}}>
+            <Card>
+                <CardHeader
+                    title={gastoIndex}
+                    subtitle="Introduzca la referencia de su inventario"
+                    actAsExpander={true}
+                    showExpandableButton={true}
+                />
+                <CardActions>
                     <SelectField
                         name="referencia"
                         floatingLabelText="Referencia"
                         value={dato.referencia}
                         onChange={handleChangeTipo}
-                        fullWidth={true}
+                        style={textFieldStyle}
                     >
                         {gastosItems}
                     </SelectField>
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} />
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} />
-            </Row>
-            <Row gutter={32}>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                    <TextField
-                        disabled={true}
-                        required
-                        name="tipo"
-                        floatingLabelText="Tipo"
-                        value={dato.tipo}
-                        onChange={onChange}
-                        fullWidth={true}
-                    />
-                </Col>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                    <TextField
-                        disabled={true}
-                        required
-                        name="subtipo"
-                        floatingLabelText="Subtipo"
-                        value={dato.subtipo}
-                        onChange={onChange}
-                        fullWidth={true}
-                    />
-                </Col>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8} >
-                    <TextField
-                        disabled={true}
-                        required
-                        name="peso"
-                        hintText="Kgs"
-                        floatingLabelText="Peso"
-                        value={dato.peso}
-                        onChange={onChange}
-                        type="number"
-                        style={{marginLeft: '2%', width: '96%'}}
-                    />
-                </Col>
-            </Row>
-            <Row gutter={32}>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8} >
-                    <TextField
-                        required
-                        disabled={true}
-                        name="monto"
-                        hintText="$ MXN"
-                        floatingLabelText="Monto"
-                        value={dato.monto}
-                        onChange={onChange}
-                        type="number"
-                        fullWidth={true}
-                    />
-                </Col>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                    <TextField
-                        required
-                        disabled={true}
-                        name="description"
-                        floatingLabelText="Descripcion"
-                        value={dato.description}
-                        onChange={onChange}
-                        fullWidth={true}
-                    />
-                </Col>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8}>
-                    <TextField
-                        required
-                        disabled={true}
-                        name="referencia"
-                        floatingLabelText="Referencia"
-                        value={dato.referencia}
-                        onChange={onChange}
-                        fullWidth={true}
-                    />
-                </Col>
-            </Row>
-        </form>
+                </CardActions>
+                <CardText expandable={true}>
+                    <div>
+                        <TextField
+                            disabled={true}
+                            required
+                            name="tipo"
+                            floatingLabelText="Tipo"
+                            value={dato.tipo}
+                            onChange={onChange}
+                            style={textFieldStyle}
+                        />
+                        <TextField
+                            disabled={true}
+                            required
+                            name="subtipo"
+                            floatingLabelText="Subtipo"
+                            value={dato.subtipo}
+                            onChange={onChange}
+                            style={textFieldStyle}
+                        />
+                        <TextField
+                            disabled={true}
+                            required
+                            name="peso"
+                            hintText="Kgs"
+                            floatingLabelText="Peso"
+                            value={dato.peso}
+                            onChange={onChange}
+                            type="number"
+                            style={textFieldStyle}
+                        />
+                        <TextField
+                            required
+                            disabled={true}
+                            name="monto"
+                            hintText="$ MXN"
+                            floatingLabelText="Monto"
+                            value={dato.monto}
+                            onChange={onChange}
+                            type="number"
+                            style={textFieldStyle}
+                        />
+                        <TextField
+                            required
+                            disabled={true}
+                            name="description"
+                            floatingLabelText="Descripcion"
+                            value={dato.description}
+                            onChange={onChange}
+                            style={textFieldStyle}
+                        />
+                        <TextField
+                            required
+                            disabled={true}
+                            name="referencia"
+                            floatingLabelText="Referencia"
+                            value={dato.referencia}
+                            onChange={onChange}
+                            style={textFieldStyle}
+                        />
+                    </div>
+                </CardText>
+            </Card>
+
+
+
+
+        </div>
     );
 };
 
@@ -143,6 +138,11 @@ commonFieldsForm.defaultProps = {
         tipo: '',
         subtipo: '',
     },
+};
+
+const textFieldStyle = {
+    margin: 10,
+    width: '45%'
 };
 
 export default commonFieldsForm;
