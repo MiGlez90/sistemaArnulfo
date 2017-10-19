@@ -3,20 +3,6 @@ import {TextField, SelectField, Card, CardHeader, CardActions, CardText} from "m
 import areIntlLocalesSupported from 'intl-locales-supported';
 //import moment from "moment";
 
-let DateTimeFormat;
-
-/**
- * Use the native Intl.DateTimeFormat if available, or a polyfill if not.
- */
-if (areIntlLocalesSupported(['es', 'es-MX'])) {
-    DateTimeFormat = global.Intl.DateTimeFormat;
-    console.info(DateTimeFormat.toString());
-} else {
-    const IntlPolyfill = require('intl');
-    DateTimeFormat = IntlPolyfill.DateTimeFormat;
-    require('intl/locale-data/jsonp/es');
-    require('intl/locale-data/jsonp/es-MX');
-}
 
 const commonFieldsForm = (props) => {
     const {
