@@ -119,18 +119,16 @@ class IngresoFormContainer extends Component {
 
     addItem = () => {
         let {cantidadItems, itemsList} = this.state;
-        const {gastosForDropDown} = this.props;
-        const gastosItems = formatMenuItems(gastosForDropDown);
-        const length = gastosForDropDown.length;
+        const {gastos} = this.props;
+        const length = gastos.length;
         // alert(length);
         // alert(cantidadItems);
+        cantidadItems++;
         if (length > 0 && cantidadItems <= length ){
-            cantidadItems++;
             this.setState({cantidadItems}, () => {
                 const newGasto = 'gasto' + cantidadItems;
                 this.setState({[newGasto]:{}}, () => {
                     const newItem = {
-                        gastosItems:gastosItems,
                         gastoIndex:newGasto
                     };
                     itemsList.push(newItem);
@@ -156,12 +154,14 @@ class IngresoFormContainer extends Component {
         // const menuItems = formatMenuItems(tipos);
         // de acuerdo a la eleccion del usuario, se cargan los subtipos
         console.log( this.state);
+        const {gastosForDropDown} = this.props;
+        const gastosItems = formatMenuItems(gastosForDropDown)
         const itemsListForShowing = itemsList.map( (item) => {
             return  <CommonFieldForm
                     dato={this.state[item.gastoIndex]}
                     onChange={this.updateIngresoState}
                     onChangeTipo={this.handleChangeReferencia}
-                    gastosItems={item.gastosItems}
+                    gastosItems={gastosItems}
                     gastoIndex={item.gastoIndex}
                 />
         });
@@ -190,14 +190,7 @@ class IngresoFormContainer extends Component {
                         fullWidth={true}
                     />
                 </div>
-                <div style={firstStepStyle}>
-                    <RaisedButton
-                        //primary={true}
-                        label="Eliminar item"
-                        onClick={this.removeItem}
-                        fullWidth={true}
-                    />
-                </div>
+                <div style={firstStepStyle}/>
                 <br/>
                 {itemsListForShowing}
                 { cantidadItems > 0 &&
