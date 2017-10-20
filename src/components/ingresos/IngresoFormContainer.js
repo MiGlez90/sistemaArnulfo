@@ -27,6 +27,7 @@ export function formatMenuItems(tipos) {
     }
 }
 
+
 class IngresoFormContainer extends Component {
     constructor(props) {
         super(props);
@@ -36,6 +37,7 @@ class IngresoFormContainer extends Component {
                 date: '',
                 items: []
             },
+            itemsList: [],
             cantidadItems: 0,
             controlledDate: {}
         };
@@ -60,6 +62,7 @@ class IngresoFormContainer extends Component {
             gasto.referencia = value;
             ingreso.items.push(gasto);
             this.setState({[gastoIndex]:gasto}, () => {
+                console.error(this.state);
             });
         });
 
@@ -115,55 +118,54 @@ class IngresoFormContainer extends Component {
     };
 
     addItem = () => {
-        let {cantidadItems} = this.state;
-        const length = this.props.gastosForDropDown.length;
-        if (length > 0 && cantidadItems < length ){
+        let {cantidadItems, itemsList} = this.state;
+        const {gastosForDropDown} = this.props;
+        const gastosItems = formatMenuItems(gastosForDropDown);
+        const length = gastosForDropDown.length;
+        // alert(length);
+        // alert(cantidadItems);
+        if (length > 0 && cantidadItems <= length ){
             cantidadItems++;
-            this.setState({cantidadItems});
+            this.setState({cantidadItems}, () => {
+                const newGasto = 'gasto' + cantidadItems;
+                this.setState({[newGasto]:{}}, () => {
+                    const newItem = {
+                        gastosItems:gastosItems,
+                        gastoIndex:newGasto
+                    };
+                    itemsList.push(newItem);
+                    this.setState({itemsList});
+                });
+            });
         }
+
     };
 
     removeItem = () => {
-        let {cantidadItems} = this.state;
+        let {cantidadItems, itemsList} = this.state;
         cantidadItems--;
+        itemsList.pop();
         this.setState({cantidadItems})
     };
 
     render() {
         // obtener datos necesarios del state
-        const { ingreso, gasto, controlledDate, cantidadItems} = this.state;
+        const { itemsList, cantidadItems} = this.state;
         // obtener datos necesarios de los props
-        const {tipos, subtiposAnimales,subtiposGranos, gastos, gastosForDropDown} = this.props;
         // formatear tipos, subtipos de animales y subtipos de granos para dropdown
         // const menuItems = formatMenuItems(tipos);
-        const menuItemsSubAnimales = formatMenuItems(subtiposAnimales);
-        const menuItemsSubGranos = formatMenuItems(subtiposGranos);
-        const gastosItems = formatMenuItems(gastosForDropDown);
-        const otros = [{text: 'En construccion', value: 'enconstruccion'}];
-        const menuItemsSubOtros = formatMenuItems(otros);
         // de acuerdo a la eleccion del usuario, se cargan los subtipos
-        const menuItemsSub = ingreso.tipo === 'animales' ? menuItemsSubAnimales :
-            ingreso.tipo === 'granos' ? menuItemsSubGranos : menuItemsSubOtros;
+        console.log( this.state);
+        const itemsListForShowing = itemsList.map( (item) => {
+            return  <CommonFieldForm
+                    dato={this.state[item.gastoIndex]}
+                    onChange={this.updateIngresoState}
+                    onChangeTipo={this.handleChangeReferencia}
+                    gastosItems={item.gastosItems}
+                    gastoIndex={item.gastoIndex}
+                />
+        });
         const today = new Date();
-        const itemsParaIngreso = [];
-        for( let i = 0 ; i < cantidadItems; i++ ){
-            const newGasto = 'gasto' + i;
-            itemsParaIngreso.push(
-                <div>
-                    <CommonFieldForm
-                        gastoIndex={newGasto}
-                        dato={this.state[newGasto]}
-                        gastosItems={gastosItems}
-                        subtipoMenuItems={menuItemsSub}
-                        controlledDate={controlledDate}
-                        onChange={this.updateIngresoState}
-                        onChangeTipo={this.handleChangeReferencia}
-                        onChangeDate={this.handleChangeDate}
-                        onChangeSubtipo={this.handleChangeSubtipo}
-                    />
-                </div>
-            );
-        }
         return (
             <div style={{width:'100%'}}>
                 <div style={firstStepStyle}>
@@ -197,7 +199,7 @@ class IngresoFormContainer extends Component {
                     />
                 </div>
                 <br/>
-                {itemsParaIngreso}
+                {itemsListForShowing}
                 { cantidadItems > 0 &&
                     <Row style={{marginTop: 20}} gutter={32}>
                         <Col xs={24} sm={24} md={24} lg={24} xl={24}>

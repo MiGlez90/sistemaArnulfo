@@ -1,30 +1,19 @@
 import React from 'react';
 import {TextField, SelectField, Card, CardHeader, CardActions, CardText} from "material-ui";
-import areIntlLocalesSupported from 'intl-locales-supported';
 //import moment from "moment";
 
 
-const commonFieldsForm = (props) => {
+const CommonFieldsForm = (props) => {
     const {
         dato,
         onChange,
         onChangeTipo,
         gastosItems,
-        gastoIndex,
-        onChangeSubtipo,
-        subtipoMenuItems
+        gastoIndex
     } = props;
-    debugger;
     const handleChangeTipo = (event, index, value) => {
         onChangeTipo(event,index,value,gastoIndex);
     };
-    const subtipoLabel =
-        dato.tipo === 'animales'?
-            "Tipo de animal" :
-            dato.tipo === 'granos' ?
-                "Tipo de grano" :
-                "Subtipo"
-    ;
     return (
         <div style={{width:'100%'}}>
             <Card>
@@ -119,7 +108,7 @@ const commonFieldsForm = (props) => {
     );
 };
 
-commonFieldsForm.defaultProps = {
+CommonFieldsForm.defaultProps = {
     dato: {
         description: '',
         referencia: '',
@@ -135,4 +124,4 @@ const textFieldStyle = {
     width: '45%'
 };
 
-export default commonFieldsForm;
+export default CommonFieldsForm;
