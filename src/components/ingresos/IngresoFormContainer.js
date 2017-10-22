@@ -38,6 +38,7 @@ class IngresoFormContainer extends Component {
                 items: []
             },
             itemsList: [],
+            gastosList: [],
             cantidadItems: 0,
             controlledDate: {}
         };
@@ -52,7 +53,7 @@ class IngresoFormContainer extends Component {
     // abrir el formulario correspondiente de acuerdo al tipo
     // por el momento solo hay un formulario
     handleChangeReferencia = (event, index, value, gastoIndex) => {
-        let {ingreso} = this.state;
+        let {ingreso, gastosList} = this.state;
         let gastoSeleccionado = this.props.gastos.filter((gasto) => gasto.key === value );
         let gasto = gastoSeleccionado[0];
         this.props.gastosActions.toogleLock(gasto).then( () => {
@@ -60,17 +61,9 @@ class IngresoFormContainer extends Component {
             let gasto = gastoSeleccionado[0];
             gasto.referencia = value;
             ingreso.total += gasto.monto;
-            ingreso.items.push(gasto);
-            this.setState({[gastoIndex]:gasto, ingreso});
+            gastosList.push(gasto);
+            this.setState({[gastoIndex]:gasto, gastosList});
         });
-
-
-    };
-    // controlar el subtipo
-    handleChangeSubtipo = (event, index, value) => {
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso.subtipo = value;
-        this.setState({ingreso});
     };
 
     // controlar la fecha
@@ -97,6 +90,7 @@ class IngresoFormContainer extends Component {
         e.preventDefault();
         // clonar el state para no generar problemas
         const ingresoCopy = Object.assign({},this.state.ingreso);
+        ingresoCopy.items = this.state.gastosList;
         for(let gasto of ingresoCopy.items){
             gasto.sold = true;
             this.props.gastosActions.saveGasto(gasto);
@@ -127,7 +121,7 @@ class IngresoFormContainer extends Component {
                 const newGasto = 'gasto' + cantidadItems;
                 this.setState({[newGasto]:{}}, () => {
                     const newItem = {
-                        gastoIndex:newGasto
+                        dato:{}
                     };
                     itemsList.push(newItem);
                     this.setState({itemsList});
@@ -138,14 +132,17 @@ class IngresoFormContainer extends Component {
     };
 
     removeItem = (itemName, itemGasto) => {
-        let {cantidadItems, itemsList} = this.state;
+        let {cantidadItems, itemsList, gastosList} = this.state;
         cantidadItems--;
         if(itemGasto.key){
             this.props.gastosActions.toogleLock(itemGasto).then( () => {
                 itemsList = itemsList.filter((item) => {
-                    return item.gastoIndex !== itemName
+                    return item.gastoIndex !== itemName;
                 });
-                this.setState({cantidadItems, itemsList});
+                gastosList = gastosList.filter( item => {
+                   return item.key !== itemGasto.key;
+                });
+                this.setState({cantidadItems, itemsList, gastosList});
             });
         }else{
             itemsList = itemsList.filter((item) => {
@@ -153,8 +150,6 @@ class IngresoFormContainer extends Component {
             });
             this.setState({cantidadItems, itemsList});
         }
-
-        debugger;
     };
 
     render() {
@@ -166,20 +161,20 @@ class IngresoFormContainer extends Component {
         // de acuerdo a la eleccion del usuario, se cargan los subtipos
         console.log( this.state);
         const {gastosForDropDown} = this.props;
+        let itemsListForShowing = [];
         const gastosItems = formatMenuItems(gastosForDropDown);
-        let i = 0;
-        const itemsListForShowing = itemsList.map( (item) => {
-            i++;
+        for(let i = 0; i < cantidadItems; i++){
             const gastoName = 'gasto' + i;
-            return  <CommonFieldForm
-                    dato={this.state[item.gastoIndex]}
+            itemsListForShowing.push(  <CommonFieldForm
+                    dato={this.state.gastosList[i]}
                     onChange={this.updateIngresoState}
                     onChangeTipo={this.handleChangeReferencia}
                     gastosItems={gastosItems}
                     gastoIndex={gastoName}
                     removeItem={this.removeItem}
                 />
-        });
+            );
+        }
         const today = new Date();
         return (
             <div style={{width:'100%'}}>
