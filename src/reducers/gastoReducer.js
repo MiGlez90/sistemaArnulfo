@@ -14,7 +14,6 @@ export default function gastoReducer (state = [], action){
             break;
 
         case "TOOGLE_LOCK":
-            debugger;
             const item = {...action.gasto, lock:!action.gasto.lock};
             return state.map(c=>{
                 if(c.key === action.gasto.key){

@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField, SelectField, Card, CardHeader, CardActions, CardText} from "material-ui";
+import {TextField, SelectField, Card, CardHeader, CardActions, CardText, RaisedButton} from "material-ui";
 //import moment from "moment";
 
 
@@ -9,10 +9,14 @@ const CommonFieldsForm = (props) => {
         onChange,
         onChangeTipo,
         gastosItems,
-        gastoIndex
+        gastoIndex,
+        removeItem
     } = props;
     const handleChangeTipo = (event, index, value) => {
         onChangeTipo(event,index,value,gastoIndex);
+    };
+    const removeThisItem = () => {
+        removeItem(gastoIndex, dato)
     };
     return (
         <div style={{width:'100%'}}>
@@ -23,7 +27,7 @@ const CommonFieldsForm = (props) => {
                     actAsExpander={true}
                     showExpandableButton={true}
                 />
-                <CardActions>
+                <CardActions >
                     { !dato.lock ?
                         <SelectField
                             name="referencia"
@@ -45,6 +49,11 @@ const CommonFieldsForm = (props) => {
                             style={textFieldStyle}
                         />
                     }
+                    <RaisedButton
+                        style={{right:10,position:'absolute',bottom:25}}
+                        label="Eliminar"
+                        onClick={removeThisItem}
+                    />
                 </CardActions>
                 <CardText expandable={true}>
                     <div>
