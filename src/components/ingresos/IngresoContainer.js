@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
+import * as fechaFiltroActions from '../../actions/fechaFiltroActions';
 import IngresoList from '../common/ShowTable';
 import {FloatingActionButton} from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -30,11 +31,7 @@ class IngresoContainer extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            filtro: 'todos',
-            filtroFecha: {
-                inicio: {},
-                final: {}
-            }
+            filtro: 'todos'
         }
     }
     componentWillMount(){
@@ -70,20 +67,12 @@ class IngresoContainer extends React.Component {
     /*** Controlar el filtro por fecha ***/
     // controlar la fecha de inicio
     handleChangeDateInicio = (event, date) => {
-        let {filtroFecha} = this.state;
-        filtroFecha.inicio = date;
-        this.setState({
-            filtroFecha
-        });
+        this.props.fechaFiltroActions.changeFechaInicio(date);
     };
 
     //controlar la fecha final
     handleChangeDateFinal = (event, date) => {
-        let {filtroFecha} = this.state;
-        filtroFecha.final = date;
-        this.setState({
-            filtroFecha
-        });
+        this.props.fechaFiltroActions.changeFechaFinal(date);
     };
 
     // comprobar si la fecha del rango final es mayor a la de inicio
@@ -93,9 +82,9 @@ class IngresoContainer extends React.Component {
     // submit recuperar los ingresos de fecha por rango
     retrieveIngresosWithDate = (e) => {
         e.preventDefault();
-        const {filtroFecha} = this.state;
-        const fechaFinal = toMiliseconds(filtroFecha.final);
-        const fechaInicio = toMiliseconds(filtroFecha.inicio);
+        const {fechaFiltro} = this.props;
+        const fechaFinal = toMiliseconds(fechaFiltro.final);
+        const fechaInicio = toMiliseconds(fechaFiltro.inicio);
         if(this.checkIfFinalIsGreather(fechaInicio,fechaFinal)){
             this.props.actions.loadIngresosDelimitedByRange(fechaInicio, fechaFinal);
         }else{
@@ -105,8 +94,8 @@ class IngresoContainer extends React.Component {
 
     render() {
         // recuperar variables y constantes de props y state
-        const {ingresos, tipos} = this.props;
-        const {filtro, filtroFecha} = this.state;
+        const {ingresos, tipos, fechaFiltro} = this.props;
+        const {filtro} = this.state;
         // filtrar ingresos dependiendo el state (filtro de tipo)
         const ingresosFiltrados = this.filterItems(ingresos,filtro);
         // formatear los tipos para que se puedan desplegar en un drop down
@@ -121,7 +110,7 @@ class IngresoContainer extends React.Component {
                 />
                 {/*Muestra el filtro por rango de fecha*/}
                 <FiltroFecha
-                    filtro={filtroFecha}
+                    filtro={fechaFiltro}
                     onChangeInicio={this.handleChangeDateInicio}
                     onChangeFinal={this.handleChangeDateFinal}
                     onSubmit={this.retrieveIngresosWithDate}
@@ -158,7 +147,8 @@ function mapStateToProps(state, ownProps) {
         ingresos: state.ingresos,
         tipos: state.tipos,
         navBarName: state.navBarName,
-        filtro: state.filtro
+        filtro: state.filtro,
+        fechaFiltro: state.fechaFiltro
     };
 }
 
@@ -166,7 +156,8 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(ingresoActions, dispatch),
         filtroActions: bindActionCreators(filtroActions, dispatch),
-        navBarNameActions: bindActionCreators(navBarNameActions, dispatch)
+        navBarNameActions: bindActionCreators(navBarNameActions, dispatch),
+        fechaFiltroActions: bindActionCreators(fechaFiltroActions, dispatch)
     };
 }
 

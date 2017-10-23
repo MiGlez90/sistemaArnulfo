@@ -22,6 +22,7 @@ export function resetGastosSuccess() {
 export function resetGastos() {
     return function (dispatch) {
         dispatch(resetGastosSuccess());
+        return Promise.resolve();
     }
 }
 

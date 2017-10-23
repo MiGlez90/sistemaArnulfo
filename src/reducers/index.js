@@ -8,6 +8,7 @@ import navBarNameReducer from './navBarNameReducer';
 import usuarioVerificadoReducer from "./usuarioVerificadoReducer";
 import subtiposGranosReducer from "./subtiposGranosReducer";
 import filtroTipoReducer from "./filtroTipoReducer";
+import fechaFiltroReducer from "./fechaFiltroReducer";
 
 
 const rootReducer = combineReducers({
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     usuario: usuarioReducer,
     navBarName: navBarNameReducer,
     usuarioVerificado: usuarioVerificadoReducer,
-    filtro: filtroTipoReducer
+    filtro: filtroTipoReducer,
+    fechaFiltro: fechaFiltroReducer
 });
 
 export default rootReducer;
