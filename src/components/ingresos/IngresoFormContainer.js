@@ -28,6 +28,8 @@ export function formatMenuItems(tipos) {
 }
 
 
+
+
 class IngresoFormContainer extends Component {
     constructor(props) {
         super(props);
@@ -46,23 +48,27 @@ class IngresoFormContainer extends Component {
     componentWillMount(){
         //cambiar nombre de barra
         this.props.navBarNameActions.changeName('Añadir ingreso');
+        //reiniciar lista de gastos para que pueda ser utilizado de nuevo
         this.props.gastosActions.resetGastos();
     }
 
+    getItemFromList = (itemKey) => {
+        let gastoSeleccionado = this.props.gastos.filter((gasto) => gasto.key === itemKey );
+        return gastoSeleccionado[0];
 
+    };
     // abrir el formulario correspondiente de acuerdo al tipo
     // por el momento solo hay un formulario
     handleChangeReferencia = (event, index, value, gastoIndex) => {
+        //bajar ingresos y gastosList del state
         let {ingreso, gastosList} = this.state;
-        let gastoSeleccionado = this.props.gastos.filter((gasto) => gasto.key === value );
-        let gasto = gastoSeleccionado[0];
+        const gasto = this.getItemFromList(value);
         this.props.gastosActions.toogleLock(gasto).then( () => {
-            gastoSeleccionado = this.props.gastos.filter((gasto) => gasto.key === value );
-            let gasto = gastoSeleccionado[0];
+            const gasto = this.getItemFromList(value);
             gasto.referencia = value;
             ingreso.total += gasto.monto;
             gastosList.push(gasto);
-            this.setState({[gastoIndex]:gasto, gastosList});
+            this.setState({[gastoIndex]:gasto, gastosList, ingreso});
         });
     };
 
@@ -132,7 +138,7 @@ class IngresoFormContainer extends Component {
     };
 
     removeItem = (itemName, itemGasto) => {
-        let {cantidadItems, itemsList, gastosList} = this.state;
+        let {cantidadItems, itemsList, gastosList, ingreso} = this.state;
         cantidadItems--;
         if(itemGasto.key){
             this.props.gastosActions.toogleLock(itemGasto).then( () => {
@@ -142,7 +148,8 @@ class IngresoFormContainer extends Component {
                 gastosList = gastosList.filter( item => {
                    return item.key !== itemGasto.key;
                 });
-                this.setState({cantidadItems, itemsList, gastosList});
+                ingreso.total -= itemGasto.monto;
+                this.setState({cantidadItems, itemsList, gastosList, ingreso});
             });
         }else{
             itemsList = itemsList.filter((item) => {
@@ -154,7 +161,7 @@ class IngresoFormContainer extends Component {
 
     render() {
         // obtener datos necesarios del state
-        const { itemsList, cantidadItems} = this.state;
+        const { gastosList, cantidadItems} = this.state;
         // obtener datos necesarios de los props
         // formatear tipos, subtipos de animales y subtipos de granos para dropdown
         // const menuItems = formatMenuItems(tipos);
@@ -166,7 +173,7 @@ class IngresoFormContainer extends Component {
         for(let i = 0; i < cantidadItems; i++){
             const gastoName = 'gasto' + i;
             itemsListForShowing.push(  <CommonFieldForm
-                    dato={this.state.gastosList[i]}
+                    dato={gastosList[i]}
                     onChange={this.updateIngresoState}
                     onChangeTipo={this.handleChangeReferencia}
                     gastosItems={gastosItems}
