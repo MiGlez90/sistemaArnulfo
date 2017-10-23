@@ -2,13 +2,13 @@
  * Created by BlisS on 22/03/17.
  * Pagina principal de ingresos /ingresos
  */
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
 import IngresoList from '../common/ShowTable';
-import {FloatingActionButton, Dialog, FlatButton} from 'material-ui';
+import {FloatingActionButton} from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {Link} from "react-router-dom";
 import FiltroSelect from "./FiltroSelect";
@@ -53,7 +53,8 @@ class IngresoContainer extends React.Component {
                 return losItems.filter(i=>i.tipo==='otro');
             case 'todos':
                 return losItems;
-
+            default:
+                return losItems;
         }
     };
 

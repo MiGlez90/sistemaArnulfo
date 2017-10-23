@@ -1,5 +1,3 @@
-import initialState from './initialState';
-
 export default function tipoReducer(state = [], action){
     switch(action.type){
         case "LOAD_TIPOS_SUCCESS":

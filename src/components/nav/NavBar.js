@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AppBar,FlatButton} from 'material-ui';
 import {connect} from 'react-redux';
-import {NavLink, Redirect} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import * as usuarioActions from '../../actions/usuarioActions';
 import {bindActionCreators} from "redux";
 import toastr from 'toastr';

@@ -10,7 +10,6 @@ import '../node_modules/font-awesome/css/font-awesome.min.css';
 import 'antd/dist/antd.css';
 import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
-import {loadIngresos} from './actions/ingresoActions'
 import {loadTipos} from './actions/tipoActions'
 import {loadGastos} from './actions/gastoActions';
 import {comprobarUsuario} from "./actions/usuarioActions";

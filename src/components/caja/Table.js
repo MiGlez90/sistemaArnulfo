@@ -76,14 +76,14 @@ const columns = [
     key: 'action',
     render: (text, record) => (
         <span>
-      <a href="#">Action 一 {record.cantidad}</a>
+      <a href="!#">Action 一 {record.cantidad}</a>
       <span className="ant-divider" />
       <Popconfirm onConfirm={()=>borrarItem(record)} title="estas seguro？" okText="Si" cancelText="No">
     <a>Borrar</a>
   </Popconfirm>
 
       <span className="ant-divider" />
-      <a href="#" className="ant-dropdown-link">
+      <a href="!#" className="ant-dropdown-link">
         Mas acciones <Icon type="down" />
       </a>
     </span>
@@ -99,12 +99,12 @@ const borrarItem = (r) => {
 
 };
 
-let total = 0;
-const footer = () => 'Total: ' + total;
+//let total = 0;
+//const footer = () => 'Total: ' + total;
 const expandedRowRender = record => <p>{record.description}</p>;
 const title = () => 'Lista de Ingresos';
 const showHeader = true;
-const scroll = { y: 240 };
+//const scroll = { y: 240 };
 class ShowTable extends Component{
 
     state = {
@@ -149,7 +149,7 @@ class ShowTable extends Component{
                             let total = 0;
                             for (let k in srk){
                                 console.log(srk[k].cantidad);
-                                total += parseInt(srk[k].cantidad);
+                                total += parseInt(srk[k].cantidad,10);
                             }
                             this.setState({total});
                             //return total;

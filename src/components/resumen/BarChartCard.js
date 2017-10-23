@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Card} from 'material-ui';
-import {Icon} from 'antd';
-import {Bar, Pie} from 'react-chartjs-2';
+//import {Icon} from 'antd';
+import {Bar} from 'react-chartjs-2';
 
 
 const data = {

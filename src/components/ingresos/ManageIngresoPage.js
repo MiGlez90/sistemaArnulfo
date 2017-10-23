@@ -1,7 +1,7 @@
 /**
  * Created by BlisS on 22/03/17.
  */
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
@@ -182,10 +182,7 @@ function mapStateToProps(state, ownProps) {
 
     debugger;
     const ingresoIsolated = state.ingresos.filter( (ingreso) => {
-        if (ingreso !== undefined){
             return ingreso.key === ownProps.match.params.key;
-        }
-
     });
 
     const ingreso = ingresoIsolated[0];

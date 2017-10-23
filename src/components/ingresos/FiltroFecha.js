@@ -1,7 +1,7 @@
 import React from 'react';
 import {DatePicker, RaisedButton} from 'material-ui';
 import {Row, Col} from 'antd';
-import moment from 'moment';
+//import moment from 'moment';
 import {DateTimeFormat} from "../../index";
 
 
