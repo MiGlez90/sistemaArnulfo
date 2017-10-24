@@ -11,8 +11,8 @@ const TableRowComponent = ({fact, muiTheme}) => {
     // console.log(muiTheme);
     return(
         <TableRow key={fact.key}>
-            <TableRowColumn>{fact.description}</TableRowColumn>
             <TableRowColumn>{fact.date}</TableRowColumn>
+            <TableRowColumn>$ {fact.total}</TableRowColumn>
             <TableRowColumn>
                 <Link to={"/ingresos/" + fact.key}>
                     <RaisedButton

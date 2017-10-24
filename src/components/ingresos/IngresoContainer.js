@@ -31,7 +31,11 @@ class IngresoContainer extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            filtro: 'todos'
+            filtro: 'todos',
+            fechaFiltro: {
+                inicio: {},
+                final: {},
+            }
         }
     }
     componentWillMount(){
@@ -67,12 +71,21 @@ class IngresoContainer extends React.Component {
     /*** Controlar el filtro por fecha ***/
     // controlar la fecha de inicio
     handleChangeDateInicio = (event, date) => {
-        this.props.fechaFiltroActions.changeFechaInicio(date);
+        // this is for local changes
+        let {fechaFiltro} = this.state;
+        fechaFiltro.inicio = date;
+        this.setState({fechaFiltro});
+        // this is for redux
+        //this.props.fechaFiltroActions.changeFechaInicio(date);
     };
 
     //controlar la fecha final
     handleChangeDateFinal = (event, date) => {
-        this.props.fechaFiltroActions.changeFechaFinal(date);
+        let {fechaFiltro} = this.state;
+        fechaFiltro.final = date;
+        this.setState({fechaFiltro});
+        // this is for redux
+        //this.props.fechaFiltroActions.changeFechaFinal(date);
     };
 
     // comprobar si la fecha del rango final es mayor a la de inicio
@@ -82,11 +95,15 @@ class IngresoContainer extends React.Component {
     // submit recuperar los ingresos de fecha por rango
     retrieveIngresosWithDate = (e) => {
         e.preventDefault();
-        const {fechaFiltro} = this.props;
+        const {fechaFiltro} = this.state;
         const fechaFinal = toMiliseconds(fechaFiltro.final);
         const fechaInicio = toMiliseconds(fechaFiltro.inicio);
         if(this.checkIfFinalIsGreather(fechaInicio,fechaFinal)){
-            this.props.actions.loadIngresosDelimitedByRange(fechaInicio, fechaFinal);
+            this.props.actions.loadIngresosDelimitedByRange(fechaInicio, fechaFinal)
+                .then( r => {
+                    this.props.fechaFiltroActions.changeFechaFinal(fechaFiltro.final);
+                    this.props.fechaFiltroActions.changeFechaInicio(fechaFiltro.inicio);
+                });
         }else{
             alert('La fecha final debe ser mayor a la de inicio');
         }
@@ -96,6 +113,7 @@ class IngresoContainer extends React.Component {
         // recuperar variables y constantes de props y state
         const {ingresos, tipos, fechaFiltro} = this.props;
         const {filtro} = this.state;
+        const fechaFiltroLocal = this.state.fechaFiltro;
         // filtrar ingresos dependiendo el state (filtro de tipo)
         const ingresosFiltrados = this.filterItems(ingresos,filtro);
         // formatear los tipos para que se puedan desplegar en un drop down
@@ -103,14 +121,16 @@ class IngresoContainer extends React.Component {
         return (
             <div>
                 {/*Muestra el filtro por tipo*/}
-                <FiltroSelect
-                    tipos={tiposMenuItems}
-                    filtro={filtro}
-                    onChange={this.handleChangeSelect}
-                />
+                {/*<FiltroSelect*/}
+                    {/*tipos={tiposMenuItems}*/}
+                    {/*filtro={filtro}*/}
+                    {/*onChange={this.handleChangeSelect}*/}
+                {/*/>*/}
                 {/*Muestra el filtro por rango de fecha*/}
                 <FiltroFecha
-                    filtro={fechaFiltro}
+                    // si la fecha está guardada en redux, mostrar fecha de redux, si no
+                    // mostrar fecha local del state
+                    filtro={ fechaFiltro.inicio !== undefined ? fechaFiltro : fechaFiltroLocal }
                     onChangeInicio={this.handleChangeDateInicio}
                     onChangeFinal={this.handleChangeDateFinal}
                     onSubmit={this.retrieveIngresosWithDate}
@@ -120,12 +140,22 @@ class IngresoContainer extends React.Component {
                     data={ingresosFiltrados}
                 />
                 {/*Muestra un fab*/}
-                <Link to="/ingresos/addIngreso">
-                    <FloatingActionButton
-                        style={fabstyle}>
-                        <ContentAdd/>
-                    </FloatingActionButton>
-                </Link>
+                {
+                    this.props.gastosLength > 0 ?
+                    <Link to="/ingresos/addIngreso">
+                        <FloatingActionButton
+                            style={fabstyle}>
+                            <ContentAdd/>
+                        </FloatingActionButton>
+                    </Link> :
+                        <FloatingActionButton
+                            onClick={ () => {
+                                alert('No tiene nada en inventario para vender');
+                            }}
+                            style={fabstyle}>
+                            <ContentAdd/>
+                        </FloatingActionButton>
+                }
             </div>
 
         );
@@ -143,8 +173,12 @@ IngresoContainer.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
+    const gastosForSelling = state.gastos.filter( (gasto) => {
+       return !gasto.sold
+    });
     return {
         ingresos: state.ingresos,
+        gastosLength : gastosForSelling.length,
         tipos: state.tipos,
         navBarName: state.navBarName,
         filtro: state.filtro,

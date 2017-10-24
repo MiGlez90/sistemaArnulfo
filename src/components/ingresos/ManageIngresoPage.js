@@ -140,28 +140,6 @@ class ManageIngresoPage extends React.Component {
                     onClick={this.deleteItem}>
                     <ContentRemove/>
                 </FloatingActionButton>
-
-
-                {/*<FlatButton*/}
-                    {/*label="Eliminar"*/}
-                    {/*primary={true}*/}
-                    {/*onClick={this.deleteItem}/>*/}
-
-                {/*<Dialog*/}
-                    {/*contentStyle={{width:350}}*/}
-                    {/*title="Editar Ingreso"*/}
-                    {/*actions={this.actions}*/}
-                    {/*modal={false}*/}
-                    {/*open={this.state.openForm}*/}
-                    {/*onRequestClose={this.closeForm}>*/}
-                    {/*<IngresoForm*/}
-                        {/*ingreso={this.state.ingresoMutable}*/}
-                        {/*allTipos={this.props.tipos}*/}
-                        {/*onChange={this.updateIngresoState}*/}
-                        {/*onChangeTipo={this.handleChangeTipo}*/}
-                    {/*/>*/}
-
-                {/*</Dialog>*/}
             </div>
         );
     }

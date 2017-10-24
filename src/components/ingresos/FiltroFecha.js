@@ -3,7 +3,7 @@ import {DatePicker, RaisedButton} from 'material-ui';
 import {Row, Col} from 'antd';
 //import moment from 'moment';
 import {DateTimeFormat} from "../../index";
-
+import './IngresoContainer.css'
 
 const FiltroFecha = (props) => {
     const {filtro, onChangeInicio, onChangeFinal, onSubmit} = props;
@@ -16,7 +16,7 @@ const FiltroFecha = (props) => {
                 </Col>
             </Row>
             <Row gutter={32}>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                <div className="container-responsive">
                     <DatePicker
                         required
                         floatingLabelText="Inicio"
@@ -29,8 +29,8 @@ const FiltroFecha = (props) => {
                         maxDate={today}
                         fullWidth={true}
                     />
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+                </div>
+                <div className="container-responsive">
                     <DatePicker
                         required
                         floatingLabelText="Final"
@@ -44,15 +44,15 @@ const FiltroFecha = (props) => {
                         minDate={filtro.inicio}
                         fullWidth={true}
                     />
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} >
+                </div>
+                <div className="container-responsive">
                     <RaisedButton
-                        label="Aceptar"
+                        label="Buscar"
                         type="submit"
                         fullWidth={true}
                         primary={true}
                     />
-                </Col>
+                </div>
             </Row>
         </form>
     );
