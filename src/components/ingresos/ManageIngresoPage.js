@@ -5,7 +5,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
-import ListaDetalle from "./ListaDetalle";
+import ListaDetalle from "./ListaDetalleAnt";
 import { FlatButton, FloatingActionButton} from 'material-ui';
 import toastr from 'toastr';
 import FormularioEditar from "./FormularioEditar";
@@ -80,24 +80,16 @@ class ManageIngresoPage extends React.Component {
 
     render() {
         const {edit} = this.state;
-        let ingresoToPrint = [];
-
-        const ingreso = this.props.ingreso;
-        for (let field in ingreso) {
-            let newIngreso = {};
-            newIngreso.value = ingreso[field];
-            newIngreso.label = field;
-            ingresoToPrint.push(newIngreso);
-        }
-
+        const {ingreso} = this.props;
         return (
             <div style={{width:'70vw'}}>
                 { (!edit)
                     ?<ListaDetalle
                         title="Detalle Ingreso"
-                        data={ingresoToPrint}/>
+                        field={ ingreso }
+                    />
                     :< FormularioEditar
-                        data={ingresoToPrint}
+                        data={ingreso}
                         ingreso={this.state.ingreso}
                         onChange={this.updateIngresoState}
                         onChangleTipo={this.handleChangeTipo}/>
