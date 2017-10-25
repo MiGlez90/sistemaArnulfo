@@ -1,7 +1,8 @@
 import firebase from '../firebase';
 import toastr from 'toastr';
 import {usuarioVerificado} from "./usuarioVerificadoActions";
-import {loadIngresos} from "./ingresoActions";
+import {loadIngresosDelimitedByRange} from "./ingresoActions";
+import {toMiliseconds} from "../components/ingresos/IngresoContainer";
 
 
 export function iniciarSesionAction(usuario) {
@@ -105,7 +106,10 @@ export function comprobarUsuario(){
                 debugger;
                 dispatch(comprobarUsuarioAction(u));
                 dispatch(usuarioVerificado());
-                dispatch(loadIngresos());
+                const fechaFiltro = getState().fechaFiltro ;
+                const fechaFinal = toMiliseconds(fechaFiltro.final);
+                const fechaInicio = toMiliseconds(fechaFiltro.inicio);
+                dispatch(loadIngresosDelimitedByRange(fechaInicio,fechaFinal));
             }else{
                 dispatch(usuarioVerificado());
                 debugger;

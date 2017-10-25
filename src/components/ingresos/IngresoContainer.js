@@ -9,7 +9,7 @@ import * as ingresoActions from '../../actions/ingresoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
 import * as fechaFiltroActions from '../../actions/fechaFiltroActions';
 import IngresoList from '../common/ShowTable';
-import {FloatingActionButton} from 'material-ui';
+import {Dialog, FloatingActionButton, Toggle} from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {Link} from "react-router-dom";
 import FiltroSelect from "./FiltroSelect";
@@ -17,13 +17,18 @@ import {formatMenuItems} from './IngresoFormContainer';
 import * as filtroActions from '../../actions/filtroTiposActions';
 import FiltroFecha from "./FiltroFecha";
 import moment from  'moment';
+import FiltroFechaOnlyRead from "./FiltroFechaOnlyRead";
 
 // import IngresoForm from './IngresoForm';
 // import toastr from 'toastr';
 
 //funcion para convertir fecha en ISO a fecha en milisegundos
-function toMiliseconds(fechaISO) {
+export function toMiliseconds(fechaISO) {
     return moment(fechaISO , moment.ISO_8601).format('x');
+}
+
+export function toBetterFormat(fechaISO) {
+    return moment(fechaISO , moment.ISO_8601).format('DD MMMM YYYY');
 }
 
 
@@ -35,13 +40,20 @@ class IngresoContainer extends React.Component {
             fechaFiltro: {
                 inicio: {},
                 final: {},
-            }
+            },
+            editDate: false
         }
     }
     componentWillMount(){
         //Cambia el nombre de la barra AppBar
         this.props.navBarNameActions.changeName('Ingresos');
     }
+
+    onToogle = (event) => {
+        let {editDate} = this.state;
+        editDate = !editDate;
+        this.setState({editDate});
+    };
 
     // funcion para filtrar por tipo (dependiendo el state)
     filterItems = (losItems, filtro) => {
@@ -103,6 +115,7 @@ class IngresoContainer extends React.Component {
                 .then( r => {
                     this.props.fechaFiltroActions.changeFechaFinal(fechaFiltro.final);
                     this.props.fechaFiltroActions.changeFechaInicio(fechaFiltro.inicio);
+                    this.onToogle();
                 });
         }else{
             alert('La fecha final debe ser mayor a la de inicio');
@@ -118,6 +131,8 @@ class IngresoContainer extends React.Component {
         const ingresosFiltrados = this.filterItems(ingresos,filtro);
         // formatear los tipos para que se puedan desplegar en un drop down
         const tiposMenuItems = formatMenuItems(tipos);
+        const fechaInicio = toBetterFormat(fechaFiltro.inicio.toISOString());
+        const fechaFinal = toBetterFormat(fechaFiltro.final.toISOString());
         return (
             <div>
                 {/*Muestra el filtro por tipo*/}
@@ -127,14 +142,25 @@ class IngresoContainer extends React.Component {
                     {/*onChange={this.handleChangeSelect}*/}
                 {/*/>*/}
                 {/*Muestra el filtro por rango de fecha*/}
-                <FiltroFecha
-                    // si la fecha está guardada en redux, mostrar fecha de redux, si no
-                    // mostrar fecha local del state
-                    filtro={ fechaFiltro.inicio !== undefined ? fechaFiltro : fechaFiltroLocal }
-                    onChangeInicio={this.handleChangeDateInicio}
-                    onChangeFinal={this.handleChangeDateFinal}
-                    onSubmit={this.retrieveIngresosWithDate}
-                />
+                {
+                    this.state.editDate ?
+                    <FiltroFecha
+                        // si la fecha está guardada en redux, mostrar fecha de redux, si no
+                        // mostrar fecha local del state
+                        filtro={ fechaFiltroLocal }
+                        onChangeInicio={this.handleChangeDateInicio}
+                        onChangeFinal={this.handleChangeDateFinal}
+                        onSubmit={this.retrieveIngresosWithDate}
+                        onClick={this.onToogle}
+                    /> :
+                        <FiltroFechaOnlyRead
+                            style={{marginTop:20}}
+                            fechaInicio={fechaInicio}
+                            fechaFinal={fechaFinal}
+                            onClick={this.onToogle}
+                        />
+                }
+
                 {/*Muestra la lista de ingresos*/}
                 <IngresoList
                     data={ingresosFiltrados}

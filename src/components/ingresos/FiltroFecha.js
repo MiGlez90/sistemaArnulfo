@@ -6,7 +6,7 @@ import {DateTimeFormat} from "../../index";
 import './IngresoContainer.css'
 
 const FiltroFecha = (props) => {
-    const {filtro, onChangeInicio, onChangeFinal, onSubmit} = props;
+    const {filtro, onChangeInicio, onChangeFinal, onSubmit, onClick} = props;
     const today = new Date();
     return (
         <form onSubmit={onSubmit}>
@@ -28,6 +28,7 @@ const FiltroFecha = (props) => {
                         locale="es"
                         maxDate={today}
                         fullWidth={true}
+                        autoOk={true}
                     />
                 </div>
                 <div className="container-responsive">
@@ -43,12 +44,21 @@ const FiltroFecha = (props) => {
                         maxDate={today}
                         minDate={filtro.inicio}
                         fullWidth={true}
+                        autoOk={true}
                     />
                 </div>
                 <div className="container-responsive">
                     <RaisedButton
                         label="Buscar"
                         type="submit"
+                        fullWidth={true}
+                        primary={true}
+                    />
+                </div>
+                <div className="container-responsive">
+                    <RaisedButton
+                        label="Cancelar"
+                        onClick={onClick}
                         fullWidth={true}
                         primary={true}
                     />
