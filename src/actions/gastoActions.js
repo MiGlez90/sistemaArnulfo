@@ -38,6 +38,13 @@ export function updateGastoSuccess(gasto){
     return { type: "UPDATE_GASTO_SUCCESS", gasto };
 }
 
+export function updateGasto(gasto){
+    return function (dispatch, getState) {
+        dispatch(updateGastoSuccess(gasto));
+        return Promise.resolve();
+    }
+}
+
 
 export function loadGastos(){
     return function (dispatch) {
