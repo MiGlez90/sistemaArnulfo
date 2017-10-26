@@ -84,20 +84,22 @@ class IngresoContainer extends React.Component {
     // controlar la fecha de inicio
     handleChangeDateInicio = (event, date) => {
         // this is for local changes
-        let {fechaFiltro} = this.state;
-        fechaFiltro.inicio = date;
-        this.setState({fechaFiltro});
+        // let {fechaFiltro} = this.state;
+        // fechaFiltro.inicio = date;
+        // this.setState({fechaFiltro});
         // this is for redux
-        //this.props.fechaFiltroActions.changeFechaInicio(date);
+        this.props.fechaFiltroActions.changeFechaInicio(date);
+        this.retrieveIngresosWithDate();
     };
 
     //controlar la fecha final
     handleChangeDateFinal = (event, date) => {
-        let {fechaFiltro} = this.state;
-        fechaFiltro.final = date;
-        this.setState({fechaFiltro});
+        // let {fechaFiltro} = this.state;
+        // fechaFiltro.final = date;
+        // this.setState({fechaFiltro});
         // this is for redux
-        //this.props.fechaFiltroActions.changeFechaFinal(date);
+        this.props.fechaFiltroActions.changeFechaFinal(date);
+        this.retrieveIngresosWithDate();
     };
 
     // comprobar si la fecha del rango final es mayor a la de inicio
@@ -105,17 +107,16 @@ class IngresoContainer extends React.Component {
         return final >= inicio;
     };
     // submit recuperar los ingresos de fecha por rango
-    retrieveIngresosWithDate = (e) => {
-        e.preventDefault();
-        const {fechaFiltro} = this.state;
+    retrieveIngresosWithDate = () => {
+        const {fechaFiltro} = this.props;
         const fechaFinal = toMiliseconds(fechaFiltro.final);
         const fechaInicio = toMiliseconds(fechaFiltro.inicio);
         if(this.checkIfFinalIsGreather(fechaInicio,fechaFinal)){
             this.props.actions.loadIngresosDelimitedByRange(fechaInicio, fechaFinal)
                 .then( r => {
-                    this.props.fechaFiltroActions.changeFechaFinal(fechaFiltro.final);
-                    this.props.fechaFiltroActions.changeFechaInicio(fechaFiltro.inicio);
-                    this.onToogle();
+                    // this.props.fechaFiltroActions.changeFechaFinal(fechaFiltro.final);
+                    // this.props.fechaFiltroActions.changeFechaInicio(fechaFiltro.inicio);
+                    // this.onToogle();
                 });
         }else{
             alert('La fecha final debe ser mayor a la de inicio');
@@ -142,24 +143,15 @@ class IngresoContainer extends React.Component {
                     {/*onChange={this.handleChangeSelect}*/}
                 {/*/>*/}
                 {/*Muestra el filtro por rango de fecha*/}
-                {
-                    this.state.editDate ?
                     <FiltroFecha
                         // si la fecha está guardada en redux, mostrar fecha de redux, si no
                         // mostrar fecha local del state
-                        filtro={ fechaFiltroLocal }
+                        filtro={ fechaFiltro }
                         onChangeInicio={this.handleChangeDateInicio}
                         onChangeFinal={this.handleChangeDateFinal}
                         onSubmit={this.retrieveIngresosWithDate}
                         onClick={this.onToogle}
-                    /> :
-                        <FiltroFechaOnlyRead
-                            style={{marginTop:20}}
-                            fechaInicio={fechaInicio}
-                            fechaFinal={fechaFinal}
-                            onClick={this.onToogle}
-                        />
-                }
+                    />
 
                 {/*Muestra la lista de ingresos*/}
                 <IngresoList

@@ -9,7 +9,7 @@ const FiltroFecha = (props) => {
     const {filtro, onChangeInicio, onChangeFinal, onSubmit, onClick} = props;
     const today = new Date();
     return (
-        <form onSubmit={onSubmit}>
+        <div >
             <Row>
                 <Col span={24}>
                     <p>Seleccionar fecha de inicio y final para filtrar</p>
@@ -47,24 +47,8 @@ const FiltroFecha = (props) => {
                         autoOk={true}
                     />
                 </div>
-                <div className="container-responsive">
-                    <RaisedButton
-                        label="Buscar"
-                        type="submit"
-                        fullWidth={true}
-                        primary={true}
-                    />
-                </div>
-                <div className="container-responsive">
-                    <RaisedButton
-                        label="Cancelar"
-                        onClick={onClick}
-                        fullWidth={true}
-                        primary={true}
-                    />
-                </div>
             </Row>
-        </form>
+        </div>
     );
 };
 
