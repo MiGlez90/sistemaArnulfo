@@ -12,7 +12,16 @@ import {bindActionCreators} from 'redux';
 import * as gastoActions from '../../actions/gastoActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
 import GastosList from '../common/ShowTable';
+import {Link} from 'react-router-dom';
+import moment from  'moment';
 
+export function toMiliseconds(fechaISO) {
+    return moment(fechaISO , moment.ISO_8601).format('x');
+}
+
+export function toBetterFormat(fechaISO) {
+    return moment(fechaISO , moment.ISO_8601).format('DD MMMM YYYY');
+}
 
 
 class TableContainer extends Component{
@@ -119,13 +128,14 @@ class TableContainer extends Component{
             <div >
                 <GastosList data={gastos}/>
                 {/*<ShowTable loading={loading} data={gastos} />*/}
-                <FloatingActionButton
-                    style={styles.float}
-                    onClick={this.openForm}
-                >
-                    <ContentAdd />
-                </FloatingActionButton>
-
+                <Link to="/gastos/addGasto">
+                    <FloatingActionButton
+                        style={styles.float}
+                        onClick={this.openForm}
+                    >
+                        <ContentAdd />
+                    </FloatingActionButton>
+                </Link>
                 <Dialog
                     contentStyle={{width:350}}
                     title="Agregar Ingreso"

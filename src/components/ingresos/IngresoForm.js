@@ -1,6 +1,3 @@
-/**
- * Created by BlisS on 22/03/17.
- */
 import React from 'react';
 //import TextInput from '../common/TextInput';
 import {MenuItem, SelectField} from "material-ui";
@@ -41,7 +38,7 @@ const IngresoForm = (props) => {
                     ingreso={ingreso}
                     controlledDate={controlledDate}
                     onChange={onChange}
-                    onChangeTipo={onChangeTipo}
+                    onChangeTipo={onC1hangeTipo}
                     onChangeDate={onChangeDate}
                 />
             }
