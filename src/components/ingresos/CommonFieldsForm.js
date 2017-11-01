@@ -28,7 +28,7 @@ const CommonFieldsForm = (props) => {
                     showExpandableButton={true}
                 />
                 <CardActions >
-                    { !dato.lock ?
+                    { !dato.lock  ?
                         <SelectField
                             name="referencia"
                             floatingLabelText="Referencia"

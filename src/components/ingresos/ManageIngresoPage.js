@@ -8,7 +8,7 @@ import * as ingresoActions from '../../actions/ingresoActions';
 import ListaDetalle from "./ListaDetalleAnt";
 import { FlatButton, FloatingActionButton} from 'material-ui';
 import toastr from 'toastr';
-import FormularioEditar from "./FormularioEditar";
+import IngresoFormContainer from './IngresoFormContainer';
 import ContentRemove from 'material-ui/svg-icons/action/delete-forever';
 
 const buttonStyle = {
@@ -88,11 +88,9 @@ class ManageIngresoPage extends React.Component {
                         title="Detalle Ingreso"
                         field={ ingreso }
                     />
-                    :< FormularioEditar
-                        data={ingreso}
-                        ingreso={this.state.ingreso}
-                        onChange={this.updateIngresoState}
-                        onChangleTipo={this.handleChangeTipo}/>
+                    :< IngresoFormContainer
+                        ingreso={ ingreso }
+                    />
                 }
                 { !edit
                     ?
