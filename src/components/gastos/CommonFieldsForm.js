@@ -12,7 +12,7 @@ const CommonFieldsForm = (props) => {
         gastoIndex,
         removeItem
     } = props;
-
+    
     const handleChangeTipo = (event, index, value) => {
         onChangeTipo(event,index,value,gastoIndex);
     };
