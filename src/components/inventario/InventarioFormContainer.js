@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {MenuItem, SelectField} from "material-ui";
 import CommonFieldForm from './CommonFieldsForm';
+import InventarioList from './InventarioList';
+import {FloatingActionButton, Dialog, FlatButton} from 'material-ui';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as ingresoActions from '../../actions/ingresoActions';
+import * as inventarioActions from '../../actions/inventarioActions';
 import * as navBarNameActions from '../../actions/navBarNameActions';
 import toastr from 'toastr';
 import {Row, Col} from 'antd';
@@ -19,11 +21,11 @@ export function formatMenuItems(tipos) {
     }
 }
 
-class IngresoFormContainer extends Component {
+class InventarioFormContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ingreso: {
+            ingresos: {
                 description: '',
                 referencia: '',
                 monto: '',
@@ -39,7 +41,7 @@ class IngresoFormContainer extends Component {
         };
     }
     componentWillMount(){
-        this.props.navBarNameActions.changeName('Añadir ingreso');
+        this.props.navBarNameActions.changeName('Inventario');
     }
 
     openFormAlimentos = () => {
@@ -59,10 +61,10 @@ class IngresoFormContainer extends Component {
     };
 
     handleChangeTipo = (event, index, value) => {
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso.tipo = value;
-        this.setState({ingreso}, () => {
-            switch (ingreso.tipo){
+        let inventario = Object.assign({}, this.state.inventario);
+        inventario.tipo = value;
+        this.setState({inventario}, () => {
+            switch (inventario.tipo){
                 case 'animales':
                     this.openFormAlimentos();
                     break;
@@ -78,38 +80,38 @@ class IngresoFormContainer extends Component {
     };
 
     handleChangeSubtipo = (event, index, value) => {
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso.subtipo = value;
-        this.setState({ingreso});
+        let inventario = Object.assign({}, this.state.inventario);
+        inventario.subtipo = value;
+        this.setState({inventario});
     };
 
 
 
     handleChangeDate = (name, date) => {
-        const ingreso = this.state.ingreso;
-        ingreso.date = moment(date.toISOString(), moment.ISO_8601).format('DD MMMM YYYY');
-        ingreso.dateMS = moment(date.toISOString(), moment.ISO_8601).format('x');
+        const inventario = this.state.inventario;
+        inventario.date = moment(date.toISOString(), moment.ISO_8601).format('DD MMMM YYYY');
+        inventario.dateMS = moment(date.toISOString(), moment.ISO_8601).format('x');
         this.setState({
-            ingreso,
+            inventario,
             controlledDate: date
         });
     };
 
-    updateIngresoState = (e) => {
+    updateInventarioState = (e) => {
         const field = e.target.name;
-        let ingreso = Object.assign({}, this.state.ingreso);
-        ingreso[field] = e.target.value;
-        this.setState({ingreso});
+        let inventario = Object.assign({}, this.state.inventario);
+        inventario[field] = e.target.value;
+        this.setState({inventario});
     };
 
     saveItem = (e) => {
         e.preventDefault();
-        const ingresoCopy = Object.assign({},this.state.ingreso);
-        this.props.actions.saveIngreso(ingresoCopy)
+        const inventarioCopy = Object.assign({},this.state.inventario);
+        this.props.actions.saveInventario(inventarioCopy)
             .then( (r) => {
                 toastr.success('Guardado');
                 console.log(r);
-                const newIngreso = {
+                const newInventario = {
                     description: '',
                     monto: '',
                     cantidad: '',
@@ -119,13 +121,13 @@ class IngresoFormContainer extends Component {
                     subtipo: '',
                     dateMS: ''
                 };
-                this.setState({ingreso:newIngreso});
+                this.setState({inventario:newInventario});
             }).catch(e=>console.error(e));
     };
 
 
     render() {
-        const { ingreso, controlledDate, showedFormAlimentos} = this.state;
+        const { inventario, controlledDate, showedFormAlimentos} = this.state;
         const {tipos, subtiposAnimales,subtiposGranos} = this.props;
         const menuItems = formatMenuItems(tipos);
         const menuItemsSubAnimales = formatMenuItems(subtiposAnimales);
@@ -133,20 +135,41 @@ class IngresoFormContainer extends Component {
         const otros = [{text: 'En construccion', value: 'enconstruccion'}];
         const menuItemsSubOtros = formatMenuItems(otros);
         const menuItemsSub =
-            ingreso.tipo === 'animales'?
+            inventario.tipo === 'animales'?
                 menuItemsSubAnimales :
-            ingreso.tipo === 'granos' ?
+            inventario.tipo === 'granos' ?
                 menuItemsSubGranos :
                 menuItemsSubOtros
         ;
         return (
+
+
+
             <div style={{width:'100%'}}>
+
+
+                              <FloatingActionButton
+                                  style={fabstyle}
+                                  onClick={this.openForm}>
+                                  <ContentAdd/>
+                              </FloatingActionButton>
+                              <Dialog
+                                  contentStyle={{width:350}}
+                                  title="Agregar"
+                                  actions={this.actions}
+                                  modal={false}
+                                  open={this.state.openForm}
+                                  onRequestClose={this.closeForm}>
+
+
+
+
                 <Row gutter={32}>
                     <Col xs={24} sm={24} md={8} lg={8} xl={8} >
                         <SelectField
                             name="tipo"
                             floatingLabelText="Tipo"
-                            value={ingreso.tipo}
+                            value={inventario.tipo}
                             onChange={this.handleChangeTipo}
                             fullWidth={true}
                         >
@@ -159,10 +182,10 @@ class IngresoFormContainer extends Component {
                 {
                     showedFormAlimentos &&
                     <CommonFieldForm
-                        ingreso={ingreso}
+                        inventario={inventario}
                         subtipoMenuItems={menuItemsSub}
                         controlledDate={controlledDate}
-                        onChange={this.updateIngresoState}
+                        onChange={this.updateInventarioState}
                         onChangeTipo={this.handleChangeTipo}
                         onChangeDate={this.handleChangeDate}
                         onChangeSubtipo={this.handleChangeSubtipo}
@@ -170,7 +193,6 @@ class IngresoFormContainer extends Component {
                     />
                 }
 
-            </div>
         );
     }
 }
@@ -178,7 +200,7 @@ class IngresoFormContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        ingresos: state.ingresos,
+        inventario: state.inventario,
         tipos: state.tipos,
         subtiposAnimales: state.subtiposAnimales,
         subtiposGranos: state.subtiposGranos,
@@ -188,10 +210,10 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(ingresoActions, dispatch),
+        actions: bindActionCreators(inventarioActions, dispatch),
         navBarNameActions: bindActionCreators(navBarNameActions, dispatch)
     };
 }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(IngresoFormContainer);
+export default connect(mapStateToProps,mapDispatchToProps)(InventarioFormContainer);

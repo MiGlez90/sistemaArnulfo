@@ -1,106 +1,137 @@
+/**
+ * Created by BlisS on 22/03/17.
+ */
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as ingresoActions from '../../actions/ingresoActions';
-import * as navBarNameActions from '../../actions/navBarNameActions';
-import IngresoList from '../common/ShowTable';
+import InventarioList from './InventarioList';
 import {FloatingActionButton, Dialog, FlatButton} from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import {Link} from "react-router-dom";
-import FiltroSelect from "./FiltroSelect";
-import {formatMenuItems} from './IngresoFormContainer';
-import * as filtroActions from '../../actions/filtroTiposActions';
-import FiltroFecha from "./FiltroFecha";
-import moment from  'moment';
+import InventarioForm from './InventarioForm';
+import toastr from 'toastr';
 
 
-class IngresoContainer extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            filtro: 'todos',
-            filtroFecha: {
-                inicio: {},
-                final: {}
-            }
-        }
-    }
-    componentWillMount(){
-        this.props.navBarNameActions.changeName('Ingresos');
-    }
-
-
-
-    filterItems = (losItems, filtro) => {
-        switch(filtro){
-            case "animales":
-                return losItems.filter(i=>i.tipo==='animales');
-            case "granos":
-                return losItems.filter(i=>i.tipo==='granos');
-            case "otros":
-                return losItems.filter(i=>i.tipo==='otro');
-            case 'todos':
-                return losItems;
-
-        }
+class InventarioContainer extends React.Component {
+    state = {
+        openForm: false,
+        ingreso: {
+            description: '',
+            referencia: '',
+            cantidad: '',
+            tipo: '',
+            captureDate: '',
+            subtipo: ''
+        },
+        controlledDate: {},
+        showedFormAlimentos: false,
+        showedFormGranos: false
     };
 
-    handleChangeSelect = (event, index, value) => {
-        this.setState({filtro:value});
-        //this.props.filtroActions.changeFilterTipo(value);
+
+    openFormAlimentos = () => {
+        this.setState({showedFormAlimentos: true});
     };
 
-    handleChangeDateInicio = (event, date) => {
-        let {filtroFecha} = this.state;
-        filtroFecha.inicio = date;
+    closeFormAlimentos = () => {
+        this.setState({showedFormAlimentos: false});
+    };
+
+    openFormGranos = () => {
+        this.setState({showedFormGranos:true});
+    };
+
+    closeFormGranos = () => {
+        this.setState({showedFormGranos:false});
+    };
+
+
+    handleChangeTipo = (event, index, value) => {
+        let ingreso = Object.assign({}, this.state.ingreso);
+        ingreso.tipo = value;
+        this.setState({ingreso});
+    };
+
+    handleChangeCaptureDate = (name, date) => {
+        const ingreso = this.state.ingreso;
+        ingreso.captureDate = date.toString();
         this.setState({
-            filtroFecha
+            ingreso,
+            controlledDate: date
         });
     };
 
-    handleChangeDateFinal = (event, date) => {
-        let {filtroFecha} = this.state;
-        filtroFecha.final = date;
-        this.setState({
-            filtroFecha
-        });
+    updateIngresoState = (e) => {
+        const field = e.target.name;
+        let ingreso = Object.assign({}, this.state.ingreso);
+        ingreso[field] = e.target.value;
+        this.setState({ingreso});
     };
 
-    retrieveIngresosWithDate = (e) => {
-        e.preventDefault();
-        const {filtroFecha} = this.state;
-        const fechaInicio = moment(filtroFecha.inicio.toISOString(), moment.ISO_8601).format('x');
-        const fechaFinal = moment(filtroFecha.final.toISOString(), moment.ISO_8601).format('x');
-        this.props.actions.loadIngresosDelimitedByRange(fechaInicio, fechaFinal);
+    saveItem = () => {
+        debugger;
+        const ingresoCopy = Object.assign({},this.state.ingreso);
+        this.props.actions.saveIngreso(ingresoCopy)
+            .then( (r) => {
+                toastr.success('Guardado correctamente');
+                console.log(r);
+                const newIngreso = {
+                    description: '',
+                        cantidad: '',
+                        tipo: '',
+                        captureDate: '',
+                        referencia: '',
+                        subtipo: ''
+                };
+                this.setState({ingreso:newIngreso});
+            }).catch(e=>console.error(e));
+        this.closeForm();
+    };
+
+    actions = [
+        <FlatButton
+            label="Ok"
+            primary={true}
+            keyboardFocused={true}
+            onClick={this.saveItem}
+        />,
+    ];
+
+    openForm = () => {
+        this.setState({openForm:true});
+    };
+
+    closeForm = () => {
+        this.setState({openForm:false});
     };
 
     render() {
-        const {ingresos, tipos} = this.props;
-        const {filtro, filtroFecha} = this.state;
-        const ingresosFiltrados = this.filterItems(ingresos,filtro);
-        const tiposMenuItems = formatMenuItems(tipos);
+        const {ingresos} = this.props;
         return (
-            <div>
-                <FiltroSelect
-                    tipos={tiposMenuItems}
-                    filtro={filtro}
-                    onChange={this.handleChangeSelect}
-                />
-                <FiltroFecha
-                    filtro={filtroFecha}
-                    onChangeInicio={this.handleChangeDateInicio}
-                    onChangeFinal={this.handleChangeDateFinal}
-                    onSubmit={this.retrieveIngresosWithDate}
-                />
-                <IngresoList
-                    data={ingresosFiltrados}
-                />
-                <Link to="/ingresos/addIngreso">
-                    <FloatingActionButton
-                        style={fabstyle}>
-                        <ContentAdd/>
-                    </FloatingActionButton>
-                </Link>
+            <div style={ingresoContainerStyle}>
+                <InventarioList ingresos={ingresos} />
+                <FloatingActionButton
+                    style={fabstyle}
+                    onClick={this.openForm}>
+                    <ContentAdd/>
+                </FloatingActionButton>
+                <Dialog
+                    contentStyle={{width:350}}
+                    title="Agregar nuevo"
+                    actions={this.actions}
+                    modal={false}
+                    open={this.state.openForm}
+                    onRequestClose={this.closeForm}>
+                    <InventarioForm
+                        ingreso={this.state.ingreso}
+                        controlledDate={this.state.controlledDate}
+                        allTipos={this.props.tipos}
+                        onChange={this.updateIngresoState}
+                        onChangeTipo={this.handleChangeTipo}
+                        onChangeDate={this.handleChangeCaptureDate}
+                    />
+
+                </Dialog>
             </div>
 
         );
@@ -113,24 +144,31 @@ const fabstyle = {
   bottom: 15
 };
 
-IngresoContainer.propTypes = {
+const ingresoContainerStyle = {
+    width: '85vw'
+};
+
+InventarioContainer.propTypes = {
+
 };
 
 function mapStateToProps(state, ownProps) {
+    const tiposFormattedForDropdown = state.tipos.map(tipo=>{
+        return {
+            value:tipo.value,
+            text:tipo.text
+        }
+    });
     return {
         ingresos: state.ingresos,
-        tipos: state.tipos,
-        navBarName: state.navBarName,
-        filtro: state.filtro
+        tipos: tiposFormattedForDropdown
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(ingresoActions, dispatch),
-        filtroActions: bindActionCreators(filtroActions, dispatch),
-        navBarNameActions: bindActionCreators(navBarNameActions, dispatch)
+        actions: bindActionCreators(ingresoActions, dispatch)
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IngresoContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(InventarioContainer);

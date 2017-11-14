@@ -18,7 +18,7 @@ if (areIntlLocalesSupported(['es', 'es-MX'])) {
 
 const commonFieldsForm = (props) => {
     const {
-        ingreso,
+        inventario,
         onChange,
         onSubmit,
         onChangeDate,
@@ -28,9 +28,9 @@ const commonFieldsForm = (props) => {
     } = props;
     const today = new Date();
     const subtipoLabel =
-        ingreso.tipo === 'animales'?
+        inventario.tipo === 'animales'?
             "Tipo de animal" :
-            ingreso.tipo === 'granos' ?
+            inventario.tipo === 'granos' ?
                 "Tipo de grano" :
                 "Subtipo"
     ;
@@ -42,7 +42,7 @@ const commonFieldsForm = (props) => {
                         required
                         name="subtipo"
                         floatingLabelText={subtipoLabel}
-                        value={ingreso.subtipo}
+                        value={inventario.subtipo}
                         onChange={onChangeSubtipo}
                         fullWidth={true}
                     >
@@ -55,7 +55,7 @@ const commonFieldsForm = (props) => {
                         name="cantidad"
                         hintText="Kgs"
                         floatingLabelText="Cantidad"
-                        value={ingreso.cantidad}
+                        value={inventario.cantidad}
                         onChange={onChange}
                         type="number"
                         style={{marginLeft: '2%', width: '96%'}}
@@ -67,7 +67,7 @@ const commonFieldsForm = (props) => {
                         name="monto"
                         hintText="$ MXN"
                         floatingLabelText="Monto"
-                        value={ingreso.monto}
+                        value={inventario.monto}
                         onChange={onChange}
                         type="number"
                         style={{marginLeft: '2%', width: '96%'}}
@@ -80,7 +80,7 @@ const commonFieldsForm = (props) => {
                         required
                         name="description"
                         floatingLabelText="Descripción"
-                        value={ingreso.description}
+                        value={inventario.description}
                         onChange={onChange}
                         fullWidth={true}
                     />
@@ -90,7 +90,7 @@ const commonFieldsForm = (props) => {
                         required
                         name="referencia"
                         floatingLabelText="Referencia"
-                        value={ingreso.referencia}
+                        value={inventario.referencia}
                         onChange={onChange}
                         fullWidth={true}
                     />
@@ -114,7 +114,7 @@ const commonFieldsForm = (props) => {
                 <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                     <RaisedButton
                         primary={true}
-                        label="Guadar"
+                        label="Guardar"
                         type="subscribe"
                         fullWidth={true}
                     />
