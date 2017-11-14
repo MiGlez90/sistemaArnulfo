@@ -1,0 +1,9 @@
+.container-responsive{
+    width: 25%;
+    display: inline-block;
+}
+
+.container-responsive-fifty{
+    width: 50%;
+    display: inline-block;
+}
