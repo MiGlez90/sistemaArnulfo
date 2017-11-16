@@ -26,7 +26,8 @@ const Routes = () => (
         <Route path="/signup" component={SignUpContainer} />
         <PrivateRouteConnect exact path="/gastos" component={Gastos} />
         <PrivateRouteConnect path="/gastos/addGasto" component={GastosFormConnect} />
-        <PrivateRouteConnect path="/caja" component={Caja} />
+        <PrivateRouteConnect path="/caja" component={Caja} />.
+
         <PrivateRouteConnect path="/resumen" component={Resumen} />
         <PrivateRouteConnect path="/ingresos/:key" component={ManageIngresoPage} />
     </Switch>
