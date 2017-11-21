@@ -13,6 +13,8 @@ import PrivateRouteConnect from "./PrivateRouteConnect";
 import IngresoFormContainer from "./components/ingresos/IngresoFormContainer";
 import GastosFormConnect from "./components/gastos/GastoFormConnect";
 import ManageGastosPage from "./components/gastos/ManageGastosPage";
+import Inventario from  "./components/inventario/InventarioContainer";
+
 
 
 
@@ -31,6 +33,7 @@ const Routes = () => (
         <PrivateRouteConnect path="/gastos/:key" component={ManageGastosPage}/>
         <PrivateRouteConnect path="/resumen" component={Resumen} />
         <PrivateRouteConnect path="/ingresos/:key" component={ManageIngresoPage} />
+        <PrivateRouteConnect path="/inventario" component={Inventario} />
     </Switch>
 );
 

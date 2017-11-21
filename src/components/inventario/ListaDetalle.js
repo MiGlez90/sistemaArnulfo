@@ -25,14 +25,18 @@ const ListaDetalle = (props) => {
                 <TableHeader displaySelectAll={false}>
                     <TableHeaderColumn>Nombre</TableHeaderColumn>
                     <TableHeaderColumn>Descripción</TableHeaderColumn>
+                      <TableHeaderColumn>Fecha</TableHeaderColumn>
+            
+
+
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
                     {
-                        props.data.map( ingreso => {
+                        props.data.map( inventario => {
                             if(ingreso.label === 'key'){
                                 return null;
                             }
-                  
+                            //return<ListItem key={ingreso.label}>{ingreso.label} : {ingreso.value}</ListItem>
                             const label = FirstLetterInMayus(ingreso.label);
                             return (
                                 <TableRow key={ingreso.label}>
