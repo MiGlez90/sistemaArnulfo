@@ -1,11 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as ingresoActions from '../../actions/ingresoActions';
+import * as gastosActions from '../../actions/gastoActions';
 import ListaDetalle from "./ListaDetalleAnt";
 import { FlatButton, FloatingActionButton} from 'material-ui';
 import toastr from 'toastr';
-import IngresoFormContainer from './IngresoFormContainer';
+import GastoFormContainer from './GastoFormContainer';
 import ContentRemove from 'material-ui/svg-icons/action/delete-forever';
 
 const buttonStyle = {
@@ -158,7 +158,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(gastoActions, dispatch)
+        actions: bindActionCreators(gastosActions, dispatch)
     };
 }
 

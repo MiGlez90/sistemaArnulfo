@@ -1,5 +1,5 @@
 import React from 'react';
-import {} from 'material-ui';
+import {TextField} from 'material-ui';
 import ShowTableDetail from "./ShowTableDetail";
 
 const ListaDetalleAnt = ({field}) => {
